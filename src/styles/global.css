@@ -198,7 +198,7 @@ h1 {
 }
 
 .primary {
-  color: #fffdf7;
+  color: var(--paper);
   background: var(--ink);
 }
 
