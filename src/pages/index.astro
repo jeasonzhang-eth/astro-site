@@ -4,52 +4,93 @@ import "../styles/global.css";
 const projects = [
   {
     title: "Capty",
+    titleZh: "Capty",
     kind: "macOS tool",
+    kindZh: "macOS 工具",
     summary: "Speech, capture, and desktop workflow experiments shaped into a practical app.",
+    summaryZh: "把语音、捕捉和桌面工作流实验打磨成可用的日常应用。",
   },
   {
     title: "GEOFlow",
+    titleZh: "GEOFlow",
     kind: "growth system",
+    kindZh: "增长系统",
     summary: "A working space for AI search visibility, content systems, and market operations.",
+    summaryZh: "面向 AI 搜索可见性、内容系统和市场运营的工作空间。",
   },
   {
     title: "Routescope",
+    titleZh: "Routescope",
     kind: "desktop app",
+    kindZh: "桌面应用",
     summary: "A route-focused interface for inspecting, organizing, and shipping local workflows.",
+    summaryZh: "围绕路径、流程和本地工作台构建的检查与组织界面。",
   },
 ];
 
-const notes = ["AI agents", "desktop automation", "creator tools", "market research"];
+const notes = [
+  { en: "AI agents", zh: "AI 智能体" },
+  { en: "desktop automation", zh: "桌面自动化" },
+  { en: "creator tools", zh: "创作者工具" },
+  { en: "market research", zh: "市场研究" },
+];
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="A personal Astro site for Jeason's projects, notes, and field work." />
+    <meta
+      name="description"
+      content="A personal Astro site for Jeason's projects, notes, and field work."
+      data-i18n-meta="description"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Jeason Zhang</title>
+    <script is:inline>
+      let savedTheme = null;
+      try {
+        savedTheme = localStorage.getItem("theme");
+      } catch {
+        savedTheme = null;
+      }
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.dataset.theme = savedTheme || (prefersDark ? "dark" : "light");
+    </script>
   </head>
   <body>
     <main class="site-shell">
+      <header class="site-toolbar" aria-label="Site controls">
+        <a class="brand" href="/" aria-label="Jeason Zhang home">JZ</a>
+        <div class="control-stack">
+          <div class="segmented-control" aria-label="Language">
+            <button type="button" class="control-button" data-lang-button="en" aria-pressed="true">EN</button>
+            <button type="button" class="control-button" data-lang-button="zh" aria-pressed="false">中</button>
+          </div>
+          <button type="button" class="control-button theme-toggle" data-theme-toggle aria-pressed="false">
+            <span data-theme-label>Dark</span>
+          </button>
+        </div>
+      </header>
+
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="eyebrow">Personal field notes</p>
-          <h1 id="hero-title">Build useful things, then leave a clear trail.</h1>
-          <p class="lede">
+          <p class="eyebrow" data-i18n="hero.eyebrow">Personal field notes</p>
+          <h1 id="hero-title" data-i18n="hero.title">Build useful things, then leave a clear trail.</h1>
+          <p class="lede" data-i18n="hero.lede">
             A compact home for software experiments, AI workflow notes, and projects that turn rough ideas into tools.
           </p>
           <div class="hero-actions" aria-label="Primary actions">
-            <a class="button primary" href="#work">View work</a>
-            <a class="button secondary" href="#notes">Read notes</a>
+            <a class="button primary" href="#work" data-i18n="hero.primaryAction">View work</a>
+            <a class="button secondary" href="#notes" data-i18n="hero.secondaryAction">Read notes</a>
           </div>
         </div>
 
         <div class="signal-board" aria-label="Project signal map">
           <div class="signal-header">
-            <span>workspace</span>
-            <strong>04 active threads</strong>
+            <span data-i18n="signal.label">workspace</span>
+            <strong data-i18n="signal.value">04 active threads</strong>
           </div>
           <div class="signal-grid">
             <span class="cell active"></span>
@@ -67,17 +108,17 @@ const notes = ["AI agents", "desktop automation", "creator tools", "market resea
 
       <section class="section" id="work" aria-labelledby="work-title">
         <div class="section-heading">
-          <p class="eyebrow">Selected work</p>
-          <h2 id="work-title">Projects with a working surface.</h2>
+          <p class="eyebrow" data-i18n="work.eyebrow">Selected work</p>
+          <h2 id="work-title" data-i18n="work.title">Projects with a working surface.</h2>
         </div>
         <div class="project-list">
           {projects.map((project) => (
             <article class="project-card">
               <div>
-                <p>{project.kind}</p>
-                <h3>{project.title}</h3>
+                <p data-i18n-en={project.kind} data-i18n-zh={project.kindZh}>{project.kind}</p>
+                <h3 data-i18n-en={project.title} data-i18n-zh={project.titleZh}>{project.title}</h3>
               </div>
-              <span>{project.summary}</span>
+              <span data-i18n-en={project.summary} data-i18n-zh={project.summaryZh}>{project.summary}</span>
             </article>
           ))}
         </div>
@@ -85,13 +126,152 @@ const notes = ["AI agents", "desktop automation", "creator tools", "market resea
 
       <section class="section notes" id="notes" aria-labelledby="notes-title">
         <div class="section-heading">
-          <p class="eyebrow">Current notes</p>
-          <h2 id="notes-title">What the site is tracking.</h2>
+          <p class="eyebrow" data-i18n="notes.eyebrow">Current notes</p>
+          <h2 id="notes-title" data-i18n="notes.title">What the site is tracking.</h2>
         </div>
         <ul class="note-tags">
-          {notes.map((note) => <li>{note}</li>)}
+          {notes.map((note) => <li data-i18n-en={note.en} data-i18n-zh={note.zh}>{note.en}</li>)}
         </ul>
       </section>
     </main>
+
+    <script>
+      type Language = "en" | "zh";
+
+      const translations: Record<Language, any> = {
+        en: {
+          title: "Jeason Zhang",
+          description: "A personal Astro site for Jeason's projects, notes, and field work.",
+          themeLight: "Light",
+          themeDark: "Dark",
+          hero: {
+            eyebrow: "Personal field notes",
+            title: "Build useful things, then leave a clear trail.",
+            lede: "A compact home for software experiments, AI workflow notes, and projects that turn rough ideas into tools.",
+            primaryAction: "View work",
+            secondaryAction: "Read notes",
+          },
+          signal: {
+            label: "workspace",
+            value: "04 active threads",
+          },
+          work: {
+            eyebrow: "Selected work",
+            title: "Projects with a working surface.",
+          },
+          notes: {
+            eyebrow: "Current notes",
+            title: "What the site is tracking.",
+          },
+        },
+        zh: {
+          title: "Jeason Zhang",
+          description: "Jeason 的个人 Astro 网站，用来整理项目、笔记和一线工作记录。",
+          themeLight: "日间",
+          themeDark: "夜间",
+          hero: {
+            eyebrow: "个人现场笔记",
+            title: "把东西做出来，也把路径留下来。",
+            lede: "这里收纳软件实验、AI 工作流笔记，以及把粗糙想法推进成可用工具的项目记录。",
+            primaryAction: "查看作品",
+            secondaryAction: "阅读笔记",
+          },
+          signal: {
+            label: "工作台",
+            value: "04 条活跃线索",
+          },
+          work: {
+            eyebrow: "精选项目",
+            title: "有真实工作面的项目。",
+          },
+          notes: {
+            eyebrow: "当前笔记",
+            title: "这个站点正在追踪什么。",
+          },
+        },
+      };
+
+      const html = document.documentElement;
+      const languageButtons = document.querySelectorAll<HTMLButtonElement>("[data-lang-button]");
+      const themeToggle = document.querySelector<HTMLButtonElement>("[data-theme-toggle]");
+      const themeLabel = document.querySelector<HTMLElement>("[data-theme-label]");
+      const translatableNodes = document.querySelectorAll<HTMLElement>("[data-i18n]");
+      const directNodes = document.querySelectorAll<HTMLElement>("[data-i18n-en][data-i18n-zh]");
+      const description = document.querySelector<HTMLMetaElement>("[data-i18n-meta='description']");
+
+      function readPreference(key: string): string | null {
+        try {
+          return localStorage.getItem(key);
+        } catch {
+          return null;
+        }
+      }
+
+      function writePreference(key: string, value: string) {
+        try {
+          localStorage.setItem(key, value);
+        } catch {
+          return;
+        }
+      }
+
+      function getTranslation(language: Language, path: string): string | undefined {
+        return path.split(".").reduce<any>((value, key) => value?.[key], translations[language]);
+      }
+
+      function setLanguage(language: string) {
+        const nextLanguage: Language = language === "zh" ? "zh" : "en";
+        const dictionary = translations[nextLanguage];
+
+        html.lang = nextLanguage === "zh" ? "zh-CN" : "en";
+        html.dataset.lang = nextLanguage;
+        document.title = dictionary.title;
+        description?.setAttribute("content", dictionary.description);
+
+        translatableNodes.forEach((node) => {
+          const value = getTranslation(nextLanguage, node.dataset.i18n || "");
+          if (value) node.textContent = value;
+        });
+
+        directNodes.forEach((node) => {
+          node.textContent = nextLanguage === "zh" ? node.dataset.i18nZh || "" : node.dataset.i18nEn || "";
+        });
+
+        languageButtons.forEach((button) => {
+          const isActive = button.dataset.langButton === nextLanguage;
+          button.setAttribute("aria-pressed", String(isActive));
+        });
+
+        writePreference("language", nextLanguage);
+        updateThemeLabel();
+      }
+
+      function updateThemeLabel() {
+        const language = html.dataset.lang === "zh" ? "zh" : "en";
+        const isDark = html.dataset.theme === "dark";
+        if (themeLabel) {
+          themeLabel.textContent = isDark ? translations[language].themeLight : translations[language].themeDark;
+        }
+        themeToggle?.setAttribute("aria-pressed", String(isDark));
+      }
+
+      function setTheme(theme: string) {
+        const nextTheme = theme === "dark" ? "dark" : "light";
+        html.dataset.theme = nextTheme;
+        writePreference("theme", nextTheme);
+        updateThemeLabel();
+      }
+
+      languageButtons.forEach((button) => {
+        button.addEventListener("click", () => setLanguage(button.dataset.langButton || "en"));
+      });
+
+      themeToggle?.addEventListener("click", () => {
+        setTheme(html.dataset.theme === "dark" ? "light" : "dark");
+      });
+
+      setLanguage(readPreference("language") || "en");
+      updateThemeLabel();
+    </script>
   </body>
 </html>
