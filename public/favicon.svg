@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Astro site mark">
+  <rect width="64" height="64" rx="14" fill="#101820"/>
+  <path d="M15 42 30 12h7l12 40-12-9-12 9 4-13z" fill="#f4d35e"/>
+  <path d="M25 39h15l-6-20z" fill="#1c7c74"/>
+</svg>

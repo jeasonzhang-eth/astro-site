@@ -1,0 +1,97 @@
+---
+import "../styles/global.css";
+
+const projects = [
+  {
+    title: "Capty",
+    kind: "macOS tool",
+    summary: "Speech, capture, and desktop workflow experiments shaped into a practical app.",
+  },
+  {
+    title: "GEOFlow",
+    kind: "growth system",
+    summary: "A working space for AI search visibility, content systems, and market operations.",
+  },
+  {
+    title: "Routescope",
+    kind: "desktop app",
+    summary: "A route-focused interface for inspecting, organizing, and shipping local workflows.",
+  },
+];
+
+const notes = ["AI agents", "desktop automation", "creator tools", "market research"];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="A personal Astro site for Jeason's projects, notes, and field work." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Jeason Zhang</title>
+  </head>
+  <body>
+    <main class="site-shell">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Personal field notes</p>
+          <h1 id="hero-title">Build useful things, then leave a clear trail.</h1>
+          <p class="lede">
+            A compact home for software experiments, AI workflow notes, and projects that turn rough ideas into tools.
+          </p>
+          <div class="hero-actions" aria-label="Primary actions">
+            <a class="button primary" href="#work">View work</a>
+            <a class="button secondary" href="#notes">Read notes</a>
+          </div>
+        </div>
+
+        <div class="signal-board" aria-label="Project signal map">
+          <div class="signal-header">
+            <span>workspace</span>
+            <strong>04 active threads</strong>
+          </div>
+          <div class="signal-grid">
+            <span class="cell active"></span>
+            <span class="cell"></span>
+            <span class="cell pulse"></span>
+            <span class="cell active"></span>
+            <span class="cell wide"></span>
+            <span class="cell active"></span>
+            <span class="cell"></span>
+            <span class="cell pulse"></span>
+            <span class="cell wide active"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="work" aria-labelledby="work-title">
+        <div class="section-heading">
+          <p class="eyebrow">Selected work</p>
+          <h2 id="work-title">Projects with a working surface.</h2>
+        </div>
+        <div class="project-list">
+          {projects.map((project) => (
+            <article class="project-card">
+              <div>
+                <p>{project.kind}</p>
+                <h3>{project.title}</h3>
+              </div>
+              <span>{project.summary}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="section notes" id="notes" aria-labelledby="notes-title">
+        <div class="section-heading">
+          <p class="eyebrow">Current notes</p>
+          <h2 id="notes-title">What the site is tracking.</h2>
+        </div>
+        <ul class="note-tags">
+          {notes.map((note) => <li>{note}</li>)}
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>
