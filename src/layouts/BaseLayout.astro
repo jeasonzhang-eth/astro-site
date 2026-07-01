@@ -43,7 +43,13 @@ const alternates = {
   <body>
     <main class="site-shell">
       <header class="site-toolbar" aria-label="Site controls">
-        <a class="brand" href={localizePath(language)} aria-label={`${site.name} home`}>JZ</a>
+        <a class="brand" href={localizePath(language)} aria-label={`${site.name} home`}>
+          <span class="brand-mark" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </a>
         <nav class="site-nav" aria-label="Primary">
           <a href={localizePath(language, "projects")}>{copy.projectLabel}</a>
           <a href={localizePath(language, "notes")}>{copy.noteLabel}</a>

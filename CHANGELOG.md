@@ -2,6 +2,7 @@
 
 ## 2026-07-02
 
+- Replaced the placeholder project list with Jeason-owned projects, including Twitter Translator, Apple Price, USD Liquidity, and WeCom KF AI Agent; replaced the text brand badge with a cleaner abstract mark.
 - Added localized project and note directory pages, wired top navigation and detail-page breadcrumbs to those directories, and normalized Capty copy to "Mac OS".
 - Expanded all project and note pages with definitions, audiences, workflows, checklists, examples, outcomes, and FAQ content for stronger SEO/GEO coverage.
 

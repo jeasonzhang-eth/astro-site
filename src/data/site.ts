@@ -193,70 +193,70 @@ export const projects: Array<{ slug: string; en: ProjectContent; zh: ProjectCont
     },
   },
   {
-    slug: "geoflow",
+    slug: "twitter-translator",
     en: {
-      title: "GEOFlow",
-      kind: "growth system",
-      summary: "A working system for AI search visibility, content structure, and market operations.",
-      definition: "GEOFlow is a content and research operating system for being understood by search engines and generative answer engines.",
-      audience: "Builders and small teams who want their expertise, products, and research to show up clearly in both classic search and AI-generated answers.",
+      title: "Twitter Translator",
+      kind: "browser extension",
+      summary: "A Chrome extension for translating X posts and long articles with your own LLM provider.",
+      definition: "Twitter Translator is a Manifest V3 browser extension that adds translation controls directly inside X timelines, detail pages, and article pages.",
+      audience: "Researchers, investors, builders, and multilingual readers who use X as a source of market, technical, or creator signal.",
       overview:
-        "GEOFlow connects market research, page structure, source material, and publishing rhythm. It treats SEO and GEO as the same underlying discipline: create useful, well-structured, citable pages that answer real questions.",
+        "Twitter Translator keeps translation close to the reading surface. Instead of copying posts into a separate tool, it injects a translation action where the user is already reading and sends the content to an OpenAI-compatible provider configured by the user.",
       why:
-        "AI answer engines need clean signals: clear definitions, first-hand context, durable URLs, structured data, and pages that can be quoted without guesswork. GEOFlow is where those practices become reusable templates.",
+        "X is noisy, fast, and multilingual. A practical translator helps preserve context while scanning foreign-language posts, following overseas builders, or reading long-form X articles without breaking flow.",
       outcomes: [
-        "A repeatable page model for projects, notes, comparisons, and explainers.",
-        "A content backlog driven by user questions, product evidence, and market research.",
-        "A technical publishing baseline with sitemap, robots, llms.txt, canonical URLs, hreflang, and JSON-LD.",
+        "Inline translation buttons for timeline posts and detail pages.",
+        "Automatic translation support for X Articles and longer reading surfaces.",
+        "A user-controlled provider setup so translation can run through the user's preferred LLM endpoint.",
       ],
       workflow: [
-        "Collect questions from search, sales calls, support, communities, and competitor pages.",
-        "Group questions into pages with one clear job: define, compare, explain, or prove.",
-        "Publish pages with structured headings, FAQ, sources, and internal links.",
-        "Review what gets indexed, cited, or reused, then update pages with stronger evidence.",
+        "Open X and read the timeline as usual.",
+        "Click Translate under a post or open a detail page with translation enabled.",
+        "Send the content to the configured LLM provider.",
+        "Read the translated result inline without leaving the original context.",
       ],
-      next: "Turn this page into a public playbook with templates for project pages, comparison pages, and AI-search-ready notes.",
+      next: "Add screenshots, setup instructions, privacy notes, and examples for common multilingual research workflows.",
       faq: [
         {
-          question: "Is GEO different from SEO?",
-          answer: "GEO focuses on how generative engines understand and cite content. In practice, strong GEO starts with strong technical SEO plus clearer structure and better evidence.",
+          question: "Does Twitter Translator require a hosted backend?",
+          answer: "The project is designed around user-provided OpenAI-compatible LLM settings, so translation does not need a separate product backend.",
         },
         {
-          question: "What should be published first?",
-          answer: "Start with pages that answer specific questions about real projects. Thin pages about abstract keywords rarely help.",
+          question: "Why translate inside X instead of using a separate app?",
+          answer: "Inline translation keeps the original post, author, thread, and surrounding context visible while reading.",
         },
       ],
     },
     zh: {
-      title: "GEOFlow",
-      kind: "增长系统",
-      summary: "一个面向 AI 搜索可见性、内容结构和市场运营的工作系统。",
-      definition: "GEOFlow 是一个内容与研究操作系统，让搜索引擎和生成式答案引擎更容易理解你。",
-      audience: "适合希望自己的专业、产品和研究同时出现在传统搜索与 AI 答案里的构建者和小团队。",
+      title: "Twitter Translator",
+      kind: "浏览器扩展",
+      summary: "一个用自有 LLM 服务翻译 X 推文和长文章的 Chrome 扩展。",
+      definition: "Twitter Translator 是一个 Manifest V3 浏览器扩展，把翻译按钮直接加到 X 的时间线、详情页和文章页里。",
+      audience: "适合把 X 当作市场、技术或创作者信号来源的研究者、投资者、构建者和多语言读者。",
       overview:
-        "GEOFlow 把市场研究、页面结构、源材料和发布节奏连起来。它把 SEO 和 GEO 视为同一件事的两面：创造有用、结构清楚、可以被引用的页面，回答真实问题。",
+        "Twitter Translator 把翻译留在阅读现场。用户不用把推文复制到另一个工具里，而是在正在阅读的位置直接触发翻译，并把内容发送到自己配置的 OpenAI 兼容服务。",
       why:
-        "AI 答案引擎需要干净信号：清晰定义、一手上下文、稳定 URL、结构化数据，以及不需要猜测就能引用的页面。GEOFlow 就是把这些实践沉淀成模板的地方。",
+        "X 信息快、噪声大、语言混杂。一个贴在原页面里的翻译工具，可以在阅读海外开发者、市场讨论和长文时保留上下文，不打断信息流。",
       outcomes: [
-        "可复用的页面模型，用于项目页、笔记页、对比页和解释页。",
-        "由用户问题、产品证据和市场研究驱动的内容 backlog。",
-        "包含 sitemap、robots、llms.txt、canonical、hreflang 和 JSON-LD 的技术发布底座。",
+        "时间线和详情页里的内联翻译按钮。",
+        "对 X Articles 和长阅读页面的自动翻译支持。",
+        "用户可控的 LLM provider 设置，可以接入自己的模型服务。",
       ],
       workflow: [
-        "从搜索、销售沟通、客服、社区和竞品页面收集问题。",
-        "把问题归类成有明确任务的页面：定义、对比、解释或证明。",
-        "用结构化标题、FAQ、来源和内链发布页面。",
-        "观察哪些内容被收录、引用或复用，再用更强证据更新页面。",
+        "照常打开 X 并阅读时间线。",
+        "在推文下方点击 Translate，或进入详情页触发翻译。",
+        "把内容发送到已配置的 LLM provider。",
+        "在原始上下文旁边读取翻译结果。",
       ],
-      next: "把这个页面扩展成公开 playbook，提供项目页、对比页和 AI 搜索友好笔记的模板。",
+      next: "补充截图、设置说明、隐私说明，以及常见多语言研究场景示例。",
       faq: [
         {
-          question: "GEO 和 SEO 有什么区别？",
-          answer: "GEO 更关注生成式引擎如何理解和引用内容。实际操作上，好的 GEO 通常从扎实的技术 SEO、更清晰的结构和更强证据开始。",
+          question: "Twitter Translator 需要独立后端吗？",
+          answer: "项目围绕用户自有的 OpenAI 兼容 LLM 配置设计，因此翻译本身不需要单独的产品后端。",
         },
         {
-          question: "应该先发布什么内容？",
-          answer: "先发布能回答真实项目具体问题的页面。围绕抽象关键词做薄页面，通常帮助不大。",
+          question: "为什么不直接用独立翻译 App？",
+          answer: "内联翻译能让原推文、作者、线程和周围上下文保持可见，阅读时不需要来回切换。",
         },
       ],
     },
@@ -326,6 +326,213 @@ export const projects: Array<{ slug: string; en: ProjectContent; zh: ProjectCont
         {
           question: "为什么关注桌面工作流？",
           answer: "桌面是文件、终端、浏览器、本地应用和 AI 智能体交汇的地方，因此天然适合做工作流可见性。",
+        },
+      ],
+    },
+  },
+  {
+    slug: "apple-price",
+    en: {
+      title: "Apple Price",
+      kind: "price tool",
+      summary: "A cross-country Apple product price comparison tool with currency conversion.",
+      definition: "Apple Price compares official Apple Store prices across countries and converts them into a common currency for quick purchase decisions.",
+      audience: "Travelers, Apple buyers, resellers, and anyone deciding where a product is actually cheaper after exchange rates.",
+      overview:
+        "Apple Price gathers product prices from multiple Apple regional stores and normalizes them through exchange rates. It turns scattered country pages into a simple comparison surface.",
+      why:
+        "Apple prices vary by region, tax, currency, and release timing. A lightweight comparison tool makes the real purchase difference easier to see before buying or asking someone to bring a device back.",
+      outcomes: [
+        "A searchable comparison of Apple product prices across regions.",
+        "Currency-normalized prices for easier country-by-country decisions.",
+        "A small data product that can grow into alerts, history, and buying guides.",
+      ],
+      workflow: [
+        "Collect official Apple Store prices from target countries.",
+        "Normalize product names and variants.",
+        "Convert prices with current exchange-rate data.",
+        "Present the results in a simple table for comparison.",
+      ],
+      next: "Add product history, tax notes, update timestamps, and country-specific buying caveats.",
+      faq: [
+        {
+          question: "Does Apple Price include taxes and import duties?",
+          answer: "The current project is best treated as a price comparison baseline. Taxes, duties, and local promotions should be documented per country.",
+        },
+        {
+          question: "Why is this useful?",
+          answer: "It turns a messy manual check across many Apple regional stores into one repeatable comparison workflow.",
+        },
+      ],
+    },
+    zh: {
+      title: "Apple Price",
+      kind: "价格工具",
+      summary: "一个带汇率换算的 Apple 产品跨国家价格比较工具。",
+      definition: "Apple Price 比较不同国家 Apple Store 官方价格，并换算到统一货币，帮助快速判断哪里买更划算。",
+      audience: "适合旅行者、Apple 买家、代购/转售者，以及需要根据汇率判断购买地的人。",
+      overview:
+        "Apple Price 从多个国家和地区的 Apple 官网收集产品价格，再通过汇率归一化展示。它把分散的区域页面变成一个简单的比较界面。",
+      why:
+        "Apple 产品价格会受地区、税费、汇率和发布时间影响。轻量的比较工具能让真实购买差异更容易被看见。",
+      outcomes: [
+        "跨地区 Apple 产品价格的可搜索比较表。",
+        "经过汇率归一化的价格，方便按国家做购买决策。",
+        "一个可以继续扩展到价格提醒、历史记录和购买指南的小型数据产品。",
+      ],
+      workflow: [
+        "收集目标国家 Apple Store 官方价格。",
+        "归一化产品名称和规格型号。",
+        "用当前汇率换算价格。",
+        "用简单表格展示比较结果。",
+      ],
+      next: "补充价格历史、税费说明、更新时间和各国购买注意事项。",
+      faq: [
+        {
+          question: "Apple Price 包含税费和关税吗？",
+          answer: "当前更适合作为价格比较基线。税费、关税和本地促销需要按国家单独补充说明。",
+        },
+        {
+          question: "这个工具有什么用？",
+          answer: "它把手动打开多个 Apple 区域官网比价的流程，变成一个可重复的比较工作流。",
+        },
+      ],
+    },
+  },
+  {
+    slug: "usd-liquidity",
+    en: {
+      title: "USD Liquidity",
+      kind: "finance dashboard",
+      summary: "A personal dashboard for tracking US dollar liquidity indicators.",
+      definition: "USD Liquidity is a finance dashboard that tracks monetary liquidity signals such as Fed assets, Treasury cash, and reverse repo balances.",
+      audience: "Macro investors, crypto market watchers, and builders who want a simple view of dollar liquidity conditions.",
+      overview:
+        "USD Liquidity turns several public macro indicators into a focused dashboard. The goal is not to predict markets mechanically, but to keep liquidity context visible when reading risk assets and policy changes.",
+      why:
+        "Dollar liquidity affects risk appetite, market stress, and the background conditions for many asset classes. A personal dashboard makes the signal easier to revisit than scattered data links.",
+      outcomes: [
+        "A consolidated view of key dollar liquidity indicators.",
+        "A reusable charting surface for macro notes and market observations.",
+        "A foundation for adding annotations, source links, and update cadence.",
+      ],
+      workflow: [
+        "Pull public macro indicator data.",
+        "Compute or display liquidity-related series.",
+        "Render the dashboard for quick reading.",
+        "Use the chart context when writing market notes.",
+      ],
+      next: "Add source citations, update dates, explanatory notes, and a short methodology page.",
+      faq: [
+        {
+          question: "Is USD Liquidity an investment signal?",
+          answer: "It is context, not a trading system. The dashboard helps make liquidity conditions visible, but decisions need broader analysis.",
+        },
+        {
+          question: "Why make a personal dashboard?",
+          answer: "A personal dashboard keeps the exact indicators and formulas you care about in one stable place.",
+        },
+      ],
+    },
+    zh: {
+      title: "USD Liquidity",
+      kind: "金融仪表盘",
+      summary: "一个追踪美元流动性指标的个人 dashboard。",
+      definition: "USD Liquidity 是一个金融仪表盘，用来追踪 Fed 资产、TGA、逆回购等美元流动性相关指标。",
+      audience: "适合宏观投资者、加密市场观察者，以及需要快速理解美元流动性背景的人。",
+      overview:
+        "USD Liquidity 把多个公开宏观指标整理成一个聚焦 dashboard。它不是机械预测市场，而是在阅读风险资产和政策变化时保留流动性背景。",
+      why:
+        "美元流动性会影响风险偏好、市场压力和多类资产的背景条件。个人 dashboard 比分散的数据链接更容易持续复盘。",
+      outcomes: [
+        "关键美元流动性指标的集中视图。",
+        "可复用到宏观笔记和市场观察里的图表界面。",
+        "继续添加注释、来源链接和更新时间的基础。",
+      ],
+      workflow: [
+        "拉取公开宏观指标数据。",
+        "计算或展示流动性相关序列。",
+        "渲染 dashboard 供快速阅读。",
+        "在写市场笔记时引用图表上下文。",
+      ],
+      next: "补充数据来源、更新时间、解释说明和简短方法论页面。",
+      faq: [
+        {
+          question: "USD Liquidity 是投资信号吗？",
+          answer: "它是上下文，不是交易系统。仪表盘帮助看见流动性环境，但决策仍需要更完整的分析。",
+        },
+        {
+          question: "为什么要做个人 dashboard？",
+          answer: "个人 dashboard 可以把你关心的指标和公式固定在一个稳定位置。",
+        },
+      ],
+    },
+  },
+  {
+    slug: "wecom-kf-ai-agent",
+    en: {
+      title: "WeCom KF AI Agent",
+      kind: "customer service agent",
+      summary: "A minimal WeCom customer-service AI agent demo with callback handling and reply logic.",
+      definition: "WeCom KF AI Agent is a backend demo for receiving WeCom customer-service messages and routing them through a replaceable reply function.",
+      audience: "Builders who need a minimal WeCom customer-service integration before adding a real LLM or business workflow.",
+      overview:
+        "The project keeps the first integration loop intentionally small: receive callbacks, parse events, generate a reply, and send it back. That makes it a good starting point before introducing complex agent memory or production support logic.",
+      why:
+        "Customer-service integrations often fail because the first callback and message loop is harder than expected. This project isolates that loop and leaves the reply logic easy to replace.",
+      outcomes: [
+        "A working callback path for WeCom customer-service messages.",
+        "A simple reply function that can later be replaced with an LLM.",
+        "A testable backend skeleton for future customer-service automation.",
+      ],
+      workflow: [
+        "Configure WeCom callback credentials.",
+        "Receive and parse incoming customer-service events.",
+        "Generate a reply through a small replaceable function.",
+        "Send the reply back through the WeCom API.",
+      ],
+      next: "Add deployment notes, security checklist, LLM integration examples, and production limitations.",
+      faq: [
+        {
+          question: "Is this a production customer-service system?",
+          answer: "No. It is a minimal integration demo that proves the callback and reply loop before a fuller system is added.",
+        },
+        {
+          question: "Where does the AI logic live?",
+          answer: "The reply generation is intentionally isolated so it can be replaced with an LLM or business-specific agent later.",
+        },
+      ],
+    },
+    zh: {
+      title: "WeCom KF AI Agent",
+      kind: "客服智能体",
+      summary: "一个处理企业微信客服回调和回复逻辑的最简 AI Agent demo。",
+      definition: "WeCom KF AI Agent 是一个后端 demo，用来接收企业微信客服消息，并通过可替换的回复函数生成响应。",
+      audience: "适合想先跑通企业微信客服接入，再逐步加入真实 LLM 或业务工作流的开发者。",
+      overview:
+        "这个项目把第一条集成闭环刻意保持得很小：接收回调、解析事件、生成回复、发送回去。它适合作为加入复杂智能体记忆或生产客服逻辑之前的起点。",
+      why:
+        "客服集成常常卡在第一条回调和消息闭环。这个项目把这件事单独拆出来，并让回复逻辑保持容易替换。",
+      outcomes: [
+        "一条可工作的企业微信客服消息回调路径。",
+        "一个后续可替换成 LLM 的简单回复函数。",
+        "一个可测试的客服自动化后端骨架。",
+      ],
+      workflow: [
+        "配置企业微信客服回调凭据。",
+        "接收并解析进来的客服事件。",
+        "通过小型可替换函数生成回复。",
+        "调用企业微信 API 把回复发回去。",
+      ],
+      next: "补充部署说明、安全检查清单、LLM 接入示例和生产限制。",
+      faq: [
+        {
+          question: "这是生产级客服系统吗？",
+          answer: "不是。它是一个最小集成 demo，用来先验证回调和回复闭环。",
+        },
+        {
+          question: "AI 逻辑在哪里？",
+          answer: "回复生成被刻意隔离，后续可以替换成 LLM 或业务专属智能体。",
         },
       ],
     },
