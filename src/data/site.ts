@@ -56,6 +56,10 @@ export const labels = {
     notesTitle: "What the site is tracking.",
     projectLabel: "Project",
     noteLabel: "Note",
+    allProjectsTitle: "All projects",
+    allProjectsDescription: "A directory of the products, systems, and interface experiments behind this site.",
+    allNotesTitle: "All notes",
+    allNotesDescription: "A directory of reusable notes on AI workflows, desktop automation, creator tools, and market research.",
     definition: "Definition",
     bestFor: "Best for",
     overview: "Overview",
@@ -83,6 +87,10 @@ export const labels = {
     notesTitle: "这个站点正在追踪什么。",
     projectLabel: "项目",
     noteLabel: "笔记",
+    allProjectsTitle: "所有项目",
+    allProjectsDescription: "这个网站背后的产品、系统和界面实验目录。",
+    allNotesTitle: "所有笔记",
+    allNotesDescription: "关于 AI 工作流、桌面自动化、创作者工具和市场研究的可复用笔记目录。",
     definition: "一句话定义",
     bestFor: "适合谁",
     overview: "概览",
@@ -119,9 +127,9 @@ export const projects: Array<{ slug: string; en: ProjectContent; zh: ProjectCont
     slug: "capty",
     en: {
       title: "Capty",
-      kind: "macOS tool",
+      kind: "Mac OS tool",
       summary: "A Mac-first capture workspace for turning speech and desktop context into reusable notes.",
-      definition: "Capty is a local-first macOS tool for recording, transcribing, organizing, and reusing spoken work.",
+      definition: "Capty is a local-first Mac OS tool for recording, transcribing, organizing, and reusing spoken work.",
       audience: "Founders, researchers, operators, and builders who think out loud and need their spoken context to become searchable project material.",
       overview:
         "Capty turns voice capture into a working surface. Instead of treating transcripts as one-off files, it keeps recordings close to projects, notes, and follow-up actions so the material can be reused after the meeting, call, or thinking session ends.",
@@ -130,7 +138,7 @@ export const projects: Array<{ slug: string; en: ProjectContent; zh: ProjectCont
       outcomes: [
         "Structured transcripts that can be reused in notes, specs, briefs, and follow-up tasks.",
         "A repeatable capture loop for meetings, solo thinking, interviews, and product research.",
-        "A Mac-native product surface for experimenting with speech-to-text and local workflow automation.",
+        "A Mac OS product surface for experimenting with speech-to-text and local workflow automation.",
       ],
       workflow: [
         "Capture audio from a meeting, file, or thinking session.",
@@ -152,9 +160,9 @@ export const projects: Array<{ slug: string; en: ProjectContent; zh: ProjectCont
     },
     zh: {
       title: "Capty",
-      kind: "macOS 工具",
+      kind: "Mac OS 工具",
       summary: "一个 Mac 优先的捕捉工作台，把语音和桌面上下文转成可复用的笔记。",
-      definition: "Capty 是一个本地优先的 macOS 工具，用来录音、转写、整理并复用口头工作内容。",
+      definition: "Capty 是一个本地优先的 Mac OS 工具，用来录音、转写、整理并复用口头工作内容。",
       audience: "适合经常通过说话思考的创业者、研究者、运营者和产品构建者，把语音上下文沉淀成可搜索的项目素材。",
       overview:
         "Capty 把语音捕捉变成一个工作面。它不把转写稿当成一次性文件，而是让录音、项目、笔记和后续行动靠在一起，让会议、访谈或独立思考结束后的素材还能继续被使用。",
@@ -163,7 +171,7 @@ export const projects: Array<{ slug: string; en: ProjectContent; zh: ProjectCont
       outcomes: [
         "可复用到笔记、规格文档、简报和待办里的结构化转写稿。",
         "适用于会议、独立思考、访谈和产品研究的固定捕捉循环。",
-        "一个 Mac 原生产品界面，用来实验语音转文字和本地自动化。",
+        "一个 Mac OS 产品界面，用来实验语音转文字和本地自动化。",
       ],
       workflow: [
         "从会议、音频文件或独立思考中捕捉声音。",
@@ -437,7 +445,7 @@ export const notes: Array<{ slug: string; en: NoteContent; zh: NoteContent }> = 
         },
         {
           question: "Why Mac-first?",
-          answer: "This workspace currently uses macOS tools, local files, browser sessions, and desktop apps as the main operating surface.",
+          answer: "This workspace currently uses Mac OS tools, local files, browser sessions, and desktop apps as the main operating surface.",
         },
       ],
     },
@@ -474,7 +482,7 @@ export const notes: Array<{ slug: string; en: NoteContent; zh: NoteContent }> = 
         },
         {
           question: "为什么是 Mac 优先？",
-          answer: "当前工作区主要以 macOS 工具、本地文件、浏览器会话和桌面应用作为操作界面。",
+          answer: "当前工作区主要以 Mac OS 工具、本地文件、浏览器会话和桌面应用作为操作界面。",
         },
       ],
     },
@@ -653,7 +661,9 @@ export function canonicalUrl(pathname: string) {
 export function allSeoPaths() {
   const paths = site.languages.flatMap((language) => [
     localizePath(language),
+    localizePath(language, "projects"),
     ...projects.map((project) => localizePath(language, `projects/${project.slug}`)),
+    localizePath(language, "notes"),
     ...notes.map((note) => localizePath(language, `notes/${note.slug}`)),
   ]);
   return ["/", ...paths];

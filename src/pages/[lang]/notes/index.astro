@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { labels, localizePath, notes, site, type Language } from "../../../data/site";
+
+export function getStaticPaths() {
+  return site.languages.map((lang) => ({ params: { lang } }));
+}
+
+const language = Astro.params.lang as Language;
+const copy = labels[language];
+const pathname = localizePath(language, "notes");
+const alternatePath = localizePath(language === "en" ? "zh" : "en", "notes");
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: copy.allNotesTitle,
+  description: copy.allNotesDescription,
+  inLanguage: language === "zh" ? "zh-CN" : "en",
+  url: `${site.url}${pathname}`,
+};
+---
+
+<BaseLayout title={copy.allNotesTitle} description={copy.allNotesDescription} pathname={pathname} language={language} alternatePath={alternatePath} jsonLd={jsonLd}>
+  <section class="content-page collection-page" aria-labelledby="notes-title">
+    <p class="eyebrow">{copy.noteLabel}</p>
+    <h1 id="notes-title">{copy.allNotesTitle}</h1>
+    <p class="lede">{copy.allNotesDescription}</p>
+
+    <div class="directory-list">
+      {notes.map((note) => {
+        const item = note[language];
+        return (
+          <a class="directory-card" href={localizePath(language, `notes/${note.slug}`)}>
+            <p>{item.tag}</p>
+            <h2>{item.title}</h2>
+            <span>{item.summary}</span>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+</BaseLayout>

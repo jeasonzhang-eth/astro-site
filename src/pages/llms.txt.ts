@@ -13,9 +13,11 @@ export function GET() {
     `- Chinese home: ${site.url}/zh/`,
     "",
     "## Projects",
+    `- Project directory: ${site.url}/en/projects/`,
     ...projects.map((project) => `- ${project.en.title}: ${site.url}/en/projects/${project.slug}/`),
     "",
     "## Notes",
+    `- Notes directory: ${site.url}/en/notes/`,
     ...notes.map((note) => `- ${note.en.title}: ${site.url}/en/notes/${note.slug}/`),
     "",
   ];

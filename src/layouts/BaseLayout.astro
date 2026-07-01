@@ -45,8 +45,8 @@ const alternates = {
       <header class="site-toolbar" aria-label="Site controls">
         <a class="brand" href={localizePath(language)} aria-label={`${site.name} home`}>JZ</a>
         <nav class="site-nav" aria-label="Primary">
-          <a href={localizePath(language, "projects/capty")}>{copy.projectLabel}</a>
-          <a href={localizePath(language, "notes/ai-agent-workflow")}>{copy.noteLabel}</a>
+          <a href={localizePath(language, "projects")}>{copy.projectLabel}</a>
+          <a href={localizePath(language, "notes")}>{copy.noteLabel}</a>
         </nav>
         <div class="control-stack">
           <a class="control-link" href={switchPath} hreflang={otherLanguage}>{labels[language].alternateLanguage}</a>

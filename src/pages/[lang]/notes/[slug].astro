@@ -47,7 +47,7 @@ const jsonLd = [
 
 <BaseLayout title={item.title} description={item.summary} pathname={pathname} language={language} alternatePath={alternatePath} jsonLd={jsonLd}>
   <article class="content-page">
-    <p class="eyebrow">{copy.noteLabel} / {item.tag}</p>
+    <p class="eyebrow breadcrumb"><a href={localizePath(language, "notes")}>{copy.noteLabel}</a> / {item.tag}</p>
     <h1>{item.title}</h1>
     <p class="lede">{item.summary}</p>
 

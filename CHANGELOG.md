@@ -2,6 +2,7 @@
 
 ## 2026-07-02
 
+- Added localized project and note directory pages, wired top navigation and detail-page breadcrumbs to those directories, and normalized Capty copy to "Mac OS".
 - Expanded all project and note pages with definitions, audiences, workflows, checklists, examples, outcomes, and FAQ content for stronger SEO/GEO coverage.
 
 ## 2026-07-01

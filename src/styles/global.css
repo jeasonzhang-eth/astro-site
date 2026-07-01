@@ -183,6 +183,11 @@ a:focus-visible {
   color: var(--signal);
 }
 
+.breadcrumb a {
+  text-decoration-color: color-mix(in srgb, var(--signal) 60%, transparent);
+  text-underline-offset: 4px;
+}
+
 h1,
 h2,
 h3,
@@ -394,6 +399,50 @@ h1 {
 
 .content-page h1 {
   font-size: clamp(3rem, 8vw, 6.8rem);
+}
+
+.collection-page {
+  width: min(960px, 100%);
+}
+
+.directory-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 56px;
+}
+
+.directory-card {
+  display: grid;
+  gap: 10px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--button-surface);
+  text-decoration: none;
+}
+
+.directory-card:hover h2 {
+  color: var(--signal);
+}
+
+.directory-card p {
+  margin: 0;
+  color: var(--coral);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.directory-card h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1;
+}
+
+.directory-card span {
+  color: var(--muted);
+  line-height: 1.65;
 }
 
 .content-grid {
