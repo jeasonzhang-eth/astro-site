@@ -1,0 +1,55 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { labels, localizePath, notes, site, type Language } from "../../../data/site";
+
+export function getStaticPaths() {
+  return site.languages.flatMap((lang) =>
+    notes.map((note) => ({
+      params: { lang, slug: note.slug },
+      props: { note },
+    })),
+  );
+}
+
+const language = Astro.params.lang as Language;
+const { note } = Astro.props;
+const copy = labels[language];
+const item = note[language];
+const pathname = localizePath(language, `notes/${note.slug}`);
+const alternatePath = localizePath(language === "en" ? "zh" : "en", `notes/${note.slug}`);
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: item.title,
+  description: item.summary,
+  author: {
+    "@type": "Person",
+    name: site.author,
+  },
+  inLanguage: language === "zh" ? "zh-CN" : "en",
+  url: `${site.url}${pathname}`,
+};
+---
+
+<BaseLayout title={item.title} description={item.summary} pathname={pathname} language={language} alternatePath={alternatePath} jsonLd={jsonLd}>
+  <article class="content-page">
+    <p class="eyebrow">{copy.noteLabel} / {item.tag}</p>
+    <h1>{item.title}</h1>
+    <p class="lede">{item.summary}</p>
+
+    <div class="content-grid">
+      <section>
+        <h2>{copy.overview}</h2>
+        <p>{item.overview}</p>
+      </section>
+      <section>
+        <h2>{copy.nextSteps}</h2>
+        <p>
+          {language === "zh"
+            ? "把这一页扩展成带案例、步骤和常见问题的长期笔记。"
+            : "Expand this page into a durable note with examples, steps, and frequently asked questions."}
+        </p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

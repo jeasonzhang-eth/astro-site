@@ -1,0 +1,56 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { labels, localizePath, projects, site, type Language } from "../../../data/site";
+
+export function getStaticPaths() {
+  return site.languages.flatMap((lang) =>
+    projects.map((project) => ({
+      params: { lang, slug: project.slug },
+      props: { project },
+    })),
+  );
+}
+
+const language = Astro.params.lang as Language;
+const { project } = Astro.props;
+const copy = labels[language];
+const item = project[language];
+const pathname = localizePath(language, `projects/${project.slug}`);
+const alternatePath = localizePath(language === "en" ? "zh" : "en", `projects/${project.slug}`);
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  name: item.title,
+  headline: item.title,
+  description: item.summary,
+  author: {
+    "@type": "Person",
+    name: site.author,
+  },
+  inLanguage: language === "zh" ? "zh-CN" : "en",
+  url: `${site.url}${pathname}`,
+};
+---
+
+<BaseLayout title={item.title} description={item.summary} pathname={pathname} language={language} alternatePath={alternatePath} jsonLd={jsonLd}>
+  <article class="content-page">
+    <p class="eyebrow">{copy.projectLabel} / {item.kind}</p>
+    <h1>{item.title}</h1>
+    <p class="lede">{item.summary}</p>
+
+    <div class="content-grid">
+      <section>
+        <h2>{copy.overview}</h2>
+        <p>{item.overview}</p>
+      </section>
+      <section>
+        <h2>{copy.whyItMatters}</h2>
+        <p>{item.why}</p>
+      </section>
+      <section>
+        <h2>{copy.nextSteps}</h2>
+        <p>{item.next}</p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

@@ -2,6 +2,7 @@
 
 ## 2026-07-01
 
+- Added the basic SEO/GEO structure: localized `/en/` and `/zh/` routes, project pages, note pages, shared SEO metadata, JSON-LD, `robots.txt`, `sitemap.xml`, and `llms.txt`.
 - Fixed primary button contrast in dark mode.
 - Added client-side English/Chinese language switching with persisted preference.
 - Added light/dark theme switching with persisted preference and system-theme default.

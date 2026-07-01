@@ -1,0 +1,101 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { home, labels, localizePath, projects, notes, site, type Language } from "../../data/site";
+
+export function getStaticPaths() {
+  return site.languages.map((lang) => ({ params: { lang } }));
+}
+
+const language = Astro.params.lang as Language;
+const copy = labels[language];
+const page = home[language];
+const pathname = localizePath(language);
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: site.author,
+    url: `${site.url}${pathname}`,
+    sameAs: ["https://github.com/jeasonzhang-eth"],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: site.name,
+    url: site.url,
+    inLanguage: language === "zh" ? "zh-CN" : "en",
+    description: page.description,
+  },
+];
+---
+
+<BaseLayout title={page.title} description={page.description} pathname={pathname} language={language} jsonLd={jsonLd}>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="eyebrow">{page.eyebrow}</p>
+      <h1 id="hero-title">{page.headline}</h1>
+      <p class="lede">{page.lede}</p>
+      <div class="hero-actions" aria-label="Primary actions">
+        <a class="button primary" href="#work">{copy.viewWork}</a>
+        <a class="button secondary" href="#notes">{copy.readNotes}</a>
+      </div>
+    </div>
+
+    <div class="signal-board" aria-label="Project signal map">
+      <div class="signal-header">
+        <span>{copy.workspace}</span>
+        <strong>{copy.activeThreads}</strong>
+      </div>
+      <div class="signal-grid">
+        <span class="cell active"></span>
+        <span class="cell"></span>
+        <span class="cell pulse"></span>
+        <span class="cell active"></span>
+        <span class="cell wide"></span>
+        <span class="cell active"></span>
+        <span class="cell"></span>
+        <span class="cell pulse"></span>
+        <span class="cell wide active"></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="work" aria-labelledby="work-title">
+    <div class="section-heading">
+      <p class="eyebrow">{copy.selectedWork}</p>
+      <h2 id="work-title">{copy.projectsTitle}</h2>
+    </div>
+    <div class="project-list">
+      {projects.map((project) => {
+        const item = project[language];
+        return (
+          <a class="project-card project-link" href={localizePath(language, `projects/${project.slug}`)}>
+            <div>
+              <p>{item.kind}</p>
+              <h3>{item.title}</h3>
+            </div>
+            <span>{item.summary}</span>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <section class="section notes" id="notes" aria-labelledby="notes-title">
+    <div class="section-heading">
+      <p class="eyebrow">{copy.currentNotes}</p>
+      <h2 id="notes-title">{copy.notesTitle}</h2>
+    </div>
+    <ul class="note-tags">
+      {notes.map((note) => {
+        const item = note[language];
+        return (
+          <li>
+            <a href={localizePath(language, `notes/${note.slug}`)}>{item.tag}</a>
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+</BaseLayout>
