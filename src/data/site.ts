@@ -32,6 +32,20 @@ type NoteContent = {
   faq: FAQ[];
 };
 
+type AboutContent = {
+  title: string;
+  description: string;
+  eyebrow: string;
+  headline: string;
+  lede: string;
+  focusTitle: string;
+  focus: string[];
+  workTitle: string;
+  work: string[];
+  contactTitle: string;
+  contact: string;
+};
+
 export const site = {
   name: "Jeason Zhang",
   url: "https://jeasonzhang-eth.github.io/astro-site",
@@ -56,6 +70,7 @@ export const labels = {
     notesTitle: "What the site is tracking.",
     projectLabel: "Project",
     noteLabel: "Note",
+    aboutLabel: "About",
     allProjectsTitle: "All projects",
     allProjectsDescription: "A directory of the products, systems, and interface experiments behind this site.",
     allNotesTitle: "All notes",
@@ -87,6 +102,7 @@ export const labels = {
     notesTitle: "这个站点正在追踪什么。",
     projectLabel: "项目",
     noteLabel: "笔记",
+    aboutLabel: "作者",
     allProjectsTitle: "所有项目",
     allProjectsDescription: "这个网站背后的产品、系统和界面实验目录。",
     allNotesTitle: "所有笔记",
@@ -121,6 +137,59 @@ export const home = {
     lede: "这里收纳软件实验、AI 工作流笔记，以及把粗糙想法推进成可用工具的项目记录。",
   },
 } satisfies Record<Language, Record<string, string>>;
+
+export const about = {
+  en: {
+    title: "About",
+    description: "About Jeason Zhang: builder of Mac OS tools, browser extensions, AI workflows, and small research systems.",
+    eyebrow: "Author",
+    headline: "I build small tools that keep useful work from disappearing.",
+    lede:
+      "I use this site as a public workbench for personal software projects, AI workflow notes, desktop automation, and market research. The common thread is simple: capture real work, make it inspectable, then turn it into tools or durable pages.",
+    focusTitle: "Current focus",
+    focus: [
+      "Mac OS desktop tools for capture, transcription, and local workflows.",
+      "Browser extensions and lightweight interfaces that keep context close to the page.",
+      "AI-assisted publishing systems for SEO, GEO, and reusable project memory.",
+      "Market and macro research dashboards that turn scattered signals into readable views.",
+    ],
+    workTitle: "How I work",
+    work: [
+      "Build the smallest working loop first, then document what the loop teaches.",
+      "Prefer tools that expose state clearly: files, routes, transcripts, diffs, and dashboards.",
+      "Treat writing as part of the product surface, not as a separate marketing layer.",
+      "Keep project pages honest by tying them to real repositories, screenshots, notes, and changelogs.",
+    ],
+    contactTitle: "Where to start",
+    contact:
+      "The best entry point is the project directory. Capty, Twitter Translator, Routescope, Apple Price, USD Liquidity, and WeCom KF AI Agent show the kinds of problems this site tracks.",
+  },
+  zh: {
+    title: "关于作者",
+    description: "关于 Jeason Zhang：构建 Mac OS 工具、浏览器扩展、AI 工作流和小型研究系统。",
+    eyebrow: "作者",
+    headline: "我做一些小工具，让有价值的工作不再消失。",
+    lede:
+      "我把这个网站当作公开工作台，用来整理个人软件项目、AI 工作流笔记、桌面自动化和市场研究。背后的共同线索很简单：捕捉真实工作，让它可检查，再把它变成工具或长期页面。",
+    focusTitle: "当前关注",
+    focus: [
+      "用于捕捉、转写和本地工作流的 Mac OS 桌面工具。",
+      "让上下文留在页面里的浏览器扩展和轻量界面。",
+      "面向 SEO、GEO 和项目记忆的 AI 辅助发布系统。",
+      "把分散信号整理成可读视图的市场与宏观研究 dashboard。",
+    ],
+    workTitle: "我的工作方式",
+    work: [
+      "先做最小可用闭环，再记录这个闭环教会了什么。",
+      "偏好能清楚暴露状态的工具：文件、路径、转写稿、diff 和 dashboard。",
+      "把写作当作产品界面的一部分，而不是单独的营销层。",
+      "让项目页尽量诚实：连接真实仓库、截图、笔记和 changelog。",
+    ],
+    contactTitle: "从哪里开始",
+    contact:
+      "最好的入口是项目目录。Capty、Twitter Translator、Routescope、Apple Price、USD Liquidity 和 WeCom KF AI Agent 展示了这个网站正在追踪的问题类型。",
+  },
+} satisfies Record<Language, AboutContent>;
 
 export const projects: Array<{ slug: string; en: ProjectContent; zh: ProjectContent }> = [
   {
@@ -868,6 +937,7 @@ export function canonicalUrl(pathname: string) {
 export function allSeoPaths() {
   const paths = site.languages.flatMap((language) => [
     localizePath(language),
+    localizePath(language, "about"),
     localizePath(language, "projects"),
     ...projects.map((project) => localizePath(language, `projects/${project.slug}`)),
     localizePath(language, "notes"),

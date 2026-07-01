@@ -11,6 +11,7 @@ export function GET() {
     "## Primary pages",
     `- English home: ${site.url}/en/`,
     `- Chinese home: ${site.url}/zh/`,
+    `- About: ${site.url}/en/about/`,
     "",
     "## Projects",
     `- Project directory: ${site.url}/en/projects/`,

@@ -498,6 +498,89 @@ h1 {
   line-height: 1.65;
 }
 
+.about-page {
+  width: min(980px, 100%);
+}
+
+.about-panel {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 22px;
+  align-items: center;
+  margin-top: 42px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--button-surface);
+}
+
+.about-panel p {
+  margin: 0 0 6px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.55rem;
+  font-weight: 800;
+}
+
+.about-panel span {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.about-mark {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.about-mark::before,
+.about-mark::after {
+  content: "";
+  position: absolute;
+  left: 15px;
+  width: 30px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--ink);
+  transform-origin: left center;
+}
+
+.about-mark::before {
+  top: 18px;
+  transform: rotate(32deg);
+}
+
+.about-mark::after {
+  bottom: 18px;
+  transform: rotate(-32deg);
+}
+
+.about-mark span {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper);
+}
+
+.about-mark span:nth-child(1) {
+  top: 13px;
+  left: 12px;
+}
+
+.about-mark span:nth-child(2) {
+  top: 23px;
+  right: 10px;
+}
+
+.about-mark span:nth-child(3) {
+  bottom: 13px;
+  left: 12px;
+}
+
 .content-grid {
   display: grid;
   gap: 28px;
@@ -613,6 +696,10 @@ h1 {
   .content-grid section {
     grid-template-columns: 1fr;
     gap: 12px;
+  }
+
+  .about-panel {
+    grid-template-columns: 1fr;
   }
 }
 
