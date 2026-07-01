@@ -17,19 +17,33 @@ const copy = labels[language];
 const item = project[language];
 const pathname = localizePath(language, `projects/${project.slug}`);
 const alternatePath = localizePath(language === "en" ? "zh" : "en", `projects/${project.slug}`);
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "CreativeWork",
-  name: item.title,
-  headline: item.title,
-  description: item.summary,
-  author: {
-    "@type": "Person",
-    name: site.author,
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: item.title,
+    headline: item.title,
+    description: item.summary,
+    author: {
+      "@type": "Person",
+      name: site.author,
+    },
+    inLanguage: language === "zh" ? "zh-CN" : "en",
+    url: `${site.url}${pathname}`,
   },
-  inLanguage: language === "zh" ? "zh-CN" : "en",
-  url: `${site.url}${pathname}`,
-};
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: item.faq.map((entry) => ({
+      "@type": "Question",
+      name: entry.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: entry.answer,
+      },
+    })),
+  },
+];
 ---
 
 <BaseLayout title={item.title} description={item.summary} pathname={pathname} language={language} alternatePath={alternatePath} jsonLd={jsonLd}>
@@ -40,6 +54,14 @@ const jsonLd = {
 
     <div class="content-grid">
       <section>
+        <h2>{copy.definition}</h2>
+        <p>{item.definition}</p>
+      </section>
+      <section>
+        <h2>{copy.bestFor}</h2>
+        <p>{item.audience}</p>
+      </section>
+      <section>
         <h2>{copy.overview}</h2>
         <p>{item.overview}</p>
       </section>
@@ -48,8 +70,31 @@ const jsonLd = {
         <p>{item.why}</p>
       </section>
       <section>
+        <h2>{copy.outcomes}</h2>
+        <ul class="content-list">
+          {item.outcomes.map((outcome) => <li>{outcome}</li>)}
+        </ul>
+      </section>
+      <section>
+        <h2>{copy.workflow}</h2>
+        <ol class="content-list ordered">
+          {item.workflow.map((step) => <li>{step}</li>)}
+        </ol>
+      </section>
+      <section>
         <h2>{copy.nextSteps}</h2>
         <p>{item.next}</p>
+      </section>
+      <section>
+        <h2>{copy.faq}</h2>
+        <div class="faq-list">
+          {item.faq.map((entry) => (
+            <details>
+              <summary>{entry.question}</summary>
+              <p>{entry.answer}</p>
+            </details>
+          ))}
+        </div>
       </section>
     </div>
   </article>

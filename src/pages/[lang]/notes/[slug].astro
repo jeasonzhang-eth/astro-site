@@ -17,18 +17,32 @@ const copy = labels[language];
 const item = note[language];
 const pathname = localizePath(language, `notes/${note.slug}`);
 const alternatePath = localizePath(language === "en" ? "zh" : "en", `notes/${note.slug}`);
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  headline: item.title,
-  description: item.summary,
-  author: {
-    "@type": "Person",
-    name: site.author,
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: item.title,
+    description: item.summary,
+    author: {
+      "@type": "Person",
+      name: site.author,
+    },
+    inLanguage: language === "zh" ? "zh-CN" : "en",
+    url: `${site.url}${pathname}`,
   },
-  inLanguage: language === "zh" ? "zh-CN" : "en",
-  url: `${site.url}${pathname}`,
-};
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: item.faq.map((entry) => ({
+      "@type": "Question",
+      name: entry.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: entry.answer,
+      },
+    })),
+  },
+];
 ---
 
 <BaseLayout title={item.title} description={item.summary} pathname={pathname} language={language} alternatePath={alternatePath} jsonLd={jsonLd}>
@@ -39,16 +53,45 @@ const jsonLd = {
 
     <div class="content-grid">
       <section>
+        <h2>{copy.definition}</h2>
+        <p>{item.definition}</p>
+      </section>
+      <section>
         <h2>{copy.overview}</h2>
         <p>{item.overview}</p>
       </section>
       <section>
+        <h2>{copy.principles}</h2>
+        <ul class="content-list">
+          {item.principles.map((principle) => <li>{principle}</li>)}
+        </ul>
+      </section>
+      <section>
+        <h2>{copy.checklist}</h2>
+        <ol class="content-list ordered">
+          {item.checklist.map((item) => <li>{item}</li>)}
+        </ol>
+      </section>
+      <section>
+        <h2>{copy.examples}</h2>
+        <ul class="content-list">
+          {item.examples.map((example) => <li>{example}</li>)}
+        </ul>
+      </section>
+      <section>
         <h2>{copy.nextSteps}</h2>
-        <p>
-          {language === "zh"
-            ? "把这一页扩展成带案例、步骤和常见问题的长期笔记。"
-            : "Expand this page into a durable note with examples, steps, and frequently asked questions."}
-        </p>
+        <p>{item.next}</p>
+      </section>
+      <section>
+        <h2>{copy.faq}</h2>
+        <div class="faq-list">
+          {item.faq.map((entry) => (
+            <details>
+              <summary>{entry.question}</summary>
+              <p>{entry.answer}</p>
+            </details>
+          ))}
+        </div>
       </section>
     </div>
   </article>
