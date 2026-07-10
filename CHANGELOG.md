@@ -11,6 +11,7 @@
 - Added bilingual Services, Company, and Contact pages with factual service boundaries, Organization and Service structured data, and direct cooperation paths.
 - Rebuilt the homepage around personal accountability, real project evidence, five company services, a four-step working method, and formal Multiple Engine delivery; expanded the author page with verified engineering experience.
 - Updated llms.txt and production discovery metadata to expose all bilingual service, company, contact, project, note, and verified company-fact paths.
+- Set the production root and x-default locale to Chinese while preserving direct bilingual route switching.
 
 ## 2026-07-02
 

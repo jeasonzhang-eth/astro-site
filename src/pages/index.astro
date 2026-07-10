@@ -1,17 +1,19 @@
 ---
-const target = "/en/";
+import { site } from "../data/site";
+
+const target = `/${site.defaultLanguage}/`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={site.defaultLanguage === "zh" ? "zh-CN" : "en"}>
   <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="noindex" />
     <meta http-equiv="refresh" content={`0; url=${target}`} />
     <link rel="canonical" href={target} />
-    <title>Jeason Zhang</title>
+    <title>Jeason Zhang × Multiple Engine</title>
   </head>
   <body>
-    <a href={target}>Continue to Jeason Zhang</a>
+    <a href={target}>继续访问 Jeason Zhang × 倍数引擎</a>
   </body>
 </html>

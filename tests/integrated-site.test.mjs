@@ -99,6 +99,14 @@ test("SEO discovery files expose the integrated routes on the production domain"
   assert.match(robots, /https:\/\/beishuyinqing\.cn\/sitemap\.xml/);
 });
 
+
+test("the production root and x-default prefer the Chinese company experience", async () => {
+  const [root, zh] = await Promise.all([read("dist/index.html"), read("dist/zh/index.html")]);
+  assert.match(root, /url=\/zh\//);
+  assert.match(root, /href="\/zh\/"/);
+  assert.match(zh, /hreflang="x-default" href="https:\/\/beishuyinqing\.cn\/zh\/"/);
+});
+
 test("the legacy verification token remains publicly buildable", async () => {
   const token = await read("dist/WW_verify_Xs9oqr5SLRAcpl58.txt");
   assert.equal(token, "Xs9oqr5SLRAcpl58");

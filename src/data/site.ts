@@ -69,7 +69,7 @@ export const site = {
   name: "Jeason Zhang",
   url: "https://beishuyinqing.cn",
   author: "Jeason Zhang",
-  defaultLanguage: "en" as Language,
+  defaultLanguage: "zh" as Language,
   languages: ["en", "zh"] as Language[],
 };
 

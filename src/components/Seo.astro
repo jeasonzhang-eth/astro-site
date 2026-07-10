@@ -20,7 +20,7 @@ const structuredData = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
 <meta name="description" content={description} />
 <link rel="canonical" href={url} />
 {Object.entries(alternates).map(([lang, path]) => <link rel="alternate" hreflang={lang} href={canonicalUrl(path)} />)}
-{alternates.en && <link rel="alternate" hreflang="x-default" href={canonicalUrl(alternates.en)} />}
+{alternates[site.defaultLanguage] && <link rel="alternate" hreflang="x-default" href={canonicalUrl(alternates[site.defaultLanguage]!)} />}
 <meta property="og:site_name" content={site.name} />
 <meta property="og:title" content={pageTitle} />
 <meta property="og:description" content={description} />
