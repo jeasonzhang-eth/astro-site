@@ -3,6 +3,7 @@
 ## 2026-07-11
 
 - Added the approved design specification for integrating Jeason’s personal site with the Multiple Engine company website, including content migration, bilingual routes, SEO/GEO, deployment, and rollback requirements.
+- Added the task-by-task implementation and verification plan for the integrated site migration and production replacement.
 
 ## 2026-07-02
 
