@@ -12,6 +12,8 @@
 - Rebuilt the homepage around personal accountability, real project evidence, five company services, a four-step working method, and formal Multiple Engine delivery; expanded the author page with verified engineering experience.
 - Updated llms.txt and production discovery metadata to expose all bilingual service, company, contact, project, note, and verified company-fact paths.
 - Set the production root and x-default locale to Chinese while preserving direct bilingual route switching.
+- Deployed release `20260710T164025Z-a28ad24` to Tencent Guangzhou and switched `beishuyinqing.cn` from the legacy single-page root to the versioned Astro release while preserving the old site and Nginx rollback backup.
+- Confirmed the apex domain, HTTPS routes, Sitemap, llms.txt, robots.txt, and verification token; `www.beishuyinqing.cn` remains pending because no DNS record currently exists.
 
 ## 2026-07-02
 
