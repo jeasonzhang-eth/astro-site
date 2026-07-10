@@ -1,6 +1,7 @@
 ---
 import Seo from "../components/Seo.astro";
 import "../styles/global.css";
+import { company } from "../data/company";
 import { alternateLanguage, labels, localizePath, site, type Language } from "../data/site";
 
 interface Props {
@@ -20,6 +21,9 @@ const alternates = {
   en: pathname.replace(/^\/(en|zh)\//, "/en/"),
   zh: pathname.replace(/^\/(en|zh)\//, "/zh/"),
 } as Record<Language, string>;
+const currentYear = new Date().getUTCFullYear();
+const companyName = language === "zh" ? company.legalNameZh : company.legalNameEn;
+const address = language === "zh" ? company.addressZh : company.addressEn;
 ---
 
 <!doctype html>
@@ -41,7 +45,7 @@ const alternates = {
     </script>
   </head>
   <body>
-    <main class="site-shell">
+    <div class="site-shell">
       <header class="site-toolbar" aria-label="Site controls">
         <a class="brand" href={localizePath(language)} aria-label={`${site.name} home`}>
           <span class="brand-mark" aria-hidden="true">
@@ -49,21 +53,53 @@ const alternates = {
             <span></span>
             <span></span>
           </span>
+          <span class="brand-copy">
+            <strong>{site.name}</strong>
+            <small>{language === "zh" ? company.shortNameZh : company.shortNameEn}</small>
+          </span>
         </a>
         <nav class="site-nav" aria-label="Primary">
           <a href={localizePath(language, "projects")}>{copy.projectLabel}</a>
           <a href={localizePath(language, "notes")}>{copy.noteLabel}</a>
+          <a href={localizePath(language, "services")}>{copy.servicesLabel}</a>
+          <a href={localizePath(language, "company")}>{copy.companyLabel}</a>
           <a href={localizePath(language, "about")}>{copy.aboutLabel}</a>
+          <a class="nav-contact" href={localizePath(language, "contact")}>{copy.contactLabel}</a>
         </nav>
         <div class="control-stack">
-          <a class="control-link" href={switchPath} hreflang={otherLanguage}>{labels[language].alternateLanguage}</a>
+          <a class="control-link" href={switchPath} hreflang={otherLanguage}>{copy.alternateLanguage}</a>
           <button type="button" class="control-button theme-toggle" data-theme-toggle aria-pressed="false" data-light-label={copy.themeLight} data-dark-label={copy.themeDark}>
             <span data-theme-label>{copy.themeDark}</span>
           </button>
         </div>
       </header>
-      <slot />
-    </main>
+
+      <main class="page-main">
+        <slot />
+      </main>
+
+      <footer class="site-footer">
+        <div class="footer-identity">
+          <p>{site.author}</p>
+          <strong>{companyName}</strong>
+        </div>
+        <div class="footer-details">
+          <div>
+            <span>{copy.footerContact}</span>
+            <a href={company.phoneHref}>{company.phoneDisplay}</a>
+          </div>
+          <div>
+            <span>{copy.footerOffice}</span>
+            <p>{address}</p>
+          </div>
+        </div>
+        <div class="footer-legal">
+          <span>© {currentYear} {company.shortNameEn}</span>
+          <a href={company.icpUrl} target="_blank" rel="noopener noreferrer">{company.icpNumber}</a>
+        </div>
+      </footer>
+    </div>
+
     <script>
       const html = document.documentElement;
       const themeToggle = document.querySelector("[data-theme-toggle]");

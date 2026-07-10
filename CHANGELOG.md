@@ -7,6 +7,7 @@
 - Ignored project-local Git worktrees so the implementation can run in an isolated checkout.
 - Added production-build contract tests for bilingual company routes, verified legal facts, SEO/GEO discovery files, structured data, and the legacy verification token.
 - Added verified company and service content sources, production-domain metadata, the legacy verification token, and the unified personal/company positioning.
+- Expanded the shared bilingual navigation and added a company-aware footer with verified phone, address, and ICP information.
 
 ## 2026-07-02
 
