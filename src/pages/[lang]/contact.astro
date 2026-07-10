@@ -1,0 +1,66 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { company, contactPages } from "../../data/company";
+import { localizePath, site, type Language } from "../../data/site";
+
+export function getStaticPaths() {
+  return site.languages.map((lang) => ({ params: { lang } }));
+}
+
+const language = Astro.params.lang as Language;
+const page = contactPages[language];
+const pathname = localizePath(language, "contact");
+const alternatePath = localizePath(language === "en" ? "zh" : "en", "contact");
+const organizationName = language === "zh" ? company.legalNameZh : company.legalNameEn;
+const address = language === "zh" ? company.addressZh : company.addressEn;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: page.title,
+  description: page.description,
+  url: `${site.url}${pathname}`,
+  about: {
+    "@type": "Organization",
+    name: organizationName,
+    telephone: company.phoneDisplay,
+    address,
+  },
+};
+---
+
+<BaseLayout title={page.title} description={page.description} pathname={pathname} language={language} alternatePath={alternatePath} jsonLd={jsonLd}>
+  <article class="content-page contact-page">
+    <p class="eyebrow">{page.eyebrow}</p>
+    <h1>{page.headline}</h1>
+    <p class="lede">{page.lede}</p>
+
+    <div class="contact-layout">
+      <a class="contact-call" href={company.phoneHref}>
+        <span>{page.phoneLabel}</span>
+        <strong>{company.phoneDisplay}</strong>
+        <em>{page.callAction}</em>
+      </a>
+
+      <dl class="contact-facts">
+        <div>
+          <dt>{page.companyLabel}</dt>
+          <dd>{organizationName}</dd>
+        </div>
+        <div>
+          <dt>{page.addressLabel}</dt>
+          <dd>{address}</dd>
+        </div>
+        <div>
+          <dt>{page.icpLabel}</dt>
+          <dd><a href={company.icpUrl} target="_blank" rel="noopener noreferrer">{company.icpNumber}</a></dd>
+        </div>
+      </dl>
+    </div>
+
+    <section class="contact-context">
+      <h2>{page.cooperationTitle}</h2>
+      <p>{page.cooperationText}</p>
+      <a class="text-link" href={localizePath(language, "services")}>{language === "zh" ? "查看服务范围" : "Review service scope"}</a>
+    </section>
+  </article>
+</BaseLayout>

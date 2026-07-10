@@ -1,0 +1,82 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { company, companyPages } from "../../data/company";
+import { localizePath, site, type Language } from "../../data/site";
+
+export function getStaticPaths() {
+  return site.languages.map((lang) => ({ params: { lang } }));
+}
+
+const language = Astro.params.lang as Language;
+const page = companyPages[language];
+const pathname = localizePath(language, "company");
+const alternatePath = localizePath(language === "en" ? "zh" : "en", "company");
+const organizationName = language === "zh" ? company.legalNameZh : company.legalNameEn;
+const address = language === "zh" ? company.addressZh : company.addressEn;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: organizationName,
+  alternateName: language === "zh" ? company.shortNameEn : company.shortNameZh,
+  url: `${site.url}${pathname}`,
+  founder: {
+    "@type": "Person",
+    name: site.author,
+    url: `${site.url}${localizePath(language, "about")}`,
+  },
+  telephone: company.phoneDisplay,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: address,
+    addressLocality: language === "zh" ? "深圳" : "Shenzhen",
+    addressCountry: "CN",
+  },
+  description: page.description,
+};
+---
+
+<BaseLayout title={page.title} description={page.description} pathname={pathname} language={language} alternatePath={alternatePath} jsonLd={jsonLd}>
+  <article class="content-page company-page">
+    <p class="eyebrow">{page.eyebrow}</p>
+    <h1>{page.headline}</h1>
+    <p class="lede">{page.lede}</p>
+
+    <div class="company-stamp" aria-label={organizationName}>
+      <span aria-hidden="true">倍</span>
+      <div>
+        <strong>{organizationName}</strong>
+        <p>{language === "zh" ? company.legalNameEn : company.legalNameZh}</p>
+      </div>
+    </div>
+
+    <div class="content-grid company-content">
+      <section>
+        <h2>{page.relationshipTitle}</h2>
+        <p>{page.relationship}</p>
+      </section>
+      <section>
+        <h2>{page.fieldsTitle}</h2>
+        <ul class="content-list">
+          {page.fields.map((item) => <li>{item}</li>)}
+        </ul>
+      </section>
+      <section>
+        <h2>{page.principlesTitle}</h2>
+        <ol class="content-list ordered">
+          {page.principles.map((item) => <li>{item}</li>)}
+        </ol>
+      </section>
+      <section>
+        <h2>{page.missionTitle}</h2>
+        <p>{page.mission}</p>
+      </section>
+    </div>
+
+    <section class="closing-panel">
+      <p class="eyebrow">{company.shortNameEn}</p>
+      <h2>{page.ctaTitle}</h2>
+      <p>{page.ctaText}</p>
+      <a class="button primary" href={localizePath(language, "contact")}>{page.ctaLabel}</a>
+    </section>
+  </article>
+</BaseLayout>
