@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-07-11
+
+- Added the approved design specification for integrating Jeason’s personal site with the Multiple Engine company website, including content migration, bilingual routes, SEO/GEO, deployment, and rollback requirements.
+
 ## 2026-07-02
 
 - Added localized About/author pages with Person JSON-LD, navigation links, sitemap coverage, and llms.txt entry.
