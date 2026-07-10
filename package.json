@@ -7,7 +7,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "verify": "npm run astro -- check && npm test"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
