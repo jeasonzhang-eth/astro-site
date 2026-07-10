@@ -38,6 +38,8 @@ type AboutContent = {
   eyebrow: string;
   headline: string;
   lede: string;
+  experienceTitle: string;
+  experience: string[];
   focusTitle: string;
   focus: string[];
   workTitle: string;
@@ -46,9 +48,26 @@ type AboutContent = {
   contact: string;
 };
 
+type HomeContent = {
+  title: string;
+  description: string;
+  eyebrow: string;
+  headline: string;
+  lede: string;
+  identity: string;
+  servicesTitle: string;
+  servicesIntro: string;
+  methodEyebrow: string;
+  methodTitle: string;
+  methodSteps: string[];
+  companyEyebrow: string;
+  companyTitle: string;
+  companyText: string;
+};
+
 export const site = {
   name: "Jeason Zhang",
-  url: "https://jeasonzhang-eth.github.io/astro-site",
+  url: "https://beishuyinqing.cn",
   author: "Jeason Zhang",
   defaultLanguage: "en" as Language,
   languages: ["en", "zh"] as Language[],
@@ -60,17 +79,21 @@ export const labels = {
     alternateLanguage: "中文",
     themeLight: "Light",
     themeDark: "Dark",
-    viewWork: "View work",
+    viewWork: "View projects",
     readNotes: "Read notes",
-    selectedWork: "Selected work",
+    contactAction: "Discuss a project",
+    selectedWork: "Evidence in working software",
     currentNotes: "Current notes",
-    workspace: "workspace",
-    activeThreads: "04 active threads",
+    workspace: "connected practice",
+    activeThreads: "person · products · company",
     projectsTitle: "Projects with a working surface.",
-    notesTitle: "What the site is tracking.",
-    projectLabel: "Project",
-    noteLabel: "Note",
+    notesTitle: "Notes that keep the reasoning visible.",
+    projectLabel: "Projects",
+    noteLabel: "Notes",
+    servicesLabel: "Services",
+    companyLabel: "Company",
     aboutLabel: "About",
+    contactLabel: "Contact",
     allProjectsTitle: "All projects",
     allProjectsDescription: "A directory of the products, systems, and interface experiments behind this site.",
     allNotesTitle: "All notes",
@@ -86,23 +109,30 @@ export const labels = {
     examples: "Examples",
     nextSteps: "Next steps",
     faq: "FAQ",
+    footerCompany: "Delivery company",
+    footerContact: "Contact",
+    footerOffice: "Office",
   },
   zh: {
     languageName: "中文",
     alternateLanguage: "EN",
     themeLight: "日间",
     themeDark: "夜间",
-    viewWork: "查看作品",
+    viewWork: "查看项目",
     readNotes: "阅读笔记",
-    selectedWork: "精选项目",
+    contactAction: "沟通合作",
+    selectedWork: "运行中的能力证据",
     currentNotes: "当前笔记",
-    workspace: "工作台",
-    activeThreads: "04 条活跃线索",
+    workspace: "一体化工作面",
+    activeThreads: "个人 · 产品 · 公司",
     projectsTitle: "有真实工作面的项目。",
-    notesTitle: "这个站点正在追踪什么。",
+    notesTitle: "把判断过程保留下来的笔记。",
     projectLabel: "项目",
     noteLabel: "笔记",
+    servicesLabel: "服务",
+    companyLabel: "公司",
     aboutLabel: "作者",
+    contactLabel: "联系",
     allProjectsTitle: "所有项目",
     allProjectsDescription: "这个网站背后的产品、系统和界面实验目录。",
     allNotesTitle: "所有笔记",
@@ -118,78 +148,119 @@ export const labels = {
     examples: "例子",
     nextSteps: "下一步",
     faq: "常见问题",
+    footerCompany: "交付公司",
+    footerContact: "联系",
+    footerOffice: "办公地址",
   },
 } satisfies Record<Language, Record<string, string>>;
 
-export const home = {
+export const home: Record<Language, HomeContent> = {
   en: {
-    title: "Jeason Zhang",
-    description: "A personal Astro site for Jeason's projects, notes, and field work.",
-    eyebrow: "Personal field notes",
-    headline: "Build useful things, then leave a clear trail.",
-    lede: "A compact home for software experiments, AI workflow notes, and projects that turn rough ideas into tools.",
+    title: "Jeason Zhang × Multiple Engine",
+    description: "Jeason Zhang and Multiple Engine build practical software, enterprise AI workflows, GEO systems, automation, and deployable tools.",
+    eyebrow: "Jeason Zhang · Founder of Multiple Engine",
+    headline: "Turn real business problems into working tools and systems.",
+    lede: "I build software, enterprise AI workflows, GEO systems, and automation around work that needs to become reliable. Multiple Engine is the company that carries cooperation and delivery.",
+    identity: "Software engineer · AI product builder · company founder",
+    servicesTitle: "Five ways to move a real workflow forward.",
+    servicesIntro: "The service is not a slide deck. It is a working loop with visible inputs, outputs, limits, and ownership.",
+    methodEyebrow: "Working method",
+    methodTitle: "Make the result inspectable from the first useful loop.",
+    methodSteps: [
+      "Define the real problem and acceptance condition.",
+      "Build the smallest end-to-end loop that can be used.",
+      "Verify it with code, data, and operating evidence.",
+      "Turn the useful path into a maintainable system and handoff.",
+    ],
+    companyEyebrow: "Multiple Engine",
+    companyTitle: "Personal accountability, formal company delivery.",
+    companyText: "Shenzhen Multiple Engine Software Technology Co., Ltd. is the cooperation and delivery entity behind this work.",
   },
   zh: {
-    title: "Jeason Zhang",
-    description: "Jeason 的个人 Astro 网站，用来整理项目、笔记和一线工作记录。",
-    eyebrow: "个人现场笔记",
-    headline: "把东西做出来，也把路径留下来。",
-    lede: "这里收纳软件实验、AI 工作流笔记，以及把粗糙想法推进成可用工具的项目记录。",
+    title: "Jeason Zhang × 倍数引擎",
+    description: "Jeason Zhang 与倍数引擎围绕真实业务问题构建软件、企业 AI 工作流、GEO 系统、自动化和可部署工具。",
+    eyebrow: "Jeason Zhang · 倍数引擎创始人",
+    headline: "把真实业务问题，做成可以运行的工具与系统。",
+    lede: "我围绕那些必须变得可靠的工作，构建软件、企业 AI 工作流、GEO 系统和自动化。倍数引擎负责承接正式合作与交付。",
+    identity: "软件工程师 · AI 产品构建者 · 公司创始人",
+    servicesTitle: "用五种能力，把一个真实流程向前推进。",
+    servicesIntro: "服务不是一份演示文稿，而是输入、输出、边界和责任都清楚的可运行闭环。",
+    methodEyebrow: "工作方式",
+    methodTitle: "从第一个有用闭环开始，让结果可以被检查。",
+    methodSteps: [
+      "明确真实问题和验收条件。",
+      "完成能够使用的最小端到端闭环。",
+      "用代码、数据和运行证据验证。",
+      "把有效路径沉淀为可维护系统和交付文档。",
+    ],
+    companyEyebrow: "倍数引擎",
+    companyTitle: "个人负责到底，公司正式承接。",
+    companyText: "深圳市倍数引擎软件技术有限责任公司是这些工作的合作与交付主体。",
   },
-} satisfies Record<Language, Record<string, string>>;
+};
 
-export const about = {
+export const about: Record<Language, AboutContent> = {
   en: {
     title: "About",
-    description: "About Jeason Zhang: builder of Mac OS tools, browser extensions, AI workflows, and small research systems.",
-    eyebrow: "Author",
-    headline: "I build small tools that keep useful work from disappearing.",
-    lede:
-      "I use this site as a public workbench for personal software projects, AI workflow notes, desktop automation, and market research. The common thread is simple: capture real work, make it inspectable, then turn it into tools or durable pages.",
+    description: "About Jeason Zhang, founder of Multiple Engine and a software engineer building practical AI, desktop, browser, data, and workflow systems.",
+    eyebrow: "Author and founder",
+    headline: "I build small systems that keep useful work from disappearing.",
+    lede: "I use this site as a public workbench for software products, enterprise AI workflows, GEO, desktop automation, and research. The common thread is simple: capture real work, make it inspectable, then turn it into a tool or durable operating surface.",
+    experienceTitle: "Engineering path",
+    experience: [
+      "About eight years of software engineering and product delivery experience.",
+      "Early work in Java HMI and quadruped robotics, followed by Qt interface development.",
+      "Hands-on work across JavaScript, HTML, CSS, C/C++, Python crawling, and data processing.",
+      "Current focus on enterprise AI implementation, GEO, and tools that connect models to real workflows.",
+    ],
     focusTitle: "Current focus",
     focus: [
       "Mac OS desktop tools for capture, transcription, and local workflows.",
       "Browser extensions and lightweight interfaces that keep context close to the page.",
-      "AI-assisted publishing systems for SEO, GEO, and reusable project memory.",
-      "Market and macro research dashboards that turn scattered signals into readable views.",
+      "AI-assisted publishing and evidence systems for SEO and GEO.",
+      "Small company delivery systems that join code, documentation, and operating evidence.",
     ],
     workTitle: "How I work",
     work: [
       "Build the smallest working loop first, then document what the loop teaches.",
       "Prefer tools that expose state clearly: files, routes, transcripts, diffs, and dashboards.",
       "Treat writing as part of the product surface, not as a separate marketing layer.",
-      "Keep project pages honest by tying them to real repositories, screenshots, notes, and changelogs.",
+      "Keep project pages honest by tying them to real repositories, notes, and changelogs.",
     ],
-    contactTitle: "Where to start",
-    contact:
-      "The best entry point is the project directory. Capty, Twitter Translator, Routescope, Apple Price, USD Liquidity, and WeCom KF AI Agent show the kinds of problems this site tracks.",
+    contactTitle: "Company relationship",
+    contact: "I founded Multiple Engine to provide a clear company structure for cooperation, delivery, and long-term maintenance around this work.",
   },
   zh: {
     title: "关于作者",
-    description: "关于 Jeason Zhang：构建 Mac OS 工具、浏览器扩展、AI 工作流和小型研究系统。",
-    eyebrow: "作者",
-    headline: "我做一些小工具，让有价值的工作不再消失。",
-    lede:
-      "我把这个网站当作公开工作台，用来整理个人软件项目、AI 工作流笔记、桌面自动化和市场研究。背后的共同线索很简单：捕捉真实工作，让它可检查，再把它变成工具或长期页面。",
+    description: "关于 Jeason Zhang：倍数引擎创始人，构建实用 AI、桌面端、浏览器、数据与工作流系统的软件工程师。",
+    eyebrow: "作者与创始人",
+    headline: "我做一些小系统，让有价值的工作不再消失。",
+    lede: "我把这个网站当作公开工作台，用来整理软件产品、企业 AI 工作流、GEO、桌面自动化和研究。背后的共同线索很简单：捕捉真实工作，让它可检查，再把它变成工具或可以长期运行的工作面。",
+    experienceTitle: "工程经历",
+    experience: [
+      "约八年软件工程与产品交付经验。",
+      "早期从事 Java 人机交互并参与四足机器人项目，随后使用 Qt 开发界面软件。",
+      "持续实践 JavaScript、HTML、CSS、C/C++、Python 爬虫与数据处理。",
+      "当前聚焦企业 AI 落地、GEO，以及把模型接入真实工作流的工具。",
+    ],
     focusTitle: "当前关注",
     focus: [
       "用于捕捉、转写和本地工作流的 Mac OS 桌面工具。",
       "让上下文留在页面里的浏览器扩展和轻量界面。",
-      "面向 SEO、GEO 和项目记忆的 AI 辅助发布系统。",
-      "把分散信号整理成可读视图的市场与宏观研究 dashboard。",
+      "面向 SEO 与 GEO 的 AI 辅助发布和证据系统。",
+      "把代码、文档和运行证据连接起来的小型公司交付系统。",
     ],
     workTitle: "我的工作方式",
     work: [
       "先做最小可用闭环，再记录这个闭环教会了什么。",
       "偏好能清楚暴露状态的工具：文件、路径、转写稿、diff 和 dashboard。",
       "把写作当作产品界面的一部分，而不是单独的营销层。",
-      "让项目页尽量诚实：连接真实仓库、截图、笔记和 changelog。",
+      "让项目页尽量诚实：连接真实仓库、笔记和 changelog。",
     ],
-    contactTitle: "从哪里开始",
-    contact:
-      "最好的入口是项目目录。Capty、Twitter Translator、Routescope、Apple Price、USD Liquidity 和 WeCom KF AI Agent 展示了这个网站正在追踪的问题类型。",
+    contactTitle: "与公司的关系",
+    contact: "我创办倍数引擎，为这些工作提供清晰的合作、交付和长期维护主体。",
   },
-} satisfies Record<Language, AboutContent>;
+};
 
 export const projects: Array<{ slug: string; en: ProjectContent; zh: ProjectContent }> = [
   {
@@ -938,6 +1009,9 @@ export function allSeoPaths() {
   const paths = site.languages.flatMap((language) => [
     localizePath(language),
     localizePath(language, "about"),
+    localizePath(language, "services"),
+    localizePath(language, "company"),
+    localizePath(language, "contact"),
     localizePath(language, "projects"),
     ...projects.map((project) => localizePath(language, `projects/${project.slug}`)),
     localizePath(language, "notes"),
