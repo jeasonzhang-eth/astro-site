@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { access, readFile } from "node:fs/promises";
+import { access, readFile, stat } from "node:fs/promises";
 
 const read = (path) => readFile(path, "utf8");
 
@@ -105,6 +105,34 @@ test("the production root and x-default prefer the Chinese company experience", 
   assert.match(root, /url=\/zh\//);
   assert.match(root, /href="\/zh\/"/);
   assert.match(zh, /hreflang="x-default" href="https:\/\/beishuyinqing\.cn\/zh\/"/);
+});
+
+
+test("the shared editorial triptych is optimized and used in the three narrative locations", async () => {
+  const assetPath = "dist/images/integrated-work-triptych.webp";
+  const [homeZh, homeEn, servicesZh, companyZh, asset] = await Promise.all([
+    read("dist/zh/index.html"),
+    read("dist/en/index.html"),
+    read("dist/zh/services/index.html"),
+    read("dist/zh/company/index.html"),
+    stat(assetPath),
+  ]);
+
+  assert.ok(asset.size < 400_000, `triptych should remain below 400KB, got ${asset.size}`);
+  assert.match(homeZh, /editorial-art--workbench/);
+  assert.match(homeZh, /把真实工作变成可以检查的工具与系统/);
+  assert.match(homeEn, /Turn rough work into inspectable tools and systems/);
+  assert.match(homeZh, /loading="eager"/);
+  assert.match(servicesZh, /editorial-art--systems/);
+  assert.match(servicesZh, /软件、AI、GEO、自动化与部署连接成同一个工作流/);
+  assert.match(companyZh, /editorial-art--company/);
+  assert.match(companyZh, /深圳的工程现场与稳定交付路径/);
+  assert.match(servicesZh, /loading="lazy"/);
+  assert.match(companyZh, /loading="lazy"/);
+
+  for (const html of [homeZh, servicesZh, companyZh]) {
+    assert.match(html, /\/images\/integrated-work-triptych\.webp/);
+  }
 });
 
 test("the legacy verification token remains publicly buildable", async () => {

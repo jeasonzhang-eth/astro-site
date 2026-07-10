@@ -1,4 +1,5 @@
 ---
+import EditorialArtwork from "../../components/EditorialArtwork.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { company } from "../../data/company";
 import { services } from "../../data/services";
@@ -70,27 +71,12 @@ const jsonLd = [
       </div>
     </div>
 
-    <div class="signal-board integrated-signal" aria-label="Personal products and company signal map">
-      <div class="signal-header">
-        <span>{copy.workspace}</span>
-        <strong>{copy.activeThreads}</strong>
-      </div>
-      <div class="integration-map">
-        <div>
-          <span>01</span>
-          <strong>{language === "zh" ? "个人负责" : "Personal accountability"}</strong>
-        </div>
-        <div>
-          <span>02</span>
-          <strong>{language === "zh" ? "产品证据" : "Product evidence"}</strong>
-        </div>
-        <div>
-          <span>03</span>
-          <strong>{language === "zh" ? "公司交付" : "Company delivery"}</strong>
-        </div>
-      </div>
-      <div class="multiple-mark" aria-hidden="true">倍</div>
-    </div>
+    <EditorialArtwork
+      variant="workbench"
+      priority={true}
+      alt={language === "zh" ? "由电脑、转写稿、流程图和硬件组成的产品构建工作台" : "A product-building workbench with a laptop, transcript pages, workflow diagrams, and hardware"}
+      caption={language === "zh" ? "把真实工作变成可以检查的工具与系统" : "Turn rough work into inspectable tools and systems"}
+    />
   </section>
 
   <section class="section" id="work" aria-labelledby="work-title">

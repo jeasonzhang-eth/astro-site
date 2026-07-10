@@ -3,6 +3,7 @@
 ## 2026-07-11
 
 - Added the approved illustration design and implementation plan for a shared editorial triptych across the homepage, Services page, and Company page.
+- Added an optimized shared editorial triptych and a reusable Astro artwork component across the homepage, Services page, and Company page with bilingual alt text and captions.
 - Added the approved design specification for integrating Jeason’s personal site with the Multiple Engine company website, including content migration, bilingual routes, SEO/GEO, deployment, and rollback requirements.
 - Added the task-by-task implementation and verification plan for the integrated site migration and production replacement.
 - Ignored project-local Git worktrees so the implementation can run in an isolated checkout.

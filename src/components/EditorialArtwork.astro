@@ -1,0 +1,36 @@
+---
+type Variant = "workbench" | "systems" | "company";
+
+interface Props {
+  variant: Variant;
+  alt: string;
+  caption: string;
+  priority?: boolean;
+}
+
+const { variant, alt, caption, priority = false } = Astro.props;
+const panelNumber: Record<Variant, string> = {
+  workbench: "01",
+  systems: "02",
+  company: "03",
+};
+---
+
+<figure class={`editorial-art editorial-art--${variant}`}>
+  <div class="editorial-art__viewport">
+    <img
+      class="editorial-art__image"
+      src="/images/integrated-work-triptych.webp"
+      alt={alt}
+      width="2172"
+      height="724"
+      loading={priority ? "eager" : "lazy"}
+      fetchpriority={priority ? "high" : "auto"}
+      decoding="async"
+    />
+  </div>
+  <figcaption>
+    <span>{panelNumber[variant]} / 03</span>
+    <p>{caption}</p>
+  </figcaption>
+</figure>
