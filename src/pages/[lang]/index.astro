@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { company } from "../../data/company";
+import { services } from "../../data/services";
 import { home, labels, localizePath, projects, notes, site, type Language } from "../../data/site";
 
 export function getStaticPaths() {
@@ -10,19 +12,44 @@ const language = Astro.params.lang as Language;
 const copy = labels[language];
 const page = home[language];
 const pathname = localizePath(language);
-
+const organizationName = language === "zh" ? company.legalNameZh : company.legalNameEn;
+const organizationUrl = `${site.url}${localizePath(language, "company")}`;
 const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "Person",
     name: site.author,
-    url: `${site.url}${pathname}`,
+    url: `${site.url}${localizePath(language, "about")}`,
     sameAs: ["https://github.com/jeasonzhang-eth"],
+    founder: {
+      "@type": "Organization",
+      name: organizationName,
+      url: organizationUrl,
+    },
+    worksFor: {
+      "@type": "Organization",
+      name: organizationName,
+      url: organizationUrl,
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: organizationName,
+    alternateName: language === "zh" ? company.shortNameEn : company.shortNameZh,
+    url: organizationUrl,
+    founder: {
+      "@type": "Person",
+      name: site.author,
+      url: `${site.url}${localizePath(language, "about")}`,
+    },
+    telephone: company.phoneDisplay,
+    address: language === "zh" ? company.addressZh : company.addressEn,
   },
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: site.name,
+    name: `${site.name} × ${company.shortNameEn}`,
     url: site.url,
     inLanguage: language === "zh" ? "zh-CN" : "en",
     description: page.description,
@@ -31,33 +58,38 @@ const jsonLd = [
 ---
 
 <BaseLayout title={page.title} description={page.description} pathname={pathname} language={language} jsonLd={jsonLd}>
-  <section class="hero" aria-labelledby="hero-title">
+  <section class="hero integrated-hero" aria-labelledby="hero-title">
     <div class="hero-copy">
       <p class="eyebrow">{page.eyebrow}</p>
       <h1 id="hero-title">{page.headline}</h1>
+      <p class="hero-identity">{page.identity}</p>
       <p class="lede">{page.lede}</p>
       <div class="hero-actions" aria-label="Primary actions">
         <a class="button primary" href="#work">{copy.viewWork}</a>
-        <a class="button secondary" href="#notes">{copy.readNotes}</a>
+        <a class="button secondary" href={localizePath(language, "contact")}>{copy.contactAction}</a>
       </div>
     </div>
 
-    <div class="signal-board" aria-label="Project signal map">
+    <div class="signal-board integrated-signal" aria-label="Personal products and company signal map">
       <div class="signal-header">
         <span>{copy.workspace}</span>
         <strong>{copy.activeThreads}</strong>
       </div>
-      <div class="signal-grid">
-        <span class="cell active"></span>
-        <span class="cell"></span>
-        <span class="cell pulse"></span>
-        <span class="cell active"></span>
-        <span class="cell wide"></span>
-        <span class="cell active"></span>
-        <span class="cell"></span>
-        <span class="cell pulse"></span>
-        <span class="cell wide active"></span>
+      <div class="integration-map">
+        <div>
+          <span>01</span>
+          <strong>{language === "zh" ? "个人负责" : "Personal accountability"}</strong>
+        </div>
+        <div>
+          <span>02</span>
+          <strong>{language === "zh" ? "产品证据" : "Product evidence"}</strong>
+        </div>
+        <div>
+          <span>03</span>
+          <strong>{language === "zh" ? "公司交付" : "Company delivery"}</strong>
+        </div>
       </div>
+      <div class="multiple-mark" aria-hidden="true">倍</div>
     </div>
   </section>
 
@@ -82,6 +114,41 @@ const jsonLd = [
     </div>
   </section>
 
+  <section class="home-services" aria-labelledby="services-title">
+    <div class="section-heading">
+      <p class="eyebrow">{copy.servicesLabel}</p>
+      <h2 id="services-title">{page.servicesTitle}</h2>
+      <p>{page.servicesIntro}</p>
+    </div>
+    <div class="home-service-grid">
+      {services.map((service, index) => {
+        const item = service[language];
+        return (
+          <a href={`${localizePath(language, "services")}#${service.slug}`} class="home-service-card">
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <h3>{item.title}</h3>
+            <p>{item.summary}</p>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <section class="method-section" aria-labelledby="method-title">
+    <div class="section-heading">
+      <p class="eyebrow">{page.methodEyebrow}</p>
+      <h2 id="method-title">{page.methodTitle}</h2>
+    </div>
+    <ol class="method-list">
+      {page.methodSteps.map((step, index) => (
+        <li>
+          <span>{String(index + 1).padStart(2, "0")}</span>
+          <p>{step}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
   <section class="section notes" id="notes" aria-labelledby="notes-title">
     <div class="section-heading">
       <p class="eyebrow">{copy.currentNotes}</p>
@@ -97,5 +164,15 @@ const jsonLd = [
         );
       })}
     </ul>
+  </section>
+
+  <section class="closing-panel home-company-panel">
+    <p class="eyebrow">{page.companyEyebrow}</p>
+    <h2>{page.companyTitle}</h2>
+    <p>{page.companyText}</p>
+    <div class="panel-actions">
+      <a class="button primary" href={localizePath(language, "company")}>{copy.companyLabel}</a>
+      <a class="button secondary" href={localizePath(language, "contact")}>{copy.contactAction}</a>
+    </div>
   </section>
 </BaseLayout>
