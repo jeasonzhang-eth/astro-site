@@ -1,29 +1,66 @@
-import { home, notes, projects, site } from "../data/site";
+import { company } from "../data/company";
+import { services } from "../data/services";
+import { notes, projects, site } from "../data/site";
 
 export function GET() {
-  const lines = [
-    `# ${site.name}`,
+  const projectLines = projects
+    .flatMap((project) => [
+      `- ${project.en.title} (EN): ${site.url}/en/projects/${project.slug}/`,
+      `- ${project.zh.title} (ZH): ${site.url}/zh/projects/${project.slug}/`,
+    ])
+    .join("\n");
+  const noteLines = notes
+    .flatMap((note) => [
+      `- ${note.en.title} (EN): ${site.url}/en/notes/${note.slug}/`,
+      `- ${note.zh.title} (ZH): ${site.url}/zh/notes/${note.slug}/`,
+    ])
+    .join("\n");
+  const serviceLines = services
+    .map(
+      (service) =>
+        `- ${service.en.title} / ${service.zh.title}: ${site.url}/en/services/#${service.slug} | ${site.url}/zh/services/#${service.slug}`,
+    )
+    .join("\n");
+
+  const body = [
+    `# ${site.name} × ${company.shortNameEn}`,
     "",
-    `> ${home.en.description}`,
-    "",
-    "This site collects Jeason Zhang's projects, AI workflow notes, desktop automation experiments, and market research references.",
+    `> ${site.author} builds practical software, enterprise AI workflows, GEO systems, automation, and deployable tools. ${company.legalNameEn} is the formal cooperation and delivery entity behind the work.`,
     "",
     "## Primary pages",
     `- English home: ${site.url}/en/`,
     `- Chinese home: ${site.url}/zh/`,
-    `- About: ${site.url}/en/about/`,
+    `- Services (EN): ${site.url}/en/services/`,
+    `- 服务 (ZH): ${site.url}/zh/services/`,
+    `- Company (EN): ${site.url}/en/company/`,
+    `- 公司 (ZH): ${site.url}/zh/company/`,
+    `- About Jeason (EN): ${site.url}/en/about/`,
+    `- 关于 Jeason (ZH): ${site.url}/zh/about/`,
+    `- Contact (EN): ${site.url}/en/contact/`,
+    `- 联系合作 (ZH): ${site.url}/zh/contact/`,
+    "",
+    "## Services",
+    serviceLines,
     "",
     "## Projects",
-    `- Project directory: ${site.url}/en/projects/`,
-    ...projects.map((project) => `- ${project.en.title}: ${site.url}/en/projects/${project.slug}/`),
+    `- Project directory (EN): ${site.url}/en/projects/`,
+    `- 项目目录 (ZH): ${site.url}/zh/projects/`,
+    projectLines,
     "",
     "## Notes",
-    `- Notes directory: ${site.url}/en/notes/`,
-    ...notes.map((note) => `- ${note.en.title}: ${site.url}/en/notes/${note.slug}/`),
+    `- Notes directory (EN): ${site.url}/en/notes/`,
+    `- 笔记目录 (ZH): ${site.url}/zh/notes/`,
+    noteLines,
     "",
-  ];
+    "## Verified company facts",
+    `- Legal name: ${company.legalNameZh} / ${company.legalNameEn}`,
+    `- Phone: ${company.phoneDisplay}`,
+    `- Address: ${company.addressZh}`,
+    `- ICP: ${company.icpNumber}`,
+    "",
+  ].join("\n");
 
-  return new Response(lines.join("\n"), {
+  return new Response(body, {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
     },

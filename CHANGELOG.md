@@ -10,6 +10,7 @@
 - Expanded the shared bilingual navigation and added a company-aware footer with verified phone, address, and ICP information.
 - Added bilingual Services, Company, and Contact pages with factual service boundaries, Organization and Service structured data, and direct cooperation paths.
 - Rebuilt the homepage around personal accountability, real project evidence, five company services, a four-step working method, and formal Multiple Engine delivery; expanded the author page with verified engineering experience.
+- Updated llms.txt and production discovery metadata to expose all bilingual service, company, contact, project, note, and verified company-fact paths.
 
 ## 2026-07-02
 
