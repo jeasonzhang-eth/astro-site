@@ -146,3 +146,21 @@ test("the legacy verification token remains publicly buildable", async () => {
   const token = await read("dist/WW_verify_Xs9oqr5SLRAcpl58.txt");
   assert.equal(token, "Xs9oqr5SLRAcpl58");
 });
+
+test("primary navigation exposes the active route semantically", async () => {
+  const html = await read("dist/zh/contact/index.html");
+  const contactLink = html.match(/<a\b(?=[^>]*\bnav-contact\b)[^>]*>联系<\/a>/)?.[0] ?? "";
+
+  assert.match(contactLink, /\bis-current\b/);
+  assert.match(contactLink, /aria-current="page"/);
+  assert.doesNotMatch(html, /href="\/zh\/projects\/"[^>]*aria-current="page"/);
+});
+
+test("contact page renders one integrated call action", async () => {
+  const html = await read("dist/zh/contact/index.html");
+  const panel = html.match(/<a[^>]*class="contact-call"[\s\S]*?<\/a>/)?.[0] ?? "";
+
+  assert.match(panel, /class="contact-cta"/);
+  assert.equal((panel.match(/185 9314 1894/g) ?? []).length, 1);
+  assert.match(html, /class="contact-facts"/);
+});

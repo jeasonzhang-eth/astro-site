@@ -241,3 +241,12 @@ test("WeCom project titles keep AI Agent together", async () => {
     assert.doesNotMatch(heading, /AI Agent/i);
   }
 });
+
+test("mobile navigation uses a horizontal product rail", async () => {
+  const css = await read("src/styles/global.css");
+  const mobileCss = extractBalancedBlocks(css, /@media\s*\([^)]*max-width\s*:[^)]*\)/gi).join("\n");
+
+  assert.match(mobileCss, /\.site-nav\s*\{[^}]*overflow-x\s*:\s*auto/is);
+  assert.match(mobileCss, /scrollbar-width\s*:\s*none/i);
+  assert.match(css, /\.site-nav::?-webkit-scrollbar\s*\{[^}]*display\s*:\s*none/is);
+});
