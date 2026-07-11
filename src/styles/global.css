@@ -1510,3 +1510,195 @@ h1 {
     grid-template-columns: 48px minmax(0, 1fr);
   }
 }
+
+/* Modern product navigation */
+.site-toolbar {
+  top: 16px;
+  gap: 10px;
+  min-height: 58px;
+  padding: 7px 8px 7px 14px;
+  border: 1px solid color-mix(in srgb, var(--line) 82%, transparent);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
+  box-shadow: 0 14px 34px color-mix(in srgb, #02080c 18%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+}
+
+.brand {
+  width: auto;
+  min-width: 176px;
+  height: 44px;
+  justify-content: flex-start;
+  gap: 11px;
+  padding: 0 10px 0 2px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease;
+}
+
+.brand:hover {
+  background: color-mix(in srgb, var(--button-surface) 72%, transparent);
+}
+
+.site-nav {
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  margin-left: 0;
+}
+
+.site-nav a {
+  flex: 0 0 auto;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 11px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.site-nav a:hover {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--button-surface) 76%, transparent);
+}
+
+.site-nav a.is-current,
+.site-nav .nav-contact.is-current {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--signal) 16%, var(--button-surface));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--signal) 34%, transparent);
+}
+
+.site-nav .nav-contact {
+  color: var(--muted);
+}
+
+.control-stack {
+  gap: 4px;
+}
+
+.control-link,
+.control-button,
+.theme-toggle {
+  min-height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--button-surface) 86%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--line) 78%, transparent);
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.control-link:hover,
+.control-button:hover {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--signal) 10%, var(--button-surface));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--signal) 28%, var(--line));
+}
+
+.control-link {
+  min-width: 52px;
+  padding: 0 12px;
+}
+
+.theme-toggle {
+  min-width: 68px;
+}
+
+@media (max-width: 980px) {
+  .site-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 7px 10px;
+    align-items: center;
+    padding: 8px;
+  }
+
+  .brand {
+    min-width: 0;
+    justify-self: start;
+  }
+
+  .control-stack {
+    justify-self: end;
+    margin-left: 0;
+  }
+
+  .site-nav {
+    grid-column: 1 / -1;
+    order: initial;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 4px;
+    margin: 0;
+    padding: 2px 0 0;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    scroll-snap-type: inline proximity;
+  }
+
+  .site-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-nav a {
+    flex: 0 0 auto;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 12px;
+    scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 620px) {
+  .site-toolbar {
+    row-gap: 7px;
+  }
+
+  .brand-copy strong {
+    font-size: 0.78rem;
+  }
+
+  .brand-copy small {
+    display: none;
+  }
+
+  .site-nav {
+    display: flex;
+    grid-template-columns: none;
+    padding-bottom: 0;
+  }
+
+  .site-nav a {
+    padding: 0 13px;
+    background: transparent;
+    font-size: 0.8125rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand,
+  .site-nav a,
+  .control-link,
+  .control-button,
+  .contact-cta span:last-child {
+    transition: none;
+    transform: none;
+  }
+}

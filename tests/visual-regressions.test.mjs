@@ -150,30 +150,20 @@ test("header controls meet a 44px minimum hit target", async () => {
   }
 });
 
-test("mobile navigation provides two clear rows and touch-safe links", async () => {
+test("mobile navigation keeps touch-safe links in its product rail", async () => {
   const css = await read("src/styles/global.css");
   const mobileCss = extractBalancedBlocks(css, /@media\s*\([^)]*max-width\s*:[^)]*\)/gi).join("\n");
   const rules = cssRules(mobileCss);
-  const navRules = rules.filter(({ selector }) => selector.includes(".site-nav"));
-  const navDeclarations = navRules.map(({ declarations }) => declarations).join("\n");
-  const linkDeclarations = navRules
+  const linkDeclarations = rules
     .filter(({ selector }) => /\.site-nav\s+a\b/.test(selector))
     .map(({ declarations }) => declarations)
     .join("\n");
 
-  const hasThreeColumns =
-    /grid-template-columns\s*:\s*repeat\(\s*3\s*,/i.test(navDeclarations) ||
-    /grid-template-columns\s*:\s*(?:minmax\([^;]+\)|1fr)\s+(?:minmax\([^;]+\)|1fr)\s+(?:minmax\([^;]+\)|1fr)\s*;/i.test(navDeclarations);
-  const hasExplicitTwoRows =
-    /grid-template-rows\s*:\s*repeat\(\s*2\s*,/i.test(navDeclarations) ||
-    /grid-auto-flow\s*:\s*column/i.test(navDeclarations) && /grid-template-rows\s*:/i.test(navDeclarations);
-
-  assert.ok(hasThreeColumns || hasExplicitTwoRows, "mobile navigation must use a three-column grid or another explicit two-row grid");
-
   const minHeights = [...linkDeclarations.matchAll(/min-height\s*:\s*(\d+(?:\.\d+)?)(px|rem|em)/gi)]
     .map((match) => cssLengthToPx(match[1], match[2].toLowerCase()))
     .filter(Number.isFinite);
-  assert.ok(minHeights.some((height) => height >= 40), "mobile navigation links must have a min-height of at least 40px");
+  assert.ok(minHeights.some((height) => height >= 44), "mobile navigation links must have a min-height of at least 44px");
+  assert.match(mobileCss, /\.site-nav\s*\{[^}]*overflow-x\s*:\s*auto/is);
 });
 
 test("FAQ summaries provide a full-size click target", async () => {
