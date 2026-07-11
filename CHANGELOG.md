@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-07-12
+
+- Added the approved design specification for a floating product-style navigation capsule and integrated contact action panel across themes and responsive layouts.
 ## 2026-07-11
 
 - Replaced the visible root redirect page with a head-first `location.replace()` redirect and a no-JavaScript fallback, eliminating the “continue visiting” flash without requiring Nginx configuration.
