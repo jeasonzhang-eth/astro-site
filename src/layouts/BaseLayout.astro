@@ -24,6 +24,15 @@ const alternates = {
 const currentYear = new Date().getUTCFullYear();
 const companyName = language === "zh" ? company.legalNameZh : company.legalNameEn;
 const address = language === "zh" ? company.addressZh : company.addressEn;
+const navItems = [
+  { href: localizePath(language, "projects"), label: copy.projectLabel },
+  { href: localizePath(language, "notes"), label: copy.noteLabel },
+  { href: localizePath(language, "services"), label: copy.servicesLabel },
+  { href: localizePath(language, "company"), label: copy.companyLabel },
+  { href: localizePath(language, "about"), label: copy.aboutLabel },
+  { href: localizePath(language, "contact"), label: copy.contactLabel, className: "nav-contact" },
+];
+const isNavCurrent = (href: string) => pathname === href || pathname.startsWith(href);
 ---
 
 <!doctype html>
@@ -59,12 +68,18 @@ const address = language === "zh" ? company.addressZh : company.addressEn;
           </span>
         </a>
         <nav class="site-nav" aria-label="Primary">
-          <a href={localizePath(language, "projects")}>{copy.projectLabel}</a>
-          <a href={localizePath(language, "notes")}>{copy.noteLabel}</a>
-          <a href={localizePath(language, "services")}>{copy.servicesLabel}</a>
-          <a href={localizePath(language, "company")}>{copy.companyLabel}</a>
-          <a href={localizePath(language, "about")}>{copy.aboutLabel}</a>
-          <a class="nav-contact" href={localizePath(language, "contact")}>{copy.contactLabel}</a>
+          {navItems.map((item) => {
+            const isCurrent = isNavCurrent(item.href);
+            return (
+              <a
+                class:list={[item.className, { "is-current": isCurrent }]}
+                href={item.href}
+                aria-current={isCurrent ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            );
+          })}
         </nav>
         <div class="control-stack">
           <a class="control-link" href={switchPath} hreflang={otherLanguage}>{copy.alternateLanguage}</a>
