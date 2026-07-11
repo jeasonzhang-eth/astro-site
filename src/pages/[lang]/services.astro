@@ -1,5 +1,6 @@
 ---
 import EditorialArtwork from "../../components/EditorialArtwork.astro";
+import DisplayHeadline from "../../components/DisplayHeadline.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { company } from "../../data/company";
 import { services, servicesPages } from "../../data/services";
@@ -10,6 +11,10 @@ export function getStaticPaths() {
 }
 
 const language = Astro.params.lang as Language;
+const headlineLines = language === "zh"
+  ? ["先把闭环跑起来，", "再让它可以长期维护。"]
+  : ["Build the working loop,", "then make it maintainable."];
+const headlineLabel = headlineLines.join(language === "zh" ? "" : " ");
 const page = servicesPages[language];
 const pathname = localizePath(language, "services");
 const alternatePath = localizePath(language === "en" ? "zh" : "en", "services");
@@ -32,7 +37,7 @@ const jsonLd = services.map((service) => ({
 <BaseLayout title={page.title} description={page.description} pathname={pathname} language={language} alternatePath={alternatePath} jsonLd={jsonLd}>
   <article class="content-page service-page">
     <p class="eyebrow">{page.eyebrow}</p>
-    <h1>{page.headline}</h1>
+    <DisplayHeadline ariaLabel={headlineLabel} lines={headlineLines} language={language} />
     <p class="lede">{page.lede}</p>
 
     <EditorialArtwork

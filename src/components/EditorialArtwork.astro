@@ -34,3 +34,64 @@ const panelNumber: Record<Variant, string> = {
     <p>{caption}</p>
   </figcaption>
 </figure>
+
+<style>
+  .editorial-art__viewport {
+    aspect-ratio: 4 / 3;
+  }
+
+  .editorial-art__image {
+    top: 50%;
+    max-width: none;
+    height: auto;
+    transform: translateY(-50%);
+  }
+
+  .editorial-art--workbench .editorial-art__image {
+    left: 0;
+    width: 324.66%;
+  }
+
+  .editorial-art--systems .editorial-art__image {
+    left: -80.12%;
+    width: 260.12%;
+  }
+
+  .editorial-art--company .editorial-art__image {
+    left: -225.15%;
+    width: 325.15%;
+  }
+
+  .editorial-art figcaption {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 16px;
+    padding-top: 15px;
+  }
+
+  .editorial-art figcaption span {
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+  }
+
+  .editorial-art figcaption p {
+    color: color-mix(in srgb, var(--ink) 76%, var(--muted));
+    font-size: 0.94rem;
+    font-weight: 700;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 560px) {
+    .editorial-art__viewport {
+      aspect-ratio: 4 / 3;
+    }
+
+    .editorial-art figcaption {
+      grid-template-columns: 54px minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .editorial-art figcaption p {
+      font-size: 0.88rem;
+    }
+  }
+</style>

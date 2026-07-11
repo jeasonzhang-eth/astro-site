@@ -611,7 +611,7 @@ export const projects: Array<{ slug: string; en: ProjectContent; zh: ProjectCont
   {
     slug: "wecom-kf-ai-agent",
     en: {
-      title: "WeCom KF AI Agent",
+      title: "WeCom KF AI\u00A0Agent",
       kind: "customer service agent",
       summary: "A minimal WeCom customer-service AI agent demo with callback handling and reply logic.",
       definition: "WeCom KF AI Agent is a backend demo for receiving WeCom customer-service messages and routing them through a replaceable reply function.",
@@ -644,7 +644,7 @@ export const projects: Array<{ slug: string; en: ProjectContent; zh: ProjectCont
       ],
     },
     zh: {
-      title: "WeCom KF AI Agent",
+      title: "WeCom KF AI\u00A0Agent",
       kind: "客服智能体",
       summary: "一个处理企业微信客服回调和回复逻辑的最简 AI Agent demo。",
       definition: "WeCom KF AI Agent 是一个后端 demo，用来接收企业微信客服消息，并通过可替换的回复函数生成响应。",

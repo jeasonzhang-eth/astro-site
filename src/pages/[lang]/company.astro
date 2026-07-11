@@ -1,5 +1,6 @@
 ---
 import EditorialArtwork from "../../components/EditorialArtwork.astro";
+import DisplayHeadline from "../../components/DisplayHeadline.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { company, companyPages } from "../../data/company";
 import { localizePath, site, type Language } from "../../data/site";
@@ -9,6 +10,10 @@ export function getStaticPaths() {
 }
 
 const language = Astro.params.lang as Language;
+const headlineLines = language === "zh"
+  ? ["一家围绕真实问题", "和可检查交付建立的", "软件公司。"]
+  : ["A small software company", "built around", "inspectable work."];
+const headlineLabel = headlineLines.join(language === "zh" ? "" : " ");
 const page = companyPages[language];
 const pathname = localizePath(language, "company");
 const alternatePath = localizePath(language === "en" ? "zh" : "en", "company");
@@ -39,7 +44,7 @@ const jsonLd = {
 <BaseLayout title={page.title} description={page.description} pathname={pathname} language={language} alternatePath={alternatePath} jsonLd={jsonLd}>
   <article class="content-page company-page">
     <p class="eyebrow">{page.eyebrow}</p>
-    <h1>{page.headline}</h1>
+    <DisplayHeadline ariaLabel={headlineLabel} lines={headlineLines} language={language} />
     <p class="lede">{page.lede}</p>
 
     <EditorialArtwork

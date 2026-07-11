@@ -172,6 +172,14 @@ a:focus-visible {
   color: var(--ink);
 }
 
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 6px;
+}
+
 .segmented-control {
   display: flex;
   padding: 3px;
@@ -185,7 +193,7 @@ a:focus-visible {
   align-items: center;
   justify-content: center;
   min-width: 44px;
-  min-height: 38px;
+  min-height: 44px;
   border: 0;
   border-radius: 6px;
   color: var(--muted);
@@ -211,7 +219,7 @@ a:focus-visible {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 38px;
+  min-height: 44px;
   padding: 0 14px;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -243,9 +251,14 @@ a:focus-visible {
 
 h1,
 h2,
-h3,
+h3 {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
 p {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 h1 {
@@ -639,18 +652,31 @@ h1 {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--button-surface);
-  padding: 14px 16px;
+  padding: 0 16px;
 }
 
 .faq-list summary {
+  min-height: 44px;
+  padding: 12px 0;
+  box-sizing: border-box;
   color: var(--ink);
   cursor: pointer;
   font-weight: 800;
 }
 
 .faq-list p {
-  margin: 12px 0 0;
+  margin: 0 0 14px;
   font-size: 1rem;
+}
+
+/* Detail pages already end with a FAQ margin; avoid stacking it with the
+   generic content-page padding and footer margin into a 170px dead zone. */
+.content-page:has(.faq-list) {
+  padding-bottom: 40px;
+}
+
+.page-main:has(.faq-list) + .site-footer {
+  margin-top: 48px;
 }
 
 @media (max-width: 820px) {
@@ -793,7 +819,7 @@ h1 {
 
 .footer-identity strong {
   color: var(--muted);
-  font-size: 0.74rem;
+  font-size: 0.75rem;
 }
 
 .footer-details {
@@ -803,7 +829,7 @@ h1 {
 
 .footer-details span {
   color: var(--coral);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -860,12 +886,30 @@ h1 {
     margin-left: auto;
   }
 
+  .site-toolbar {
+    row-gap: 10px;
+  }
+
   .site-nav {
-    gap: 7px 12px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    padding-bottom: 8px;
   }
 
   .site-nav a {
-    font-size: 0.78rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 6px 8px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--button-surface);
+    font-size: 0.8125rem;
+    line-height: 1.15;
+    text-align: center;
+    white-space: nowrap;
   }
 
   .site-footer,
@@ -874,8 +918,40 @@ h1 {
     grid-template-columns: 1fr;
   }
 
-  .footer-legal {
+  .site-footer {
+    gap: 24px;
+    padding: 30px 0 36px;
+    font-size: 0.8rem;
+  }
+
+  .footer-details {
+    gap: 20px;
+  }
+
+  .footer-details > div {
     gap: 8px;
+  }
+
+  .footer-identity strong,
+  .footer-details span {
+    font-size: 0.75rem;
+  }
+
+  .footer-details p {
+    line-height: 1.7;
+  }
+
+  .footer-legal {
+    gap: 10px;
+    line-height: 1.6;
+  }
+
+  .content-page:has(.faq-list) {
+    padding-bottom: 24px;
+  }
+
+  .page-main:has(.faq-list) + .site-footer {
+    margin-top: 24px;
   }
 }
 
@@ -1107,8 +1183,12 @@ h1 {
 
 .contact-call strong {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2.2rem, 5vw, 4.2rem);
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
   line-height: 0.95;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
 }
 
 .contact-facts {
@@ -1365,23 +1445,11 @@ h1 {
   position: absolute;
   top: 50%;
   display: block;
-  width: 300%;
   max-width: none;
   height: auto;
   transform: translateY(-50%);
 }
 
-.editorial-art--workbench .editorial-art__image {
-  left: 0;
-}
-
-.editorial-art--systems .editorial-art__image {
-  left: -100%;
-}
-
-.editorial-art--company .editorial-art__image {
-  left: -200%;
-}
 
 .editorial-art figcaption {
   display: grid;

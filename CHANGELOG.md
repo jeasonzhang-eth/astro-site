@@ -2,6 +2,9 @@
 
 ## 2026-07-11
 
+- Completed two-pass black-box visual QA across all 34 bilingual routes and 68 desktop/mobile screenshots, then added structural regression contracts for the repaired layouts.
+- Reworked editorial display headlines into accessible authored lines, corrected the measured triptych crops, and balanced the homepage artwork and typography across desktop and mobile.
+- Expanded navigation, language/theme controls, and FAQ summaries to 44px hit targets; prevented broken English words, phone-number wrapping, and excess detail-page footer spacing.
 - Added the approved illustration design and implementation plan for a shared editorial triptych across the homepage, Services page, and Company page.
 - Added an optimized shared editorial triptych and a reusable Astro artwork component across the homepage, Services page, and Company page with bilingual alt text and captions.
 - Deployed illustration release `20260710T170213Z-ffce81e` to `beishuyinqing.cn`; verified the 259KB WebP asset, three production crops, accessibility text, and rollback to the previous release.
