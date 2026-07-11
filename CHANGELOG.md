@@ -2,6 +2,8 @@
 
 ## 2026-07-12
 
+- Rebuilt the shared header as a floating translucent product-navigation capsule with semantic active-route states, unified controls, and a two-row mobile scroll rail.
+- Replaced the isolated phone poster with an integrated responsive call panel and compact company-fact strip; verified Chinese/English, light/dark, desktop/mobile layouts with 12 rendered screenshots.
 - Added the task-by-task implementation and verification plan for the modern navigation capsule and integrated contact surface.
 - Added the approved design specification for a floating product-style navigation capsule and integrated contact action panel across themes and responsive layouts.
 ## 2026-07-11

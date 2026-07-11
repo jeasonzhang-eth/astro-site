@@ -237,6 +237,8 @@ test("mobile navigation uses a horizontal product rail", async () => {
   const mobileCss = extractBalancedBlocks(css, /@media\s*\([^)]*max-width\s*:[^)]*\)/gi).join("\n");
 
   assert.match(mobileCss, /\.site-nav\s*\{[^}]*overflow-x\s*:\s*auto/is);
+  assert.match(mobileCss, /\.site-nav\s*\{[^}]*grid-row\s*:\s*2/is);
+  assert.match(mobileCss, /\.control-stack\s*\{[^}]*grid-row\s*:\s*1/is);
   assert.match(mobileCss, /scrollbar-width\s*:\s*none/i);
   assert.match(css, /\.site-nav::?-webkit-scrollbar\s*\{[^}]*display\s*:\s*none/is);
 });
