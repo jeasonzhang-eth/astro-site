@@ -100,10 +100,17 @@ test("SEO discovery files expose the integrated routes on the production domain"
 });
 
 
-test("the production root and x-default prefer the Chinese company experience", async () => {
+test("the production root redirects invisibly to the Chinese company experience", async () => {
   const [root, zh] = await Promise.all([read("dist/index.html"), read("dist/zh/index.html")]);
-  assert.match(root, /url=\/zh\//);
-  assert.match(root, /href="\/zh\/"/);
+
+  assert.match(root, /window\.location\.replace\(/);
+  assert.ok(
+    root.indexOf("window.location.replace") < root.indexOf("<body"),
+    "the client redirect must execute in the head before the body can paint",
+  );
+  assert.match(root, /<noscript>[\s\S]*url=\/zh\/[\s\S]*<\/noscript>/);
+  assert.match(root, /<noscript>[\s\S]*href="\/zh\/"[\s\S]*<\/noscript>/);
+  assert.doesNotMatch(root, /<body>\s*<a\b/i, "the normal body must not expose a visible fallback link");
   assert.match(zh, /hreflang="x-default" href="https:\/\/beishuyinqing\.cn\/zh\/"/);
 });
 

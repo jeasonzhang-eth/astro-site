@@ -2,6 +2,7 @@
 
 ## 2026-07-11
 
+- Replaced the visible root redirect page with a head-first `location.replace()` redirect and a no-JavaScript fallback, eliminating the “continue visiting” flash without requiring Nginx configuration.
 - Completed two-pass black-box visual QA across all 34 bilingual routes and 68 desktop/mobile screenshots, then added structural regression contracts for the repaired layouts.
 - Reworked editorial display headlines into accessible authored lines, corrected the measured triptych crops, and balanced the homepage artwork and typography across desktop and mobile.
 - Expanded navigation, language/theme controls, and FAQ summaries to 44px hit targets; prevented broken English words, phone-number wrapping, and excess detail-page footer spacing.

@@ -9,11 +9,51 @@ const target = `/${site.defaultLanguage}/`;
   <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="noindex" />
-    <meta http-equiv="refresh" content={`0; url=${target}`} />
+
+    <script is:inline define:vars={{ target }}>
+      window.location.replace(target);
+    </script>
+
+    <noscript>
+      <meta http-equiv="refresh" content={`0; url=${target}`} />
+    </noscript>
+
     <link rel="canonical" href={target} />
     <title>Jeason Zhang × Multiple Engine</title>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: #f5f2e9;
+      }
+
+      body {
+        visibility: hidden;
+      }
+    </style>
+
+    <noscript>
+      <style>
+        body {
+          visibility: visible;
+          display: grid;
+          min-height: 100vh;
+          place-items: center;
+          padding: 24px;
+          box-sizing: border-box;
+          color: #11212b;
+          font-family: system-ui, sans-serif;
+        }
+      </style>
+    </noscript>
   </head>
   <body>
-    <a href={target}>继续访问 Jeason Zhang × 倍数引擎</a>
+    <noscript>
+      <p>
+        正在进入网站。如果没有自动跳转，
+        <a href={target}>请点击这里</a>。
+      </p>
+    </noscript>
   </body>
 </html>
