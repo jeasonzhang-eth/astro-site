@@ -2,6 +2,7 @@
 
 ## 2026-07-12
 
+- Added the task-by-task implementation and verification plan for the modern navigation capsule and integrated contact surface.
 - Added the approved design specification for a floating product-style navigation capsule and integrated contact action panel across themes and responsive layouts.
 ## 2026-07-11
 
