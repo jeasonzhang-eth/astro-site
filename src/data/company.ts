@@ -30,6 +30,7 @@ type ContactPageContent = {
   addressLabel: string;
   icpLabel: string;
   callAction: string;
+  callDescription: string;
   cooperationTitle: string;
   cooperationText: string;
 };
@@ -124,7 +125,8 @@ export const contactPages: Record<Locale, ContactPageContent> = {
     phoneLabel: "Phone",
     addressLabel: "Office",
     icpLabel: "ICP registration",
-    callAction: "Call 185 9314 1894",
+    callAction: "Call now",
+    callDescription: "Use a short first call to confirm the problem, boundaries, and next step.",
     cooperationTitle: "Good starting points",
     cooperationText:
       "Software delivery, enterprise AI implementation, GEO visibility, automation, data workflows, and cloud deployment are all suitable starting points when the desired result can be made concrete.",
@@ -139,7 +141,8 @@ export const contactPages: Record<Locale, ContactPageContent> = {
     phoneLabel: "联系电话",
     addressLabel: "办公地址",
     icpLabel: "ICP备案",
-    callAction: "拨打 185 9314 1894",
+    callAction: "立即拨打",
+    callDescription: "先用一次短沟通确认问题、边界和下一步。",
     cooperationTitle: "适合从这些问题开始",
     cooperationText:
       "软件交付、企业 AI 落地、GEO 可见度、自动化、数据工作流和云端部署都可以成为合作入口，前提是目标能够被说清楚并被验证。",

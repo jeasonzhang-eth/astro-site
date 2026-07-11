@@ -41,9 +41,15 @@ const jsonLd = {
 
     <div class="contact-layout">
       <a class="contact-call" href={company.phoneHref}>
-        <span>{page.phoneLabel}</span>
-        <strong>{company.phoneDisplay}</strong>
-        <em>{page.callAction}</em>
+        <span class="contact-call__content">
+          <span class="contact-call__label">{page.phoneLabel}</span>
+          <strong>{company.phoneDisplay}</strong>
+          <span class="contact-call__description">{page.callDescription}</span>
+        </span>
+        <span class="contact-cta">
+          <span>{page.callAction}</span>
+          <span aria-hidden="true">→</span>
+        </span>
       </a>
 
       <dl class="contact-facts">
