@@ -8,12 +8,23 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "npm run build && node --test tests/*.test.mjs",
+    "test:unit": "tsx --test tests/*.test.ts",
+    "test:site": "npm run build && node --test tests/*.test.mjs",
+    "test": "npm run test:unit && npm run test:site",
+    "notes:export": "tsx scripts/export-local-notes.ts",
+    "notes:validate": "tsx scripts/validate-sanity-notes.ts",
     "verify": "npm run astro -- check && npm test"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
+    "@sanity/client": "^7.23.0",
+    "@sanity/image-url": "^2.1.1",
     "astro": "^7.0.4",
+    "astro-portabletext": "^0.13.0",
     "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "tsx": "^4.23.1"
   }
 }
