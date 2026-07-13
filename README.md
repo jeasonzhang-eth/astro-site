@@ -27,7 +27,7 @@ SANITY_DATASET=production
 SANITY_API_VERSION=2026-07-13
 ```
 
-The public Content Lake dataset and the Astro build are tokenless; a read token is not required. Publish and update Note content through Sanity Studio. Public root document IDs must use `note-<slug>-<language>` because dotted Sanity IDs are private path documents and are not returned by the public Content Lake API.
+The public Content Lake dataset and the Astro build are tokenless; a read token is not required. Publish and update Note content through Sanity Studio. Publicly readable Notes must have a root document ID with no dot/path segment. The eight migrated documents use deterministic `note-<slug>-<language>` IDs, but this naming pattern is only needed when an API/import workflow wants deterministic IDs; new Notes created normally through Studio may use Sanity-generated UUIDs. Dotted IDs are private path documents and are not returned by the public Content Lake API.
 
 Run the complete local check before handing off a change:
 
@@ -35,11 +35,13 @@ Run the complete local check before handing off a change:
 npm run verify
 ```
 
-`notes:validate` is an audit-only migration check, not a publishing command. It requires an explicit manifest path:
+`notes:validate` is an audit-only structural/count migration check, not the publishing workflow. It requires an explicit manifest path:
 
 ```bash
 npm run notes:validate -- <manifest>
 ```
+
+After validating the manifest and remote records structurally, the audit compares each Note's `_id`, language, slug, `translationKey`, FAQ item count, and top-level content block count. It also compares total, English, Chinese, translation-pair, and complete-pair counts. It does **not** prove full field, body, or SEO equality between the manifest and Sanity.
 
 There is no local Notes fallback. If Sanity is unavailable, a new build is blocked instead of silently publishing stale local content. Already-deployed static HTML remains available during a Sanity outage because the deployed pages do not require a runtime Content Lake request.
 

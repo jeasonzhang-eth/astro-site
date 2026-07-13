@@ -2,7 +2,7 @@
 
 ## 2026-07-13
 
-- Documented the Sanity-only Notes operating workflow, exact public build configuration, audit-only manifest validation, public root document ID convention, outage behavior, and separate deployment boundary.
+- Documented the Sanity-only Notes workflow, tokenless public build configuration, Studio publishing, root-ID public-access requirement, limited structural/count scope of the migration manifest audit, outage behavior, and separate deployment boundary.
 - Removed the local Notes dataset and exporter after verifying Sanity as the only source and confirming that invalid API configuration fails the build.
 - Sourced Sitemap and llms.txt Note discovery from the shared memoized Sanity snapshot, restored both Note directories, grouped actual translation routes, deduplicated URLs, escaped XML locations, sanitized llms.txt labels, and kept Note paths out of the static SEO helper.
 - Escaped script-breaking characters in all JSON-LD output and added hostile-payload round-trip plus parsed Note Article/FAQ regression coverage.
