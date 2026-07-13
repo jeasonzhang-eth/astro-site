@@ -2,6 +2,7 @@
 
 ## 2026-07-13
 
+- Added the published Notes GROQ query, strict API response validation, route collision detection, bilingual pairing, and one-snapshot build fetch.
 - Locked the Sanity Notes client to the approved production project, dataset, and API version with singleton client regression coverage.
 - Added strict build-time Sanity configuration and the API/rendering dependencies for the Notes single-source migration.
 - Added the task-by-task implementation plan for migrating eight bilingual Notes to Sanity, cutting Astro over to API-only content, and removing all local fallback data.
