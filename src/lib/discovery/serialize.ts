@@ -5,6 +5,7 @@ export type NoteDiscoverySource = {
   language: DiscoveryLanguage;
   slug: string;
   title: string;
+  seo?: { noIndex?: boolean };
 };
 
 export type NoteDiscoveryEntry = {
@@ -51,6 +52,7 @@ export function buildNoteDiscoveryEntries(notes: NoteDiscoverySource[]): NoteDis
   const groups = new Map<string, Partial<Record<DiscoveryLanguage, NoteDiscoverySource>>>();
 
   for (const note of notes) {
+    if (note.seo?.noIndex === true) continue;
     if (!discoveryLanguages.includes(note.language)) {
       throw new Error(`Unsupported Note discovery language: ${String(note.language)}`);
     }

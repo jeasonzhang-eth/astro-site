@@ -80,6 +80,13 @@ test("Note discovery preserves translated slugs, incomplete pairs, deterministic
       slug: "english-only-slug",
       title: "Duplicate route",
     },
+    {
+      translationKey: "hidden",
+      language: "zh",
+      slug: "hidden-note",
+      title: "Hidden note",
+      seo: { noIndex: true },
+    },
   ]);
 
   assert.deepEqual(entries, [

@@ -1,17 +1,14 @@
 ---
-type SanityCodeBlockNode = {
-  _key?: string;
-  _type: "codeBlock";
-  code: string;
-  language?: string;
-  filename?: string;
-};
+import type { PortableTextCodeBlock as SanityCodeBlockNode } from "../../lib/sanity/types";
 
 interface Props {
   node: SanityCodeBlockNode;
 }
 
 const { node } = Astro.props;
+if (typeof node.code !== "string" || !node.code.trim()) {
+  throw new Error("Sanity Portable Text codeBlock requires non-empty code");
+}
 ---
 
 <div class="sanity-code-block">

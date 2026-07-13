@@ -30,6 +30,7 @@ const pathname = localizePath(language, `notes/${note.slug}`);
 const alternatePath = alternate
   ? localizePath(alternate.language as Language, `notes/${alternate.slug}`)
   : undefined;
+const alternateSeoPath = alternate && alternate.seo?.noIndex !== true ? alternatePath : null;
 const title = note.seo?.title || note.title;
 const description = note.seo?.description || note.summary;
 const tag = note.tags[0] || copy.noteLabel;
@@ -71,6 +72,7 @@ const jsonLd = [
   pathname={pathname}
   language={language}
   alternatePath={alternatePath}
+  alternateSeoPath={alternateSeoPath}
   noIndex={note.seo?.noIndex}
   jsonLd={jsonLd}
 >

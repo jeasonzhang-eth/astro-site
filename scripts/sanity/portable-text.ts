@@ -23,7 +23,12 @@ function key(seed: string): string {
   return createHash("sha1").update(seed).digest("hex").slice(0, 12);
 }
 
-function textBlock(seed: string, text: string, style = "normal", listItem?: "bullet" | "number"): PortableTextBlock {
+function textBlock(
+  seed: string,
+  text: string,
+  style: PortableTextBlock["style"] = "normal",
+  listItem?: "bullet" | "number",
+): PortableTextBlock {
   return {
     _key: key(`block:${seed}`),
     _type: "block",

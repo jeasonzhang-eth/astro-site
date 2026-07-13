@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-07-14
+
+- Hardened Sanity Note publishing with required migrated bilingual pairs, future-note route compatibility, strict schema-shaped Portable Text/SEO validation, safe link rendering, and consistent `noIndex` filtering across discovery and hreflang output.
+
 ## 2026-07-13
 
 - Documented the Sanity-only Notes workflow, tokenless public build configuration, Studio publishing, root-ID public-access requirement, limited structural/count scope of the migration manifest audit, outage behavior, and separate deployment boundary.

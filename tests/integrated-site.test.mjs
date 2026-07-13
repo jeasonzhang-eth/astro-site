@@ -226,7 +226,7 @@ test("contact page renders one integrated call action", async () => {
   assert.match(html, /class="contact-facts"/);
 });
 
-test("Sanity publishes every migrated bilingual Note route", async () => {
+test("Sanity publishes the required migrated Note routes while allowing valid future routes", async () => {
   const builtRoutes = [];
 
   for (const language of ["en", "zh"]) {
@@ -243,11 +243,30 @@ test("Sanity publishes every migrated bilingual Note route", async () => {
     `zh/${slug}`,
   ]);
 
-  assert.deepEqual(builtRoutes.sort(), expectedRoutes.sort());
+  assert.equal(new Set(builtRoutes).size, builtRoutes.length, "generated Note routes must be unique");
+  for (const route of builtRoutes) {
+    assert.match(route, /^(en|zh)\/[^/\\]+$/, `malformed generated Note route: ${route}`);
+  }
+  for (const expectedRoute of expectedRoutes) {
+    assert.ok(builtRoutes.includes(expectedRoute), `missing required migrated Note route: ${expectedRoute}`);
+  }
 
   for (const slug of sanityNoteSlugs) {
     for (const language of ["en", "zh"]) {
       await assert.doesNotReject(access(`dist/${language}/notes/${slug}/index.html`));
+    }
+  }
+});
+
+
+test("indexable migrated Notes publish reciprocal hreflang without unsafe link output", async () => {
+  for (const slug of sanityNoteSlugs) {
+    for (const language of ["en", "zh"]) {
+      const html = await read(`dist/${language}/notes/${slug}/index.html`);
+      assert.match(html, new RegExp(`<link rel="alternate" hreflang="en" href="https://beishuyinqing\\.cn/en/notes/${slug}/">`));
+      assert.match(html, new RegExp(`<link rel="alternate" hreflang="zh" href="https://beishuyinqing\\.cn/zh/notes/${slug}/">`));
+      assert.match(html, new RegExp(`<link rel="alternate" hreflang="x-default" href="https://beishuyinqing\\.cn/en/notes/${slug}/">`));
+      assert.doesNotMatch(html, /href="(?:javascript|data):/i);
     }
   }
 });

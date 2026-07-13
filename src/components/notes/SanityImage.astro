@@ -1,13 +1,8 @@
 ---
-import type { SanityImageObject } from "@sanity/image-url";
 import { sanityImageUrl } from "../../lib/sanity/image";
+import type { PortableTextImage } from "../../lib/sanity/types";
 
-type SanityImageNode = SanityImageObject & {
-  _key?: string;
-  _type: "image";
-  alt?: string;
-  caption?: string;
-};
+type SanityImageNode = PortableTextImage;
 
 interface Props {
   node: SanityImageNode;

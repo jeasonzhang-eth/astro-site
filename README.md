@@ -29,6 +29,8 @@ SANITY_API_VERSION=2026-07-13
 
 The public Content Lake dataset and the Astro build are tokenless; a read token is not required. Publish and update Note content through Sanity Studio. Publicly readable Notes must have a root document ID with no dot/path segment. The eight migrated documents use deterministic `note-<slug>-<language>` IDs, but this naming pattern is only needed when an API/import workflow wants deterministic IDs; new Notes created normally through Studio may use Sanity-generated UUIDs. Dotted IDs are private path documents and are not returned by the public Content Lake API.
 
+Builds require both `en` and `zh` translations for the four migrated keys (`ai-agent-workflow`, `desktop-automation`, `creator-tools`, and `market-research`). New translation keys may be published in only one language; they build normally without a missing-language alternate. Notes with `seo.noIndex: true` remain directly buildable and reachable through intentional navigation, but are omitted from Sitemap, `llms.txt`, and hreflang advertising. Portable Text accepts only the Studio schema's `block`, `image`, and `codeBlock` objects, and link annotations are restricted to `http`, `https`, `mailto`, and `tel` URLs.
+
 Run the complete local check before handing off a change:
 
 ```bash
