@@ -1907,3 +1907,126 @@ h1 {
     grid-row: 2;
   }
 }
+
+/* Sanity Portable Text note body */
+.portable-note-body {
+  color: var(--ink);
+  line-height: 1.75;
+}
+
+.portable-note-body h2,
+.portable-note-body h3 {
+  margin: 2.2em 0 0.7em;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.portable-note-body h2 {
+  font-size: clamp(1.65rem, 3vw, 2.25rem);
+}
+
+.portable-note-body h3 {
+  font-size: clamp(1.25rem, 2.4vw, 1.65rem);
+}
+
+.portable-note-body p {
+  margin: 0 0 1.15em;
+}
+
+.portable-note-body ul,
+.portable-note-body ol {
+  margin: 0 0 1.35em;
+  padding-inline-start: 1.5em;
+}
+
+.portable-note-body li + li {
+  margin-top: 0.45em;
+}
+
+.portable-note-body blockquote {
+  margin: 1.75em 0;
+  padding: 1em 1.25em;
+  border-left: 4px solid var(--signal);
+  color: var(--muted);
+  background: color-mix(in srgb, var(--wash) 74%, var(--panel));
+}
+
+.portable-note-body blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.portable-note-body figure {
+  margin: 2em 0;
+}
+
+.portable-note-body figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+}
+
+.portable-note-body figcaption {
+  margin-top: 0.75em;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.portable-note-body .sanity-code-block {
+  margin: 1.75em 0;
+}
+
+.portable-note-body .sanity-code-filename {
+  margin: 0;
+  padding: 0.65em 1em;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: 12px 12px 0 0;
+  color: var(--muted);
+  background: var(--panel);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8rem;
+}
+
+.portable-note-body pre {
+  max-width: 100%;
+  margin: 0;
+  padding: 1.1em 1.25em;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--paper);
+  background: var(--ink);
+  tab-size: 2;
+}
+
+.portable-note-body .sanity-code-filename + pre {
+  border-radius: 0 0 12px 12px;
+}
+
+.portable-note-body pre code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.88em;
+  line-height: 1.65;
+  white-space: pre;
+}
+
+.portable-note-body :not(pre) > code {
+  padding: 0.12em 0.35em;
+  border-radius: 4px;
+  color: var(--ink);
+  background: var(--wash);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
+}
+
+.portable-note-body a {
+  color: var(--signal);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.2em;
+}

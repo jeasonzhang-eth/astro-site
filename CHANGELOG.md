@@ -2,6 +2,7 @@
 
 ## 2026-07-13
 
+- Added strict Sanity Portable Text rendering with required-alt responsive images, escaped code blocks, explicit bilingual alternates, no-index propagation, and theme-aware article styles.
 - Added deterministic Portable Text migration tooling and imported the four bilingual local Note pairs as eight public root-ID Sanity documents validated through anonymous direct and CDN reads.
 - Added the published Notes GROQ query, strict API and Portable Text validation, route collision detection, bilingual pairing, span-aware plain-text extraction, and one-snapshot build fetch.
 - Locked the Sanity Notes client to the approved production project, dataset, and API version with singleton client regression coverage.

@@ -1,0 +1,20 @@
+---
+type SanityCodeBlockNode = {
+  _key?: string;
+  _type: "codeBlock";
+  code: string;
+  language?: string;
+  filename?: string;
+};
+
+interface Props {
+  node: SanityCodeBlockNode;
+}
+
+const { node } = Astro.props;
+---
+
+<div class="sanity-code-block">
+  {node.filename && <p class="sanity-code-filename">{node.filename}</p>}
+  <pre><code class:list={[node.language && `language-${node.language}`]}>{node.code}</code></pre>
+</div>

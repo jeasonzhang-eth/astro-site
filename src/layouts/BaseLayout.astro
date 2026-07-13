@@ -10,17 +10,16 @@ interface Props {
   pathname: string;
   language: Language;
   alternatePath?: string;
+  noIndex?: boolean;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description, pathname, language, alternatePath, jsonLd } = Astro.props;
+const { title, description, pathname, language, alternatePath, noIndex, jsonLd } = Astro.props;
 const copy = labels[language];
 const otherLanguage = alternateLanguage(language);
 const switchPath = alternatePath || localizePath(otherLanguage);
-const alternates = {
-  en: pathname.replace(/^\/(en|zh)\//, "/en/"),
-  zh: pathname.replace(/^\/(en|zh)\//, "/zh/"),
-} as Record<Language, string>;
+const alternates: Partial<Record<Language, string>> = { [language]: pathname };
+if (alternatePath) alternates[otherLanguage] = alternatePath;
 const currentYear = new Date().getUTCFullYear();
 const companyName = language === "zh" ? company.legalNameZh : company.legalNameEn;
 const address = language === "zh" ? company.addressZh : company.addressEn;
@@ -41,7 +40,7 @@ const isNavCurrent = (href: string) => pathname === href || pathname.startsWith(
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <Seo title={title} description={description} pathname={pathname} language={language} alternates={alternates} jsonLd={jsonLd} />
+    <Seo title={title} description={description} pathname={pathname} language={language} alternates={alternates} noIndex={noIndex} jsonLd={jsonLd} />
     <script is:inline>
       let savedTheme = null;
       try {

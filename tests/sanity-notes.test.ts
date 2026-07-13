@@ -1,8 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { PUBLISHED_NOTES_QUERY } from "../src/lib/sanity/queries";
 import { pairNotes, portableTextToPlainText, validateNotes } from "../src/lib/sanity/notes";
 import type { PortableTextBlock } from "../src/lib/sanity/types";
+
+const source = (path: string) => readFileSync(new URL(path, import.meta.url), "utf8");
 
 const block = (text: string): PortableTextBlock => ({
   _key: `key-${text}`,
@@ -112,4 +115,54 @@ test("Portable Text joins spans within blocks and separates blocks", () => {
   };
 
   assert.equal(portableTextToPlainText([markedWord, block("Second block")]), "OpenAI Second block");
+});
+
+test("Portable Note body maps Sanity custom types and fails on unsupported components", () => {
+  const renderer = source("../src/components/notes/PortableNoteBody.astro");
+
+  assert.match(renderer, /from ["']astro-portabletext["']/);
+  assert.match(renderer, /SanityImage/);
+  assert.match(renderer, /SanityCodeBlock/);
+  assert.match(renderer, /type:\s*\{[^}]*image:\s*SanityImage[^}]*codeBlock:\s*SanityCodeBlock/s);
+  assert.match(renderer, /onMissingComponent/);
+  assert.match(renderer, /throw new Error\(`Unsupported Portable Text component:/);
+});
+
+test("Sanity image rendering requires alt text and uses the fixed image builder", () => {
+  const imageBuilder = source("../src/lib/sanity/image.ts");
+  const imageRenderer = source("../src/components/notes/SanityImage.astro");
+
+  assert.match(imageBuilder, /createImageUrlBuilder\(getSanityConfig\(\)\)/);
+  assert.match(imageBuilder, /builder\.image\(source\)/);
+  assert.match(imageRenderer, /node\.alt/);
+  assert.match(imageRenderer, /throw new Error/);
+  assert.match(imageRenderer, /\.width\(1400\)/);
+  assert.match(imageRenderer, /\.auto\(["']format["']\)/);
+  assert.match(imageRenderer, /loading=["']lazy["']/);
+  assert.match(imageRenderer, /figcaption/);
+});
+
+test("Sanity code blocks render optional metadata and escaped code", () => {
+  const codeRenderer = source("../src/components/notes/SanityCodeBlock.astro");
+
+  assert.match(codeRenderer, /node\.filename/);
+  assert.match(codeRenderer, /node\.language/);
+  assert.match(codeRenderer, /language-\$\{node\.language\}/);
+  assert.match(codeRenderer, /<pre><code/);
+  assert.match(codeRenderer, /\{node\.code\}/);
+  assert.doesNotMatch(codeRenderer, /set:html/);
+});
+
+test("Base layout only advertises real alternates and propagates no-index metadata", () => {
+  const layout = source("../src/layouts/BaseLayout.astro");
+  const seo = source("../src/components/Seo.astro");
+
+  assert.match(layout, /alternatePath\?: string/);
+  assert.match(layout, /noIndex\?: boolean/);
+  assert.match(layout, /Partial<Record<Language, string>>/);
+  assert.match(layout, /\{ \[language\]: pathname \}/);
+  assert.match(layout, /if \(alternatePath\) alternates\[otherLanguage\] = alternatePath/);
+  assert.match(layout, /<Seo[^>]*noIndex=\{noIndex\}/s);
+  assert.match(seo, /noIndex\?: boolean/);
+  assert.match(seo, /noIndex && <meta name=["']robots["'] content=["']noindex, nofollow["']/);
 });

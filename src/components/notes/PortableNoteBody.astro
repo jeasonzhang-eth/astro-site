@@ -1,0 +1,25 @@
+---
+import { PortableText } from "astro-portabletext";
+import type { PortableTextBlock } from "../../lib/sanity/types";
+import SanityImage from "./SanityImage.astro";
+import SanityCodeBlock from "./SanityCodeBlock.astro";
+
+interface Props {
+  value: PortableTextBlock[];
+}
+
+const { value } = Astro.props;
+const components = {
+  type: {
+    image: SanityImage,
+    codeBlock: SanityCodeBlock,
+  },
+};
+const onMissingComponent = (message: string) => {
+  throw new Error(`Unsupported Portable Text component: ${message}`);
+};
+---
+
+<div class="portable-note-body">
+  <PortableText value={value} {components} {onMissingComponent} />
+</div>

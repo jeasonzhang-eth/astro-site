@@ -1,0 +1,29 @@
+---
+import type { SanityImageObject } from "@sanity/image-url";
+import { sanityImageUrl } from "../../lib/sanity/image";
+
+type SanityImageNode = SanityImageObject & {
+  _key?: string;
+  _type: "image";
+  alt?: string;
+  caption?: string;
+};
+
+interface Props {
+  node: SanityImageNode;
+}
+
+const { node } = Astro.props;
+if (typeof node.alt !== "string" || !node.alt.trim()) {
+  throw new Error("Sanity Portable Text images require non-empty alt text");
+}
+
+const alt = node.alt.trim();
+const caption = typeof node.caption === "string" ? node.caption.trim() : "";
+const src = sanityImageUrl(node).width(1400).auto("format").url();
+---
+
+<figure>
+  <img src={src} alt={alt} width="1400" loading="lazy" decoding="async" />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
