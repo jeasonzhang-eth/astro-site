@@ -1,8 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { access, readFile, stat } from "node:fs/promises";
+import { access, readFile, readdir, stat } from "node:fs/promises";
 
 const read = (path) => readFile(path, "utf8");
+
+const sanityNoteSlugs = ["ai-agent-workflow", "desktop-automation", "creator-tools", "market-research"];
 
 const routeFiles = [
   "dist/en/services/index.html",
@@ -184,4 +186,39 @@ test("contact page renders one integrated call action", async () => {
   assert.match(panel, /class="contact-cta"/);
   assert.equal((panel.match(/185 9314 1894/g) ?? []).length, 1);
   assert.match(html, /class="contact-facts"/);
+});
+
+test("Sanity publishes every migrated bilingual Note route", async () => {
+  const builtRoutes = [];
+
+  for (const language of ["en", "zh"]) {
+    const noteDirectories = await readdir(`dist/${language}/notes`, { withFileTypes: true });
+    builtRoutes.push(
+      ...noteDirectories
+        .filter((entry) => entry.isDirectory())
+        .map((entry) => `${language}/${entry.name}`),
+    );
+  }
+
+  const expectedRoutes = sanityNoteSlugs.flatMap((slug) => [
+    `en/${slug}`,
+    `zh/${slug}`,
+  ]);
+
+  assert.deepEqual(builtRoutes.sort(), expectedRoutes.sort());
+
+  for (const slug of sanityNoteSlugs) {
+    for (const language of ["en", "zh"]) {
+      await assert.doesNotReject(access(`dist/${language}/notes/${slug}/index.html`));
+    }
+  }
+});
+
+test("migrated Note pages render Portable Text and FAQ structured data", async () => {
+  const html = await read("dist/zh/notes/ai-agent-workflow/index.html");
+  assert.match(html, /AI 智能体工作流/);
+  assert.match(html, /检查清单/);
+  assert.match(html, /"@type":"Article"/);
+  assert.match(html, /"@type":"FAQPage"/);
+  assert.match(html, /class="portable-note-body"/);
 });

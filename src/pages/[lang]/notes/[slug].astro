@@ -1,94 +1,93 @@
 ---
+import PortableNoteBody from "../../../components/notes/PortableNoteBody.astro";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import { labels, localizePath, notes, site, type Language } from "../../../data/site";
+import { labels, localizePath, site, type Language } from "../../../data/site";
+import { getAllPublishedNotes, pairNotes, portableTextToPlainText } from "../../../lib/sanity/notes";
+import type { SanityNote } from "../../../lib/sanity/types";
 
-export function getStaticPaths() {
-  return site.languages.flatMap((lang) =>
-    notes.map((note) => ({
-      params: { lang, slug: note.slug },
-      props: { note },
-    })),
-  );
+type Props = {
+  note: SanityNote;
+  alternate?: SanityNote;
+};
+
+export async function getStaticPaths() {
+  const notes = await getAllPublishedNotes();
+  const pairs = pairNotes(notes);
+
+  return notes.map((note) => ({
+    params: { lang: note.language, slug: note.slug },
+    props: {
+      note,
+      alternate: pairs.get(note.translationKey)?.[note.language === "en" ? "zh" : "en"],
+    },
+  }));
 }
 
-const language = Astro.params.lang as Language;
-const { note } = Astro.props;
+const { note, alternate } = Astro.props as Props;
+const language = note.language as Language;
 const copy = labels[language];
-const item = note[language];
 const pathname = localizePath(language, `notes/${note.slug}`);
-const alternatePath = localizePath(language === "en" ? "zh" : "en", `notes/${note.slug}`);
+const alternatePath = alternate
+  ? localizePath(alternate.language as Language, `notes/${alternate.slug}`)
+  : undefined;
+const title = note.seo?.title || note.title;
+const description = note.seo?.description || note.summary;
+const tag = note.tags[0] || copy.noteLabel;
 const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: item.title,
-    description: item.summary,
+    headline: note.title,
+    description,
+    articleBody: portableTextToPlainText(note.content),
     author: {
       "@type": "Person",
       name: site.author,
     },
     inLanguage: language === "zh" ? "zh-CN" : "en",
     url: `${site.url}${pathname}`,
+    datePublished: note.publishedAt,
+    dateModified: note.updatedAt || note.publishedAt,
+    keywords: note.seo?.keywords,
   },
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: item.faq.map((entry) => ({
+    mainEntity: note.faq.map((entry) => ({
       "@type": "Question",
       name: entry.question,
       acceptedAnswer: {
         "@type": "Answer",
-        text: entry.answer,
+        text: portableTextToPlainText(entry.answer),
       },
     })),
   },
 ];
 ---
 
-<BaseLayout title={item.title} description={item.summary} pathname={pathname} language={language} alternatePath={alternatePath} jsonLd={jsonLd}>
+<BaseLayout
+  title={title}
+  description={description}
+  pathname={pathname}
+  language={language}
+  alternatePath={alternatePath}
+  noIndex={note.seo?.noIndex}
+  jsonLd={jsonLd}
+>
   <article class="content-page">
-    <p class="eyebrow breadcrumb"><a href={localizePath(language, "notes")}>{copy.noteLabel}</a> / {item.tag}</p>
-    <h1>{item.title}</h1>
-    <p class="lede">{item.summary}</p>
+    <p class="eyebrow breadcrumb"><a href={localizePath(language, "notes")}>{copy.noteLabel}</a> / {tag}</p>
+    <h1>{note.title}</h1>
+    <p class="lede">{note.summary}</p>
 
     <div class="content-grid">
-      <section>
-        <h2>{copy.definition}</h2>
-        <p>{item.definition}</p>
-      </section>
-      <section>
-        <h2>{copy.overview}</h2>
-        <p>{item.overview}</p>
-      </section>
-      <section>
-        <h2>{copy.principles}</h2>
-        <ul class="content-list">
-          {item.principles.map((principle) => <li>{principle}</li>)}
-        </ul>
-      </section>
-      <section>
-        <h2>{copy.checklist}</h2>
-        <ol class="content-list ordered">
-          {item.checklist.map((item) => <li>{item}</li>)}
-        </ol>
-      </section>
-      <section>
-        <h2>{copy.examples}</h2>
-        <ul class="content-list">
-          {item.examples.map((example) => <li>{example}</li>)}
-        </ul>
-      </section>
-      <section>
-        <h2>{copy.nextSteps}</h2>
-        <p>{item.next}</p>
-      </section>
+      <PortableNoteBody value={note.content} />
       <section>
         <h2>{copy.faq}</h2>
         <div class="faq-list">
-          {item.faq.map((entry) => (
+          {note.faq.map((entry) => (
             <details>
               <summary>{entry.question}</summary>
-              <p>{entry.answer}</p>
+              <PortableNoteBody value={entry.answer} />
             </details>
           ))}
         </div>

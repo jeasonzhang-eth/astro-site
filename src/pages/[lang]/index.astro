@@ -4,13 +4,18 @@ import DisplayHeadline from "../../components/DisplayHeadline.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { company } from "../../data/company";
 import { services } from "../../data/services";
-import { alternateLanguage, home, labels, localizePath, projects, notes, site, type Language } from "../../data/site";
+import { alternateLanguage, home, labels, localizePath, projects, site, type Language } from "../../data/site";
+import { getAllPublishedNotes } from "../../lib/sanity/notes";
+import type { SanityNote } from "../../lib/sanity/types";
 
-export function getStaticPaths() {
-  return site.languages.map((lang) => ({ params: { lang } }));
+export async function getStaticPaths() {
+  const notes = await getAllPublishedNotes();
+  return site.languages.map((lang) => ({ params: { lang }, props: { notes } }));
 }
 
 const language = Astro.params.lang as Language;
+const { notes } = Astro.props as { notes: SanityNote[] };
+const languageNotes = notes.filter((note) => note.language === language);
 const headlineLines = language === "zh"
   ? ["把真实业务问题", "做成可以运行的", "工具与系统。"]
   : ["Turn real business problems", "into working tools", "and systems."];
@@ -149,14 +154,11 @@ const jsonLd = [
       <h2 id="notes-title">{copy.notesTitle}</h2>
     </div>
     <ul class="note-tags">
-      {notes.map((note) => {
-        const item = note[language];
-        return (
-          <li>
-            <a href={localizePath(language, `notes/${note.slug}`)}>{item.tag}</a>
-          </li>
-        );
-      })}
+      {languageNotes.map((note) => (
+        <li>
+          <a href={localizePath(language, `notes/${note.slug}`)}>{note.tags[0] || copy.noteLabel}</a>
+        </li>
+      ))}
     </ul>
   </section>
 

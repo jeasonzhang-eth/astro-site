@@ -1,12 +1,17 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import { labels, localizePath, notes, site, type Language } from "../../../data/site";
+import { labels, localizePath, site, type Language } from "../../../data/site";
+import { getAllPublishedNotes } from "../../../lib/sanity/notes";
+import type { SanityNote } from "../../../lib/sanity/types";
 
-export function getStaticPaths() {
-  return site.languages.map((lang) => ({ params: { lang } }));
+export async function getStaticPaths() {
+  const notes = await getAllPublishedNotes();
+  return site.languages.map((lang) => ({ params: { lang }, props: { notes } }));
 }
 
 const language = Astro.params.lang as Language;
+const { notes } = Astro.props as { notes: SanityNote[] };
+const languageNotes = notes.filter((note) => note.language === language);
 const copy = labels[language];
 const pathname = localizePath(language, "notes");
 const alternatePath = localizePath(language === "en" ? "zh" : "en", "notes");
@@ -27,16 +32,13 @@ const jsonLd = {
     <p class="lede">{copy.allNotesDescription}</p>
 
     <div class="directory-list">
-      {notes.map((note) => {
-        const item = note[language];
-        return (
-          <a class="directory-card" href={localizePath(language, `notes/${note.slug}`)}>
-            <p>{item.tag}</p>
-            <h2>{item.title}</h2>
-            <span>{item.summary}</span>
-          </a>
-        );
-      })}
+      {languageNotes.map((note) => (
+        <a class="directory-card" href={localizePath(language, `notes/${note.slug}`)}>
+          <p>{note.tags[0] || copy.noteLabel}</p>
+          <h2>{note.title}</h2>
+          <span>{note.summary}</span>
+        </a>
+      ))}
     </div>
   </section>
 </BaseLayout>
