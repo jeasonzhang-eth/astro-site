@@ -15,6 +15,7 @@ const { title, description, pathname, language, alternates = {}, noIndex, jsonLd
 const url = canonicalUrl(pathname);
 const pageTitle = title === site.name ? title : `${title} | ${site.name}`;
 const structuredData = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
+const xDefaultPath = alternates.en;
 ---
 
 <title>{pageTitle}</title>
@@ -22,7 +23,7 @@ const structuredData = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
 {noIndex && <meta name="robots" content="noindex, nofollow" />}
 <link rel="canonical" href={url} />
 {Object.entries(alternates).map(([lang, path]) => <link rel="alternate" hreflang={lang} href={canonicalUrl(path)} />)}
-{alternates[site.defaultLanguage] && <link rel="alternate" hreflang="x-default" href={canonicalUrl(alternates[site.defaultLanguage]!)} />}
+{xDefaultPath && <link rel="alternate" hreflang="x-default" href={canonicalUrl(xDefaultPath)} />}
 <meta property="og:site_name" content={site.name} />
 <meta property="og:title" content={pageTitle} />
 <meta property="og:description" content={description} />

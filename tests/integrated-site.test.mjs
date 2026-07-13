@@ -47,6 +47,28 @@ test("homepages connect the personal brand to the company", async () => {
   assert.match(zh, /https:\/\/beishuyinqing\.cn\/zh\//);
 });
 
+test("homepages publish reciprocal language alternates with English as x-default", async () => {
+  const [en, zh] = await Promise.all([read("dist/en/index.html"), read("dist/zh/index.html")]);
+
+  for (const [route, html] of [["/en/", en], ["/zh/", zh]]) {
+    assert.match(
+      html,
+      /<link rel="alternate" hreflang="en" href="https:\/\/beishuyinqing\.cn\/en\/">/,
+      `${route} must advertise the English homepage`,
+    );
+    assert.match(
+      html,
+      /<link rel="alternate" hreflang="zh" href="https:\/\/beishuyinqing\.cn\/zh\/">/,
+      `${route} must advertise the Chinese homepage`,
+    );
+    assert.match(
+      html,
+      /<link rel="alternate" hreflang="x-default" href="https:\/\/beishuyinqing\.cn\/en\/">/,
+      `${route} must use the English homepage as x-default`,
+    );
+  }
+});
+
 test("service pages publish the five approved services", async () => {
   const [zh, en] = await Promise.all([
     read("dist/zh/services/index.html"),
@@ -101,7 +123,7 @@ test("SEO discovery files expose the integrated routes on the production domain"
 
 
 test("the production root redirects invisibly to the Chinese company experience", async () => {
-  const [root, zh] = await Promise.all([read("dist/index.html"), read("dist/zh/index.html")]);
+  const root = await read("dist/index.html");
 
   assert.match(root, /window\.location\.replace\(/);
   assert.ok(
@@ -111,7 +133,6 @@ test("the production root redirects invisibly to the Chinese company experience"
   assert.match(root, /<noscript>[\s\S]*url=\/zh\/[\s\S]*<\/noscript>/);
   assert.match(root, /<noscript>[\s\S]*href="\/zh\/"[\s\S]*<\/noscript>/);
   assert.doesNotMatch(root, /<body>\s*<a\b/i, "the normal body must not expose a visible fallback link");
-  assert.match(zh, /hreflang="x-default" href="https:\/\/beishuyinqing\.cn\/zh\/"/);
 });
 
 
