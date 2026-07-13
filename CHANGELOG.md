@@ -2,6 +2,7 @@
 
 ## 2026-07-13
 
+- Added the task-by-task implementation plan for migrating eight bilingual Notes to Sanity, cutting Astro over to API-only content, and removing all local fallback data.
 - Added the approved design for migrating all bilingual Notes to Sanity as the only source of truth, with Portable Text rendering, API-driven static generation, strict failure semantics, and no local fallback.
 
 ## 2026-07-12

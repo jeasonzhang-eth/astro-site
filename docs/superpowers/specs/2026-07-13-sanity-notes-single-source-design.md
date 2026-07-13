@@ -65,7 +65,7 @@ Sanity is the only runtime/build-time source for Notes after migration. Astro co
 
 ## API Client
 
-Add `@sanity/client` and `@portabletext/astro` to the Astro project.
+Add `@sanity/client`, `@sanity/image-url`, and `astro-portabletext` to the Astro project.
 
 Create a server/build-only client with:
 
