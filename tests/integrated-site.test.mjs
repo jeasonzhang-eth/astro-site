@@ -13,6 +13,10 @@ const sanityNoteUrls = sanityNoteSlugs.flatMap((slug) => [
   `https://beishuyinqing.cn/en/notes/${slug}/`,
   `https://beishuyinqing.cn/zh/notes/${slug}/`,
 ]);
+const sanityNoteDirectoryUrls = [
+  "https://beishuyinqing.cn/en/notes/",
+  "https://beishuyinqing.cn/zh/notes/",
+];
 
 const routeFiles = [
   "dist/en/services/index.html",
@@ -132,7 +136,7 @@ test("SEO discovery files expose integrated and Sanity Note routes without dupli
     assert.match(llms, new RegExp(path.replaceAll("/", "\\/")));
   }
 
-  for (const url of sanityNoteUrls) {
+  for (const url of [...sanityNoteDirectoryUrls, ...sanityNoteUrls]) {
     assert.ok(sitemap.includes(`<loc>${url}</loc>`), `sitemap is missing ${url}`);
     assert.ok(llms.includes(url), `llms.txt is missing ${url}`);
   }
@@ -152,6 +156,8 @@ test("SEO discovery files expose integrated and Sanity Note routes without dupli
     /import\s*\{[^}]*\bnotes\b[^}]*\}\s*from\s*["']\.\.\/data\/site["']/s,
   );
   assert.doesNotMatch(llmsSource, /\bnotes\s*\.\s*flatMap\(/);
+  assert.match(sitemapSource, /\bserializeSitemap\b/);
+  assert.match(llmsSource, /\bserializeLlmsNoteLines\b/);
   assert.match(robots, /https:\/\/beishuyinqing\.cn\/sitemap\.xml/);
 });
 

@@ -1,7 +1,8 @@
 import { company } from "../data/company";
 import { services } from "../data/services";
-import { localizePath, projects, site } from "../data/site";
-import { getAllPublishedNotes, pairNotes } from "../lib/sanity/notes";
+import { projects, site } from "../data/site";
+import { buildNoteDiscoveryEntries, serializeLlmsNoteLines } from "../lib/discovery/serialize";
+import { getAllPublishedNotes } from "../lib/sanity/notes";
 
 export async function GET() {
   const notes = await getAllPublishedNotes();
@@ -11,18 +12,7 @@ export async function GET() {
       `- ${project.zh.title} (ZH): ${site.url}/zh/projects/${project.slug}/`,
     ])
     .join("\n");
-  const noteUrls = new Set<string>();
-  const noteLines = [...pairNotes(notes).values()]
-    .flatMap((pair) => site.languages.flatMap((language) => {
-      const note = pair[language];
-      if (!note) return [];
-
-      const url = `${site.url}${localizePath(note.language, `notes/${note.slug}`)}`;
-      if (noteUrls.has(url)) return [];
-      noteUrls.add(url);
-      return [`- ${note.title} (${language.toUpperCase()}): ${url}`];
-    }))
-    .join("\n");
+  const noteLines = serializeLlmsNoteLines(buildNoteDiscoveryEntries(notes), site.url);
   const serviceLines = services
     .map(
       (service) =>

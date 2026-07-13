@@ -1,17 +1,18 @@
-import { allStaticSeoPaths, canonicalUrl, localizePath } from "../data/site";
+import { allStaticSeoPaths, canonicalUrl, localizePath, site } from "../data/site";
+import { buildNoteDiscoveryEntries, serializeSitemap } from "../lib/discovery/serialize";
 import { getAllPublishedNotes } from "../lib/sanity/notes";
 
 export async function GET() {
   const notes = await getAllPublishedNotes();
-  const paths = new Set([
+  const noteEntries = buildNoteDiscoveryEntries(notes);
+  const paths = [
     ...allStaticSeoPaths(),
-    ...notes.map((note) => localizePath(note.language, `notes/${note.slug}`)),
-  ]);
-  const urls = [...paths]
-    .map((path) => `  <url><loc>${canonicalUrl(path)}</loc></url>`)
-    .join("\n");
+    ...site.languages.map((language) => localizePath(language, "notes")),
+    ...noteEntries.map((entry) => entry.path),
+  ];
+  const body = serializeSitemap(paths.map(canonicalUrl));
 
-  return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`, {
+  return new Response(body, {
     headers: {
       "Content-Type": "application/xml; charset=utf-8",
     },
