@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-07-13
+
+- Added the approved design for migrating all bilingual Notes to Sanity as the only source of truth, with Portable Text rendering, API-driven static generation, strict failure semantics, and no local fallback.
+
 ## 2026-07-12
 
 - Rebuilt the shared header as a floating translucent product-navigation capsule with semantic active-route states, unified controls, and a two-row mobile scroll rail.
