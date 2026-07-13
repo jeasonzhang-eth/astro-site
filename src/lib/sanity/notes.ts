@@ -16,10 +16,34 @@ function requiredString(document: Record<string, unknown>, field: string): strin
   return value;
 }
 
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
 function blocks(value: unknown, field: string, id: string): PortableTextBlock[] {
-  if (!Array.isArray(value) || value.length === 0 || !value.every(isRecord)) {
+  if (!Array.isArray(value) || value.length === 0) {
     throw new Error(`Sanity Note ${id} has invalid ${field}`);
   }
+
+  for (const entry of value) {
+    if (!isRecord(entry) || !isNonEmptyString(entry._key) || !isNonEmptyString(entry._type)) {
+      throw new Error(`Sanity Note ${id} has invalid ${field}`);
+    }
+
+    if (entry._type === "block") {
+      if (!Array.isArray(entry.children) || !entry.children.every((child) => (
+        isRecord(child)
+        && isNonEmptyString(child._key)
+        && child._type === "span"
+        && Array.isArray(child.marks)
+        && child.marks.every((mark) => typeof mark === "string")
+        && typeof child.text === "string"
+      ))) {
+        throw new Error(`Sanity Note ${id} has invalid ${field}`);
+      }
+    }
+  }
+
   return value as PortableTextBlock[];
 }
 
@@ -92,8 +116,7 @@ export function pairNotes(notes: SanityNote[]): Map<string, SanityNotePair> {
 export function portableTextToPlainText(blocks: PortableTextBlock[]): string {
   return blocks
     .filter((block) => block._type === "block" && Array.isArray(block.children))
-    .flatMap((block) => block.children || [])
-    .map((child) => child.text)
+    .map((block) => (block.children || []).map((child) => child.text).join(""))
     .join(" ")
     .replace(/\s+/g, " ")
     .trim();

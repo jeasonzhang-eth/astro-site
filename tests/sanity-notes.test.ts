@@ -39,12 +39,77 @@ test("validation rejects duplicate language and slug routes", () => {
   assert.throws(() => validateNotes([note("zh", "same", "one"), note("zh", "same", "two")]), /duplicate route/);
 });
 
+test("validation rejects malformed Portable Text in main content", () => {
+  const malformedContent = [
+    [{}],
+    [{ _key: "", _type: "custom" }],
+    [{ _key: "custom", _type: "" }],
+    [{ _key: "block", _type: "block" }],
+    [{
+      _key: "block",
+      _type: "block",
+      children: [{ _key: "", _type: "span", marks: [], text: "Invalid key" }],
+    }],
+    [{
+      _key: "block",
+      _type: "block",
+      children: [{ _key: "span", _type: "other", marks: [], text: "Invalid type" }],
+    }],
+    [{
+      _key: "block",
+      _type: "block",
+      children: [{ _key: "span", _type: "span", marks: ["strong", 1], text: "Invalid marks" }],
+    }],
+    [{
+      _key: "block",
+      _type: "block",
+      children: [{ _key: "span", _type: "span", marks: [], text: 42 }],
+    }],
+  ];
+
+  for (const content of malformedContent) {
+    assert.throws(() => validateNotes([{ ...note("zh", "hello"), content }]), /content/);
+  }
+});
+
+test("validation rejects malformed Portable Text in FAQ answers", () => {
+  const faq = [{
+    question: "Question",
+    answer: [{
+      _key: "faq-block",
+      _type: "block",
+      children: [{ _key: "faq-span", _type: "span", marks: ["strong", 1], text: "Answer" }],
+    }],
+  }];
+
+  assert.throws(() => validateNotes([{ ...note("zh", "hello"), faq }]), /faq\[0\]\.answer/);
+});
+
+test("validation preserves custom Portable Text objects with valid identity fields", () => {
+  const customObject = { _key: "image-1", _type: "image", asset: { _ref: "image-ref" } };
+  const [validated] = validateNotes([{
+    ...note("zh", "hello"),
+    content: [block("Before"), customObject],
+  }]);
+
+  assert.deepEqual(validated.content[1], customObject);
+});
+
 test("pairing keeps translated slugs independent", () => {
   const pairs = pairNotes(validateNotes([note("zh", "zh-slug"), note("en", "en-slug")]));
   assert.equal(pairs.get("paired-note")?.zh?.slug, "zh-slug");
   assert.equal(pairs.get("paired-note")?.en?.slug, "en-slug");
 });
 
-test("Portable Text converts to plain text for JSON-LD", () => {
-  assert.equal(portableTextToPlainText([block("First"), block("Second")]), "First Second");
+test("Portable Text joins spans within blocks and separates blocks", () => {
+  const markedWord: PortableTextBlock = {
+    _key: "marked-word",
+    _type: "block",
+    children: [
+      { _key: "open", _type: "span", marks: [], text: "Open" },
+      { _key: "ai", _type: "span", marks: ["strong"], text: "AI" },
+    ],
+  };
+
+  assert.equal(portableTextToPlainText([markedWord, block("Second block")]), "OpenAI Second block");
 });
