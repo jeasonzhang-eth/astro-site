@@ -9,6 +9,10 @@ const extractJsonLd = (html) =>
     .map((match) => JSON.parse(match[1]));
 
 const sanityNoteSlugs = ["ai-agent-workflow", "desktop-automation", "creator-tools", "market-research"];
+const sanityNoteUrls = sanityNoteSlugs.flatMap((slug) => [
+  `https://beishuyinqing.cn/en/notes/${slug}/`,
+  `https://beishuyinqing.cn/zh/notes/${slug}/`,
+]);
 
 const routeFiles = [
   "dist/en/services/index.html",
@@ -106,11 +110,14 @@ test("company and contact pages preserve verified legal facts", async () => {
   assert.match(contactZh, /href="tel:18593141894"/);
 });
 
-test("SEO discovery files expose the integrated routes on the production domain", async () => {
-  const [sitemap, llms, robots] = await Promise.all([
+test("SEO discovery files expose integrated and Sanity Note routes without duplicates", async () => {
+  const [sitemap, llms, robots, siteSource, sitemapSource, llmsSource] = await Promise.all([
     read("dist/sitemap.xml"),
     read("dist/llms.txt"),
     read("dist/robots.txt"),
+    read("src/data/site.ts"),
+    read("src/pages/sitemap.xml.ts"),
+    read("src/pages/llms.txt.ts"),
   ]);
 
   for (const path of [
@@ -124,6 +131,27 @@ test("SEO discovery files expose the integrated routes on the production domain"
     assert.match(sitemap, new RegExp(`https://beishuyinqing\\.cn${path}`));
     assert.match(llms, new RegExp(path.replaceAll("/", "\\/")));
   }
+
+  for (const url of sanityNoteUrls) {
+    assert.ok(sitemap.includes(`<loc>${url}</loc>`), `sitemap is missing ${url}`);
+    assert.ok(llms.includes(url), `llms.txt is missing ${url}`);
+  }
+
+  const sitemapUrls = [...sitemap.matchAll(/<loc>(https:\/\/[^<]+)<\/loc>/g)].map((match) => match[1]);
+  const llmsUrls = llms.match(/https:\/\/beishuyinqing\.cn\/[^\s|]+/g) ?? [];
+  assert.equal(new Set(sitemapUrls).size, sitemapUrls.length, "sitemap contains duplicate URLs");
+  assert.equal(new Set(llmsUrls).size, llmsUrls.length, "llms.txt contains duplicate URLs");
+
+  const discoverySource = `${siteSource}\n${sitemapSource}\n${llmsSource}`;
+  const staticSeoHelper = siteSource.match(/export function allStaticSeoPaths\(\) \{[\s\S]*?\n\}/)?.[0] ?? "";
+  assert.doesNotMatch(discoverySource, /\ballSeoPaths\b/);
+  assert.match(staticSeoHelper, /\ballStaticSeoPaths\b/);
+  assert.doesNotMatch(staticSeoHelper, /notes/i);
+  assert.doesNotMatch(
+    llmsSource,
+    /import\s*\{[^}]*\bnotes\b[^}]*\}\s*from\s*["']\.\.\/data\/site["']/s,
+  );
+  assert.doesNotMatch(llmsSource, /\bnotes\s*\.\s*flatMap\(/);
   assert.match(robots, /https:\/\/beishuyinqing\.cn\/sitemap\.xml/);
 });
 

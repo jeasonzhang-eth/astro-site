@@ -1,7 +1,13 @@
-import { allSeoPaths, canonicalUrl } from "../data/site";
+import { allStaticSeoPaths, canonicalUrl, localizePath } from "../data/site";
+import { getAllPublishedNotes } from "../lib/sanity/notes";
 
-export function GET() {
-  const urls = allSeoPaths()
+export async function GET() {
+  const notes = await getAllPublishedNotes();
+  const paths = new Set([
+    ...allStaticSeoPaths(),
+    ...notes.map((note) => localizePath(note.language, `notes/${note.slug}`)),
+  ]);
+  const urls = [...paths]
     .map((path) => `  <url><loc>${canonicalUrl(path)}</loc></url>`)
     .join("\n");
 

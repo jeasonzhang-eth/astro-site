@@ -1,19 +1,27 @@
 import { company } from "../data/company";
 import { services } from "../data/services";
-import { notes, projects, site } from "../data/site";
+import { localizePath, projects, site } from "../data/site";
+import { getAllPublishedNotes, pairNotes } from "../lib/sanity/notes";
 
-export function GET() {
+export async function GET() {
+  const notes = await getAllPublishedNotes();
   const projectLines = projects
     .flatMap((project) => [
       `- ${project.en.title} (EN): ${site.url}/en/projects/${project.slug}/`,
       `- ${project.zh.title} (ZH): ${site.url}/zh/projects/${project.slug}/`,
     ])
     .join("\n");
-  const noteLines = notes
-    .flatMap((note) => [
-      `- ${note.en.title} (EN): ${site.url}/en/notes/${note.slug}/`,
-      `- ${note.zh.title} (ZH): ${site.url}/zh/notes/${note.slug}/`,
-    ])
+  const noteUrls = new Set<string>();
+  const noteLines = [...pairNotes(notes).values()]
+    .flatMap((pair) => site.languages.flatMap((language) => {
+      const note = pair[language];
+      if (!note) return [];
+
+      const url = `${site.url}${localizePath(note.language, `notes/${note.slug}`)}`;
+      if (noteUrls.has(url)) return [];
+      noteUrls.add(url);
+      return [`- ${note.title} (${language.toUpperCase()}): ${url}`];
+    }))
     .join("\n");
   const serviceLines = services
     .map(

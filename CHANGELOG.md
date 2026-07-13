@@ -2,6 +2,7 @@
 
 ## 2026-07-13
 
+- Sourced Sitemap and llms.txt Note discovery from the shared memoized Sanity snapshot, grouped actual translation routes, deduplicated URLs, and removed Note paths from the static SEO helper.
 - Escaped script-breaking characters in all JSON-LD output and added hostile-payload round-trip plus parsed Note Article/FAQ regression coverage.
 - Switched homepage Note cards, bilingual Note directories, and all Note detail routes to the validated Sanity dataset and Portable Text renderer.
 - Added strict Sanity Portable Text rendering with required-alt responsive images, escaped code blocks, explicit bilingual alternates, no-index propagation, and theme-aware article styles.

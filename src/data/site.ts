@@ -1005,7 +1005,7 @@ export function canonicalUrl(pathname: string) {
   return `${site.url}${pathname}`;
 }
 
-export function allSeoPaths() {
+export function allStaticSeoPaths() {
   const paths = site.languages.flatMap((language) => [
     localizePath(language),
     localizePath(language, "about"),
@@ -1014,8 +1014,6 @@ export function allSeoPaths() {
     localizePath(language, "contact"),
     localizePath(language, "projects"),
     ...projects.map((project) => localizePath(language, `projects/${project.slug}`)),
-    localizePath(language, "notes"),
-    ...notes.map((note) => localizePath(language, `notes/${note.slug}`)),
   ]);
   return ["/", ...paths];
 }
