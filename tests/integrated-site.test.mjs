@@ -4,6 +4,10 @@ import { access, readFile, readdir, stat } from "node:fs/promises";
 
 const read = (path) => readFile(path, "utf8");
 
+const extractJsonLd = (html) =>
+  [...html.matchAll(/<script\b(?=[^>]*\btype="application\/ld\+json")[^>]*>([\s\S]*?)<\/script>/g)]
+    .map((match) => JSON.parse(match[1]));
+
 const sanityNoteSlugs = ["ai-agent-workflow", "desktop-automation", "creator-tools", "market-research"];
 
 const routeFiles = [
@@ -214,11 +218,33 @@ test("Sanity publishes every migrated bilingual Note route", async () => {
   }
 });
 
-test("migrated Note pages render Portable Text and FAQ structured data", async () => {
+test("migrated Note pages render parseable Article and exact FAQ structured data", async () => {
   const html = await read("dist/zh/notes/ai-agent-workflow/index.html");
+  const jsonLd = extractJsonLd(html);
+  const article = jsonLd.find((item) => item["@type"] === "Article");
+  const faqPage = jsonLd.find((item) => item["@type"] === "FAQPage");
+
   assert.match(html, /AI 智能体工作流/);
   assert.match(html, /检查清单/);
-  assert.match(html, /"@type":"Article"/);
-  assert.match(html, /"@type":"FAQPage"/);
   assert.match(html, /class="portable-note-body"/);
+  assert.deepEqual(jsonLd.map((item) => item["@type"]).sort(), ["Article", "FAQPage"]);
+  assert.ok(article, "expected parsed Article JSON-LD");
+  assert.match(article.articleBody, /检查清单/);
+  assert.ok(faqPage, "expected parsed FAQPage JSON-LD");
+  assert.deepEqual(
+    faqPage.mainEntity.map((entry) => ({
+      question: entry.name,
+      answer: entry.acceptedAnswer.text,
+    })),
+    [
+      {
+        question: "智能体工作流和提示词有什么区别？",
+        answer: "提示词是在要答案；工作流是在定义上下文、行动、检查、记忆和完成标准。",
+      },
+      {
+        question: "项目记忆应该放在哪里？",
+        answer: "放在离工作最近的地方：AGENTS.md、changelog、数据文件、规格文档或未来会话真的会读取的 wiki 页面。",
+      },
+    ],
+  );
 });
