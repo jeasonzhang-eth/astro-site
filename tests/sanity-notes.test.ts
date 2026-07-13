@@ -1,11 +1,21 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { readFile } from "node:fs/promises";
 import { PUBLISHED_NOTES_QUERY } from "../src/lib/sanity/queries";
 import { pairNotes, portableTextToPlainText, validateNotes } from "../src/lib/sanity/notes";
 import type { PortableTextBlock } from "../src/lib/sanity/types";
 
 const source = (path: string) => readFileSync(new URL(path, import.meta.url), "utf8");
+
+const sourceFiles = [
+  "src/data/site.ts",
+  "src/pages/[lang]/index.astro",
+  "src/pages/[lang]/notes/index.astro",
+  "src/pages/[lang]/notes/[slug].astro",
+  "src/pages/sitemap.xml.ts",
+  "src/pages/llms.txt.ts",
+];
 
 const block = (text: string): PortableTextBlock => ({
   _key: `key-${text}`,
@@ -27,6 +37,13 @@ const note = (language: "en" | "zh", slug: string, translationKey = "paired-note
   faq: [{ question: `${language} question`, answer: [block(`${language} answer`)] }],
   publishedAt: "2026-07-13T00:00:00.000Z",
   featured: false,
+});
+
+test("Astro has no local Notes source or fallback import", async () => {
+  const source = (await Promise.all(sourceFiles.map((file) => readFile(file, "utf8")))).join("\n");
+  assert.doesNotMatch(source, /export const notes\b/);
+  assert.doesNotMatch(source, /\bnotes\s*,?\s*from ["'][^"']*data\/site/);
+  assert.doesNotMatch(source, /fallbackNotes|localNotes/);
 });
 
 test("GROQ query excludes drafts and requires a slug", () => {

@@ -2,6 +2,7 @@
 
 ## 2026-07-13
 
+- Removed the local Notes dataset and exporter after verifying Sanity as the only source and confirming that invalid API configuration fails the build.
 - Sourced Sitemap and llms.txt Note discovery from the shared memoized Sanity snapshot, restored both Note directories, grouped actual translation routes, deduplicated URLs, escaped XML locations, sanitized llms.txt labels, and kept Note paths out of the static SEO helper.
 - Escaped script-breaking characters in all JSON-LD output and added hostile-payload round-trip plus parsed Note Article/FAQ regression coverage.
 - Switched homepage Note cards, bilingual Note directories, and all Note detail routes to the validated Sanity dataset and Portable Text renderer.
