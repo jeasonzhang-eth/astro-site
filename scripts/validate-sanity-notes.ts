@@ -10,14 +10,12 @@ if (manifestPaths.length !== 1) {
   process.exit(1);
 }
 
-const token = process.env.SANITY_AUTH_TOKEN;
 const client = createClient({
   projectId: "7lstorz2",
   dataset: "production",
   apiVersion: "2026-07-13",
   useCdn: false,
   perspective: "published",
-  ...(token ? { token } : {}),
 });
 
 type ManifestNote = {

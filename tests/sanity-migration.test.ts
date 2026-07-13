@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { createLocalNoteDocuments } from "../scripts/export-local-notes";
 import { convertFaqAnswer, convertLocalNoteContent } from "../scripts/sanity/portable-text";
 
 const local = {
@@ -33,4 +34,22 @@ test("migration keys are deterministic", () => {
 
 test("FAQ answers become Portable Text paragraphs", () => {
   assert.equal(convertFaqAnswer("Answer")[0]?.children?.[0]?.text, "Answer");
+});
+
+test("exported Note IDs are public root document IDs", () => {
+  const documents = createLocalNoteDocuments();
+  const ids = documents.map((document) => document._id);
+
+  assert.deepEqual(ids, [
+    "note-ai-agent-workflow-en",
+    "note-ai-agent-workflow-zh",
+    "note-desktop-automation-en",
+    "note-desktop-automation-zh",
+    "note-creator-tools-en",
+    "note-creator-tools-zh",
+    "note-market-research-en",
+    "note-market-research-zh",
+  ]);
+  assert.equal(ids.some((id) => id.includes(".")), false);
+  for (const id of ids) assert.match(id, /^note-[a-z0-9-]+-(en|zh)$/);
 });

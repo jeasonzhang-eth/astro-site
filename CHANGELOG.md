@@ -2,7 +2,7 @@
 
 ## 2026-07-13
 
-- Added deterministic Portable Text migration tooling and imported the four bilingual local Note pairs as eight validated Sanity documents.
+- Added deterministic Portable Text migration tooling and imported the four bilingual local Note pairs as eight public root-ID Sanity documents validated through anonymous direct and CDN reads.
 - Added the published Notes GROQ query, strict API and Portable Text validation, route collision detection, bilingual pairing, span-aware plain-text extraction, and one-snapshot build fetch.
 - Locked the Sanity Notes client to the approved production project, dataset, and API version with singleton client regression coverage.
 - Added strict build-time Sanity configuration and the API/rendering dependencies for the Notes single-source migration.
