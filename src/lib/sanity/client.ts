@@ -6,7 +6,7 @@ let client: ReturnType<typeof createClient> | undefined;
 export function getSanityClient() {
   client ||= createClient({
     ...getSanityConfig(),
-    useCdn: true,
+    useCdn: false,
     perspective: "published",
   });
   return client;

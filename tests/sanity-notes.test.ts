@@ -9,7 +9,6 @@ import type { PortableTextBlock } from "../src/lib/sanity/types";
 const source = (path: string) => readFileSync(new URL(path, import.meta.url), "utf8");
 
 const sourceFiles = [
-  "src/data/site.ts",
   "src/pages/[lang]/index.astro",
   "src/pages/[lang]/notes/index.astro",
   "src/pages/[lang]/notes/[slug].astro",

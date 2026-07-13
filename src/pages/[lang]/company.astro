@@ -2,21 +2,22 @@
 import EditorialArtwork from "../../components/EditorialArtwork.astro";
 import DisplayHeadline from "../../components/DisplayHeadline.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { company, companyPages } from "../../data/company";
-import { localizePath, site, type Language } from "../../data/site";
+import { alternateLanguage, type Language } from "../../lib/site/language";
+import { localizePath } from "../../lib/site/routes";
+import { getSiteContent } from "../../lib/sanity/site-content";
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const { site } = await getSiteContent();
   return site.languages.map((lang) => ({ params: { lang } }));
 }
 
+const { company, companyPages, site } = await getSiteContent();
 const language = Astro.params.lang as Language;
-const headlineLines = language === "zh"
-  ? ["一家围绕真实问题", "和可检查交付建立的", "软件公司。"]
-  : ["A small software company", "built around", "inspectable work."];
-const headlineLabel = headlineLines.join(language === "zh" ? "" : " ");
 const page = companyPages[language];
+const headlineLines = page.headlineLines;
+const headlineLabel = page.headline;
 const pathname = localizePath(language, "company");
-const alternatePath = localizePath(language === "en" ? "zh" : "en", "company");
+const alternatePath = localizePath(alternateLanguage(language), "company");
 const organizationName = language === "zh" ? company.legalNameZh : company.legalNameEn;
 const address = language === "zh" ? company.addressZh : company.addressEn;
 const jsonLd = {
@@ -34,8 +35,9 @@ const jsonLd = {
   address: {
     "@type": "PostalAddress",
     streetAddress: address,
-    addressLocality: language === "zh" ? "深圳" : "Shenzhen",
-    addressCountry: "CN",
+    addressLocality: language === "zh" ? company.cityZh : company.cityEn,
+    postalCode: company.postalCode,
+    addressCountry: company.countryCode,
   },
   description: page.description,
 };
@@ -49,8 +51,8 @@ const jsonLd = {
 
     <EditorialArtwork
       variant="company"
-      alt={language === "zh" ? "深圳城市建筑、服务器和版本化交付层组成的工程场景" : "A Shenzhen engineering scene with modern buildings, servers, and versioned delivery layers"}
-      caption={language === "zh" ? "深圳的工程现场与稳定交付路径" : "A Shenzhen engineering base with a stable delivery path"}
+      alt={page.artworkAlt}
+      caption={page.artworkCaption}
     />
 
     <div class="company-stamp" aria-label={organizationName}>

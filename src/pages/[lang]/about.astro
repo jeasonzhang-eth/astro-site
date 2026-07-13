@@ -1,35 +1,37 @@
 ---
 import DisplayHeadline from "../../components/DisplayHeadline.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { about, localizePath, site, type Language } from "../../data/site";
+import { alternateLanguage, type Language } from "../../lib/site/language";
+import { localizePath } from "../../lib/site/routes";
+import { getSiteContent } from "../../lib/sanity/site-content";
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const { site } = await getSiteContent();
   return site.languages.map((lang) => ({ params: { lang } }));
 }
 
+const { about, company, settings, site } = await getSiteContent();
 const language = Astro.params.lang as Language;
-const headlineLines = language === "zh"
-  ? ["我做一些小系统，", "让有价值的工作", "不再消失。"]
-  : ["I build small systems", "that keep useful work", "from disappearing."];
-const headlineLabel = headlineLines.join(language === "zh" ? "" : " ");
 const page = about[language];
+const headlineLines = page.headlineLines;
+const headlineLabel = page.headline;
 const pathname = localizePath(language, "about");
-const alternatePath = localizePath(language === "en" ? "zh" : "en", "about");
+const alternatePath = localizePath(alternateLanguage(language), "about");
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: site.author,
   url: `${site.url}${pathname}`,
   description: page.description,
-  sameAs: ["https://github.com/jeasonzhang-eth"],
+  sameAs: [settings.githubUrl],
   founder: {
     "@type": "Organization",
-    name: language === "zh" ? "深圳市倍数引擎软件技术有限责任公司" : "Shenzhen Multiple Engine Software Technology Co., Ltd.",
+    name: language === "zh" ? company.legalNameZh : company.legalNameEn,
     url: `${site.url}${localizePath(language, "company")}`,
   },
   worksFor: {
     "@type": "Organization",
-    name: language === "zh" ? "深圳市倍数引擎软件技术有限责任公司" : "Shenzhen Multiple Engine Software Technology Co., Ltd.",
+    name: language === "zh" ? company.legalNameZh : company.legalNameEn,
     url: `${site.url}${localizePath(language, "company")}`,
   },
 };

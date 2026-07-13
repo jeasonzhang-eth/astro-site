@@ -1,22 +1,27 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import { labels, localizePath, projects, site, type Language } from "../../../data/site";
+import { alternateLanguage, SUPPORTED_LANGUAGES, type Language } from "../../../lib/site/language";
+import { localizePath } from "../../../lib/site/routes";
+import { getSiteContent, type LocalizedPair, type Project } from "../../../lib/sanity/site-content";
 
-export function getStaticPaths() {
-  return site.languages.flatMap((lang) =>
-    projects.map((project) => ({
-      params: { lang, slug: project.slug },
+export async function getStaticPaths() {
+  const { projects } = await getSiteContent();
+  return projects.flatMap((project) =>
+    SUPPORTED_LANGUAGES.map((lang) => ({
+      params: { lang, slug: project[lang].slug },
       props: { project },
     })),
   );
 }
 
+const { labels, site } = await getSiteContent();
 const language = Astro.params.lang as Language;
-const { project } = Astro.props;
+const { project } = Astro.props as { project: LocalizedPair<Project> };
 const copy = labels[language];
 const item = project[language];
-const pathname = localizePath(language, `projects/${project.slug}`);
-const alternatePath = localizePath(language === "en" ? "zh" : "en", `projects/${project.slug}`);
+const pathname = localizePath(language, `projects/${item.slug}`);
+const otherLanguage = alternateLanguage(language);
+const alternatePath = localizePath(otherLanguage, `projects/${project[otherLanguage].slug}`);
 const jsonLd = [
   {
     "@context": "https://schema.org",

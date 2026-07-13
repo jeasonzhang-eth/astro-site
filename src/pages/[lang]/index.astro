@@ -2,26 +2,23 @@
 import EditorialArtwork from "../../components/EditorialArtwork.astro";
 import DisplayHeadline from "../../components/DisplayHeadline.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { company } from "../../data/company";
-import { services } from "../../data/services";
-import { alternateLanguage, home, labels, localizePath, projects, site, type Language } from "../../data/site";
+import { alternateLanguage, type Language } from "../../lib/site/language";
+import { localizePath } from "../../lib/site/routes";
+import { getSiteContent } from "../../lib/sanity/site-content";
 import { getAllPublishedNotes } from "../../lib/sanity/notes";
 import type { SanityNote } from "../../lib/sanity/types";
 
 export async function getStaticPaths() {
-  const notes = await getAllPublishedNotes();
+  const [{ site }, notes] = await Promise.all([getSiteContent(), getAllPublishedNotes()]);
   return site.languages.map((lang) => ({ params: { lang }, props: { notes } }));
 }
 
+const { company, home, labels, projects, services, settings, site } = await getSiteContent();
 const language = Astro.params.lang as Language;
 const { notes } = Astro.props as { notes: SanityNote[] };
 const languageNotes = notes.filter((note) => note.language === language);
-const headlineLines = language === "zh"
-  ? ["把真实业务问题", "做成可以运行的", "工具与系统。"]
-  : ["Turn real business problems", "into working tools", "and systems."];
-const headlineLabel = language === "zh"
-  ? "把真实业务问题，做成可以运行的工具与系统。"
-  : "Turn real business problems into working tools and systems.";
+const headlineLines = home[language].headlineLines;
+const headlineLabel = home[language].headline;
 const copy = labels[language];
 const page = home[language];
 const pathname = localizePath(language);
@@ -34,7 +31,7 @@ const jsonLd = [
     "@type": "Person",
     name: site.author,
     url: `${site.url}${localizePath(language, "about")}`,
-    sameAs: ["https://github.com/jeasonzhang-eth"],
+    sameAs: [settings.githubUrl],
     founder: {
       "@type": "Organization",
       name: organizationName,
@@ -78,7 +75,7 @@ const jsonLd = [
       <DisplayHeadline id="hero-title" ariaLabel={headlineLabel} lines={headlineLines} variant="hero" language={language} />
       <p class="hero-identity">{page.identity}</p>
       <p class="lede">{page.lede}</p>
-      <div class="hero-actions" aria-label="Primary actions">
+      <div class="hero-actions" aria-label={page.primaryActionsLabel}>
         <a class="button primary" href="#work">{copy.viewWork}</a>
         <a class="button secondary" href={localizePath(language, "contact")}>{copy.contactAction}</a>
       </div>
@@ -87,8 +84,8 @@ const jsonLd = [
     <EditorialArtwork
       variant="workbench"
       priority={true}
-      alt={language === "zh" ? "由电脑、转写稿、流程图和硬件组成的产品构建工作台" : "A product-building workbench with a laptop, transcript pages, workflow diagrams, and hardware"}
-      caption={language === "zh" ? "把真实工作变成可以检查的工具与系统" : "Turn rough work into inspectable tools and systems"}
+      alt={page.artworkAlt}
+      caption={page.artworkCaption}
     />
   </section>
 
@@ -101,7 +98,7 @@ const jsonLd = [
       {projects.map((project) => {
         const item = project[language];
         return (
-          <a class="project-card project-link" href={localizePath(language, `projects/${project.slug}`)}>
+          <a class="project-card project-link" href={localizePath(language, `projects/${item.slug}`)}>
             <div>
               <p>{item.kind}</p>
               <h3>{item.title}</h3>
@@ -123,7 +120,7 @@ const jsonLd = [
       {services.map((service, index) => {
         const item = service[language];
         return (
-          <a href={`${localizePath(language, "services")}#${service.slug}`} class="home-service-card">
+          <a href={`${localizePath(language, "services")}#${item.slug}`} class="home-service-card">
             <span>{String(index + 1).padStart(2, "0")}</span>
             <h3>{item.title}</h3>
             <p>{item.summary}</p>

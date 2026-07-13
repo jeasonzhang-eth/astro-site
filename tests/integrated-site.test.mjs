@@ -115,11 +115,11 @@ test("company and contact pages preserve verified legal facts", async () => {
 });
 
 test("SEO discovery files expose integrated and Sanity Note routes without duplicates", async () => {
-  const [sitemap, llms, robots, siteSource, sitemapSource, llmsSource] = await Promise.all([
+  const [sitemap, llms, robots, routesSource, sitemapSource, llmsSource] = await Promise.all([
     read("dist/sitemap.xml"),
     read("dist/llms.txt"),
     read("dist/robots.txt"),
-    read("src/data/site.ts"),
+    read("src/lib/site/routes.ts"),
     read("src/pages/sitemap.xml.ts"),
     read("src/pages/llms.txt.ts"),
   ]);
@@ -146,8 +146,8 @@ test("SEO discovery files expose integrated and Sanity Note routes without dupli
   assert.equal(new Set(sitemapUrls).size, sitemapUrls.length, "sitemap contains duplicate URLs");
   assert.equal(new Set(llmsUrls).size, llmsUrls.length, "llms.txt contains duplicate URLs");
 
-  const discoverySource = `${siteSource}\n${sitemapSource}\n${llmsSource}`;
-  const staticSeoHelper = siteSource.match(/export function allStaticSeoPaths\(\) \{[\s\S]*?\n\}/)?.[0] ?? "";
+  const discoverySource = `${routesSource}\n${sitemapSource}\n${llmsSource}`;
+  const staticSeoHelper = routesSource.match(/export function allStaticSeoPaths\([^)]*\): string\[\] \{[\s\S]*?\n\}/)?.[0] ?? "";
   assert.doesNotMatch(discoverySource, /\ballSeoPaths\b/);
   assert.match(staticSeoHelper, /\ballStaticSeoPaths\b/);
   assert.doesNotMatch(staticSeoHelper, /notes/i);

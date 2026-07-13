@@ -2,35 +2,35 @@
 import EditorialArtwork from "../../components/EditorialArtwork.astro";
 import DisplayHeadline from "../../components/DisplayHeadline.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { company } from "../../data/company";
-import { services, servicesPages } from "../../data/services";
-import { localizePath, site, type Language } from "../../data/site";
+import { alternateLanguage, type Language } from "../../lib/site/language";
+import { localizePath } from "../../lib/site/routes";
+import { getSiteContent } from "../../lib/sanity/site-content";
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const { site } = await getSiteContent();
   return site.languages.map((lang) => ({ params: { lang } }));
 }
 
+const { company, services, servicesPages, site } = await getSiteContent();
 const language = Astro.params.lang as Language;
-const headlineLines = language === "zh"
-  ? ["先把闭环跑起来，", "再让它可以长期维护。"]
-  : ["Build the working loop,", "then make it maintainable."];
-const headlineLabel = headlineLines.join(language === "zh" ? "" : " ");
 const page = servicesPages[language];
+const headlineLines = page.headlineLines;
+const headlineLabel = page.headline;
 const pathname = localizePath(language, "services");
-const alternatePath = localizePath(language === "en" ? "zh" : "en", "services");
+const alternatePath = localizePath(alternateLanguage(language), "services");
 const organizationName = language === "zh" ? company.legalNameZh : company.legalNameEn;
 const jsonLd = services.map((service) => ({
   "@context": "https://schema.org",
   "@type": "Service",
   name: service[language].title,
   description: service[language].summary,
-  url: `${site.url}${pathname}#${service.slug}`,
+  url: `${site.url}${pathname}#${service[language].slug}`,
   provider: {
     "@type": "Organization",
     name: organizationName,
     url: `${site.url}${localizePath(language, "company")}`,
   },
-  areaServed: "CN",
+  areaServed: company.countryCode,
 }));
 ---
 
@@ -42,13 +42,13 @@ const jsonLd = services.map((service) => ({
 
     <EditorialArtwork
       variant="systems"
-      alt={language === "zh" ? "文档、数据、AI 节点、自动化流程和服务器连接成的系统图" : "A connected system of documents, data, AI nodes, automation paths, and a deployment server"}
-      caption={language === "zh" ? "软件、AI、GEO、自动化与部署连接成同一个工作流" : "Software, AI, GEO, automation, and deployment connected as one workflow"}
+      alt={page.artworkAlt}
+      caption={page.artworkCaption}
     />
 
     <nav class="service-index" aria-label={page.title}>
       {services.map((service, index) => (
-        <a href={`#${service.slug}`}>
+        <a href={`#${service[language].slug}`}>
           <span>{String(index + 1).padStart(2, "0")}</span>
           {service[language].title}
         </a>
@@ -59,7 +59,7 @@ const jsonLd = services.map((service) => ({
       {services.map((service, index) => {
         const item = service[language];
         return (
-          <section class="service-detail" id={service.slug}>
+          <section class="service-detail" id={service[language].slug}>
             <div class="service-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</div>
             <div class="service-body">
               <h2>{item.title}</h2>

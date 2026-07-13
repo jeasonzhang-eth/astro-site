@@ -2,6 +2,11 @@
 
 ## 2026-07-14
 
+- Migrated global settings, shared bilingual UI copy, seven bilingual page types, twelve localized Project documents, and ten localized Service documents to Sanity as the site's only editable content source.
+- Removed all runtime local content modules and switched every page, layout, SEO output, JSON-LD block, sitemap, robots.txt, and llms.txt to a strictly validated memoized Sanity snapshot.
+- Added fixed production Project/Service translation invariants, deterministic route pairing, HTTPS/company-fact validation, fresh non-CDN build reads, and failure-on-partial-content behavior.
+- Moved authored display headline lines, artwork accessibility copy, navigation accessibility labels, and root redirect copy into Sanity while retaining layout, routes, styles, and supported language codes in Astro.
+- Added the full-site migration design, implementation plan, validator regression suite, and Sanity-only source assertions.
 - Hardened Sanity Note publishing with required migrated bilingual pairs, future-note route compatibility, strict schema-shaped Portable Text/SEO validation, safe link rendering, and consistent `noIndex` filtering across discovery and hreflang output.
 
 ## 2026-07-13

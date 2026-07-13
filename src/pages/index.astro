@@ -1,7 +1,10 @@
 ---
-import { site } from "../data/site";
+import { getSiteContent } from "../lib/sanity/site-content";
 
+const { company, labels, site } = await getSiteContent();
 const target = `/${site.defaultLanguage}/`;
+const copy = labels[site.defaultLanguage];
+const pageTitle = `${site.name} × ${company.shortNameEn}`;
 ---
 
 <!doctype html>
@@ -19,7 +22,7 @@ const target = `/${site.defaultLanguage}/`;
     </noscript>
 
     <link rel="canonical" href={target} />
-    <title>Jeason Zhang × Multiple Engine</title>
+    <title>{pageTitle}</title>
 
     <style>
       html,
@@ -51,8 +54,8 @@ const target = `/${site.defaultLanguage}/`;
   <body>
     <noscript>
       <p>
-        正在进入网站。如果没有自动跳转，
-        <a href={target}>请点击这里</a>。
+        {copy.redirectMessage}
+        <a href={target}>{copy.redirectLinkLabel}</a>。
       </p>
     </noscript>
   </body>

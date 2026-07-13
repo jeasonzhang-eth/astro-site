@@ -1,4 +1,4 @@
-import type { Language } from "../../data/site";
+import type { Language } from "../site/language";
 
 export type LanguageAlternateInput = {
   language: Language;

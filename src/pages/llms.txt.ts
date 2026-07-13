@@ -1,29 +1,27 @@
-import { company } from "../data/company";
-import { services } from "../data/services";
-import { projects, site } from "../data/site";
+import { getSiteContent } from "../lib/sanity/site-content";
 import { buildNoteDiscoveryEntries, serializeLlmsNoteLines } from "../lib/discovery/serialize";
 import { getAllPublishedNotes } from "../lib/sanity/notes";
 
 export async function GET() {
-  const notes = await getAllPublishedNotes();
+  const [{ company, projects, services, settings, site }, notes] = await Promise.all([getSiteContent(), getAllPublishedNotes()]);
   const projectLines = projects
     .flatMap((project) => [
-      `- ${project.en.title} (EN): ${site.url}/en/projects/${project.slug}/`,
-      `- ${project.zh.title} (ZH): ${site.url}/zh/projects/${project.slug}/`,
+      `- ${project.en.title} (EN): ${site.url}/en/projects/${project.en.slug}/`,
+      `- ${project.zh.title} (ZH): ${site.url}/zh/projects/${project.zh.slug}/`,
     ])
     .join("\n");
   const noteLines = serializeLlmsNoteLines(buildNoteDiscoveryEntries(notes), site.url);
   const serviceLines = services
     .map(
       (service) =>
-        `- ${service.en.title} / ${service.zh.title}: ${site.url}/en/services/#${service.slug} | ${site.url}/zh/services/#${service.slug}`,
+        `- ${service.en.title} / ${service.zh.title}: ${site.url}/en/services/#${service.en.slug} | ${site.url}/zh/services/#${service.zh.slug}`,
     )
     .join("\n");
 
   const body = [
     `# ${site.name} × ${company.shortNameEn}`,
     "",
-    `> ${site.author} builds practical software, enterprise AI workflows, GEO systems, automation, and deployable tools. ${company.legalNameEn} is the formal cooperation and delivery entity behind the work.`,
+    `> ${settings.llmsDescription}`,
     "",
     "## Primary pages",
     `- English home: ${site.url}/en/`,

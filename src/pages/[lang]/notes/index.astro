@@ -1,35 +1,39 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import { labels, localizePath, site, type Language } from "../../../data/site";
+import { alternateLanguage, type Language } from "../../../lib/site/language";
+import { localizePath } from "../../../lib/site/routes";
+import { getSiteContent } from "../../../lib/sanity/site-content";
 import { getAllPublishedNotes } from "../../../lib/sanity/notes";
 import type { SanityNote } from "../../../lib/sanity/types";
 
 export async function getStaticPaths() {
-  const notes = await getAllPublishedNotes();
+  const [{ site }, notes] = await Promise.all([getSiteContent(), getAllPublishedNotes()]);
   return site.languages.map((lang) => ({ params: { lang }, props: { notes } }));
 }
 
+const { labels, notesPages, site } = await getSiteContent();
 const language = Astro.params.lang as Language;
 const { notes } = Astro.props as { notes: SanityNote[] };
 const languageNotes = notes.filter((note) => note.language === language);
 const copy = labels[language];
+const page = notesPages[language];
 const pathname = localizePath(language, "notes");
-const alternatePath = localizePath(language === "en" ? "zh" : "en", "notes");
+const alternatePath = localizePath(alternateLanguage(language), "notes");
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: copy.allNotesTitle,
-  description: copy.allNotesDescription,
+  name: page.title,
+  description: page.description,
   inLanguage: language === "zh" ? "zh-CN" : "en",
   url: `${site.url}${pathname}`,
 };
 ---
 
-<BaseLayout title={copy.allNotesTitle} description={copy.allNotesDescription} pathname={pathname} language={language} alternatePath={alternatePath} jsonLd={jsonLd}>
+<BaseLayout title={page.title} description={page.description} pathname={pathname} language={language} alternatePath={alternatePath} jsonLd={jsonLd}>
   <section class="content-page collection-page" aria-labelledby="notes-title">
-    <p class="eyebrow">{copy.noteLabel}</p>
-    <h1 id="notes-title">{copy.allNotesTitle}</h1>
-    <p class="lede">{copy.allNotesDescription}</p>
+    <p class="eyebrow">{page.eyebrow}</p>
+    <h1 id="notes-title">{page.title}</h1>
+    <p class="lede">{page.description}</p>
 
     <div class="directory-list">
       {languageNotes.map((note) => (

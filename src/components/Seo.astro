@@ -1,5 +1,7 @@
 ---
-import { canonicalUrl, site, type Language } from "../data/site";
+import type { Language } from "../lib/site/language";
+import { canonicalUrl } from "../lib/site/routes";
+import { getSiteContent } from "../lib/sanity/site-content";
 import { serializeJsonLd } from "../lib/seo/json-ld";
 
 interface Props {
@@ -13,7 +15,8 @@ interface Props {
 }
 
 const { title, description, pathname, language, alternates = {}, noIndex, jsonLd } = Astro.props;
-const url = canonicalUrl(pathname);
+const { site } = await getSiteContent();
+const url = canonicalUrl(site.url, pathname);
 const pageTitle = title === site.name ? title : `${title} | ${site.name}`;
 const structuredData = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
 const xDefaultPath = alternates.en;
@@ -23,8 +26,8 @@ const xDefaultPath = alternates.en;
 <meta name="description" content={description} />
 {noIndex && <meta name="robots" content="noindex, nofollow" />}
 <link rel="canonical" href={url} />
-{Object.entries(alternates).map(([lang, path]) => <link rel="alternate" hreflang={lang} href={canonicalUrl(path)} />)}
-{xDefaultPath && <link rel="alternate" hreflang="x-default" href={canonicalUrl(xDefaultPath)} />}
+{Object.entries(alternates).map(([lang, path]) => <link rel="alternate" hreflang={lang} href={canonicalUrl(site.url, path)} />)}
+{xDefaultPath && <link rel="alternate" hreflang="x-default" href={canonicalUrl(site.url, xDefaultPath)} />}
 <meta property="og:site_name" content={site.name} />
 <meta property="og:title" content={pageTitle} />
 <meta property="og:description" content={description} />

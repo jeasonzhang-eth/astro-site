@@ -1,8 +1,9 @@
 ---
 import Seo from "../components/Seo.astro";
 import "../styles/global.css";
-import { company } from "../data/company";
-import { alternateLanguage, labels, localizePath, site, type Language } from "../data/site";
+import { alternateLanguage, type Language } from "../lib/site/language";
+import { localizePath } from "../lib/site/routes";
+import { getSiteContent } from "../lib/sanity/site-content";
 import { buildLanguageAlternates } from "../lib/seo/alternates";
 
 interface Props {
@@ -17,6 +18,7 @@ interface Props {
 }
 
 const { title, description, pathname, language, alternatePath, alternateSeoPath, noIndex, jsonLd } = Astro.props;
+const { company, labels, site } = await getSiteContent();
 const copy = labels[language];
 const otherLanguage = alternateLanguage(language);
 const switchPath = alternatePath || localizePath(otherLanguage);
@@ -56,7 +58,7 @@ const isNavCurrent = (href: string) => pathname === href || pathname.startsWith(
   </head>
   <body>
     <div class="site-shell">
-      <header class="site-toolbar" aria-label="Site controls">
+      <header class="site-toolbar" aria-label={copy.siteControlsLabel}>
         <a class="brand" href={localizePath(language)} aria-label={`${site.name} home`}>
           <span class="brand-mark" aria-hidden="true">
             <span></span>
@@ -68,7 +70,7 @@ const isNavCurrent = (href: string) => pathname === href || pathname.startsWith(
             <small>{language === "zh" ? company.shortNameZh : company.shortNameEn}</small>
           </span>
         </a>
-        <nav class="site-nav" aria-label="Primary">
+        <nav class="site-nav" aria-label={copy.primaryNavigationLabel}>
           {navItems.map((item) => {
             const isCurrent = isNavCurrent(item.href);
             return (

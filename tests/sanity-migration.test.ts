@@ -34,3 +34,11 @@ test("migration keys are deterministic", () => {
 test("FAQ answers become Portable Text paragraphs", () => {
   assert.equal(convertFaqAnswer("Answer")[0]?.children?.[0]?.text, "Answer");
 });
+
+import { existsSync } from "node:fs";
+
+test("full-site migration removes every runtime local content source", () => {
+  for (const path of ["src/data/site.ts", "src/data/company.ts", "src/data/services.ts"]) {
+    assert.equal(existsSync(path), false, `${path} must not remain as a runtime fallback`);
+  }
+});

@@ -100,7 +100,7 @@ test("Sanity client uses the fixed published-read configuration", () => {
         projectId: "7lstorz2",
         dataset: "production",
         apiVersion: "2026-07-13",
-        useCdn: true,
+        useCdn: false,
         perspective: "published",
       },
     );

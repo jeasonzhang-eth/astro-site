@@ -14,7 +14,7 @@ export function getSanityConfig(env?: Record<string, string | undefined>): Sanit
   const dataset = source.SANITY_DATASET || SANITY_DATASET;
   const apiVersion = source.SANITY_API_VERSION || SANITY_API_VERSION;
 
-  if (!projectId) throw new Error("Missing SANITY_PROJECT_ID; the Notes build requires Sanity.");
+  if (!projectId) throw new Error("Missing SANITY_PROJECT_ID; the site build requires Sanity.");
   if (projectId !== SANITY_PROJECT_ID) throw new Error(`Invalid SANITY_PROJECT_ID: ${projectId}`);
   if (dataset !== SANITY_DATASET) throw new Error(`Invalid SANITY_DATASET: ${dataset}`);
   if (apiVersion !== SANITY_API_VERSION) throw new Error(`Invalid SANITY_API_VERSION: ${apiVersion}`);

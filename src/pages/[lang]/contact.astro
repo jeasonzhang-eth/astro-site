@@ -1,21 +1,22 @@
 ---
 import DisplayHeadline from "../../components/DisplayHeadline.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { company, contactPages } from "../../data/company";
-import { localizePath, site, type Language } from "../../data/site";
+import { alternateLanguage, type Language } from "../../lib/site/language";
+import { localizePath } from "../../lib/site/routes";
+import { getSiteContent } from "../../lib/sanity/site-content";
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const { site } = await getSiteContent();
   return site.languages.map((lang) => ({ params: { lang } }));
 }
 
+const { company, contactPages, site } = await getSiteContent();
 const language = Astro.params.lang as Language;
-const headlineLines = language === "zh"
-  ? ["从那个必须稳定运行的", "问题开始。"]
-  : ["Start with the problem", "that needs to work reliably."];
-const headlineLabel = headlineLines.join(language === "zh" ? "" : " ");
 const page = contactPages[language];
+const headlineLines = page.headlineLines;
+const headlineLabel = page.headline;
 const pathname = localizePath(language, "contact");
-const alternatePath = localizePath(language === "en" ? "zh" : "en", "contact");
+const alternatePath = localizePath(alternateLanguage(language), "contact");
 const organizationName = language === "zh" ? company.legalNameZh : company.legalNameEn;
 const address = language === "zh" ? company.addressZh : company.addressEn;
 const jsonLd = {

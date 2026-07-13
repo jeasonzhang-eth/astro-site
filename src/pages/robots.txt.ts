@@ -1,6 +1,7 @@
-import { site } from "../data/site";
+import { getSiteContent } from "../lib/sanity/site-content";
 
-export function GET() {
+export async function GET() {
+  const { site } = await getSiteContent();
   return new Response(
     [
       "User-agent: *",

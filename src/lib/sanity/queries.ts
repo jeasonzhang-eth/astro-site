@@ -19,3 +19,16 @@ export const PUBLISHED_NOTES_QUERY = `
     featured
   }
 `;
+
+export const PUBLISHED_SITE_CONTENT_QUERY = `
+  *[
+    _type in [
+      "siteSettings", "siteCopy", "homePage", "aboutPage", "companyPage", "contactPage",
+      "servicesPage", "projectsPage", "notesPage", "project", "service"
+    ] &&
+    !(_id in path("drafts.**"))
+  ] | order(_type asc, order asc, language asc) {
+    ...,
+    "slug": slug.current
+  }
+`

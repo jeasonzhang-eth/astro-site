@@ -1,7 +1,9 @@
 ---
 import PortableNoteBody from "../../../components/notes/PortableNoteBody.astro";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import { labels, localizePath, site, type Language } from "../../../data/site";
+import type { Language } from "../../../lib/site/language";
+import { localizePath } from "../../../lib/site/routes";
+import { getSiteContent } from "../../../lib/sanity/site-content";
 import { getAllPublishedNotes, pairNotes, portableTextToPlainText } from "../../../lib/sanity/notes";
 import type { SanityNote } from "../../../lib/sanity/types";
 
@@ -23,6 +25,7 @@ export async function getStaticPaths() {
   }));
 }
 
+const { labels, site } = await getSiteContent();
 const { note, alternate } = Astro.props as Props;
 const language = note.language as Language;
 const copy = labels[language];
